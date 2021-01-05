@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'pin',
 ]
 
+AUTH_USER_MODEL = 'account.Account'
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',

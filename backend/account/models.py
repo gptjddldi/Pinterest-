@@ -8,7 +8,7 @@ class AccountManager(BaseUserManager):
 
 
 class Account(AbstractUser):
-    avatar = models.BinaryField()
+    avatar = models.ImageField(blank=True, upload_to="account/profile/%Y/%m/%d")
     # image 를 db에 저장할 것인가? 아니면 파일 시스템에 저장할 것인가?
     # https://stackoverflow.com/questions/3748/storing-images-in-db-yea-or-nay
     # https://softwareengineering.stackexchange.com/questions/150669/is-it-a-bad-practice-to-store-large-files-10-mb-in-a-database

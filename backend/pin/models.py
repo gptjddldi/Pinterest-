@@ -12,7 +12,7 @@ class TimestampedModel(models.Model):
 
 class Pin(TimestampedModel):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pins')
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=100)
     image = models.ImageField(blank=True, upload_to="pins/%Y/%m/%d")
     tag_set = models.ManyToManyField(to='Tag', blank=True)
 

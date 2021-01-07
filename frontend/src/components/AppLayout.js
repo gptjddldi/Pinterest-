@@ -18,7 +18,7 @@ function AppLayout({children}) {
                 <div className="search"><Input.Search/></div>
                 <div className="topnav">
                     <Menu mode={'horizontal'}>
-                        <Menu.Item>메뉴 1</Menu.Item>
+                        <Menu.Item>로그인</Menu.Item>
                         <Menu.Item>메뉴 2</Menu.Item>
                         <Menu.Item>메뉴 3</Menu.Item>
                     </Menu>

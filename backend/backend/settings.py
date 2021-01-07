@@ -1,3 +1,4 @@
+import datetime
 import os
 from pathlib import Path
 
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
 
     # 3rd
     'rest_framework',
+    'rest_framework_jwt',
     'corsheaders',
 
     # Apps
@@ -123,3 +125,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {  # added
+    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ]
+}
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'account.utils.my_jwt_response_handler',  # jwt_response_handler 커스텀
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
+}

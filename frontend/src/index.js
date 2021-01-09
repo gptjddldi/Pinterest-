@@ -8,14 +8,18 @@ import {createStore} from "redux";
 import RootReducer from "./reducers";
 import {Provider} from "react-redux";
 import {composeWithDevTools} from "redux-devtools-extension";
+import {PersistGate} from "redux-persist/integration/react";
+import configureStore from './store'
 
-const store = createStore(RootReducer, composeWithDevTools()); // 스토어를 만듭니다.
-console.log(store.getState())
+const {store, persistor} = configureStore()
+
 
 ReactDOM.render(
   <BrowserRouter>
       <Provider store={store} >
-        <Root />
+          <PersistGate loading={null} persistor={persistor}>
+              <Root />
+          </PersistGate>
       </Provider>
   </BrowserRouter>,
   document.getElementById('root')

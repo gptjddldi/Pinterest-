@@ -3,11 +3,19 @@ import React, {useState} from 'react'
 import {Checkbox, Input, Modal, Button, Form} from "antd";
 import {Link} from "react-router-dom";
 import Axios from 'axios'
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../actions/userAction";
 
-export default function AuthModal() {
-
+const AuthModal = () => {
     const [type, setType] = useState("login")
     const [visible, setVisible] = useState(true)
+
+    const {token, user} = useSelector(state => ({
+        token: state.userReducer.token,
+        user: state.userReducer.user,
+    }))
+    const dispatch = useDispatch()
+    const onLogin = (data) => dispatch(login(data));
 
     const Login = (values) => {
         async function fn() {
@@ -18,6 +26,7 @@ export default function AuthModal() {
                 const apiRoot = "http://localhost:8000/account/login/"
                 const response = await Axios.post(apiRoot, data)
                 console.log(response)
+                onLogin(response.data)
                 setVisible(false)
             }
             catch (err){
@@ -141,3 +150,4 @@ export default function AuthModal() {
         </div>
     )
 }
+export default AuthModal

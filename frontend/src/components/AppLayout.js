@@ -1,8 +1,11 @@
-import React from "react"
+import React, {useState} from "react"
 import './AppLayout.scss'
 import {Input, Menu, Button} from "antd";
+import AuthModal from "./AuthModal";
+import {Link} from "react-router-dom";
 
 function AppLayout({children}) {
+    const [modalOpen, setModalOpen] = useState(false)
     return(
         <div className={"app"}>
             <div className="header">
@@ -17,14 +20,18 @@ function AppLayout({children}) {
                 </div>
                 <div className="search"><Input.Search/></div>
                 <div className="topnav">
-                    <Menu mode={'horizontal'}>
-                        <Menu.Item>로그인</Menu.Item>
-                        <Menu.Item>메뉴 2</Menu.Item>
-                        <Menu.Item>메뉴 3</Menu.Item>
-                    </Menu>
+                    <button
+                        onClick={() => {setModalOpen(true)}}>
+                        로그인
+                    </button>
                 </div>
             </div>
-            <div className="contents">{children}</div>
-        </div>
+            <div className="contents">
+                {children}
+            </div>
+            <div className="modal">
+                {/*{modalOpen ? <AuthModal modalOpen={modalOpen}/> : console.log('fail')}*/}
+            </div>
+        </div>  // TODO: 로그인 클릭시 Modal 이 뜨도록 하기. 자꾸 안되잖아 속상하게 ㅜㅜ
     )
 } export default AppLayout

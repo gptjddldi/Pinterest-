@@ -3,9 +3,16 @@ import './AppLayout.scss'
 import {Input, Menu, Button} from "antd";
 import AuthModal from "./AuthModal";
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../actions/userAction";
 
 function AppLayout({children}) {
     const [modalOpen, setModalOpen] = useState(false)
+    const dispatch = useDispatch()
+    const onLogout =() => dispatch(logout())
+    const {user} = useSelector(state => ({
+        user: state.userReducer.user,
+    }))
     return(
         <div className={"app"}>
             <div className="header">
@@ -20,18 +27,13 @@ function AppLayout({children}) {
                 </div>
                 <div className="search"><Input.Search/></div>
                 <div className="topnav">
-                    <button
-                        onClick={() => {setModalOpen(true)}}>
-                        로그인
-                    </button>
+                    <h2>{user.email}님, 안녕하세욤?</h2>
+                    <Button onClick={onLogout}>로그아웃</Button>
                 </div>
             </div>
             <div className="contents">
                 {children}
             </div>
-            <div className="modal">
-                {/*{modalOpen ? <AuthModal modalOpen={modalOpen}/> : console.log('fail')}*/}
-            </div>
-        </div>  // TODO: 로그인 클릭시 Modal 이 뜨도록 하기. 자꾸 안되잖아 속상하게 ㅜㅜ
+        </div>
     )
 } export default AppLayout

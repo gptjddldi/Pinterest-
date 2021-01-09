@@ -10,10 +10,10 @@ const AuthModal = () => {
     const [type, setType] = useState("login")
     const [visible, setVisible] = useState(true)
 
-    const {token, user} = useSelector(state => ({
-        token: state.userReducer.token,
-        user: state.userReducer.user,
-    }))
+    // const {token, user} = useSelector(state => ({
+    //     token: state.userReducer.token,
+    //     user: state.userReducer.user,
+    // }))
     const dispatch = useDispatch()
     const onLogin = (data) => dispatch(login(data));
 

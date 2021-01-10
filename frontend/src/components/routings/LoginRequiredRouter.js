@@ -10,7 +10,11 @@ export default function LoginRequiredRouter({component:C, ...kwargs}) {
         <Route {...kwargs} render={props =>
             isAuth
             ? <C {...props}/>
-            : <Redirect to={'account/login'}/>
+            : <Redirect to={{
+                    pathname: '/account/login',
+                    state: {from: props.location}
+                }}/>
+
         }/>
     )
 }

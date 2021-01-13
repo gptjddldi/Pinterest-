@@ -14,7 +14,7 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-export default function Login() {
+export default function Login(props) {
 
     const history = useHistory()
     const location = useLocation()
@@ -74,7 +74,7 @@ export default function Login() {
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         FaceBook
                     </Button>
-                    <Link to={"/account/signup"}>아직 Pinterest 를 사용하고 있지 않으신가요? 가입하기</Link>
+                    <div onClick={props.onSignupClick}>아직 Pinterest 를 사용하고 있지 않으신가요? 가입하기</div>
                 </Form.Item>
             </Form>
         </div>

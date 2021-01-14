@@ -6,7 +6,13 @@ import {Button, Form, Input, Modal} from "antd";
 import {Link, useHistory} from "react-router-dom";
 import './login.scss'
 
-export default function Signup() {
+const loginStyle = {
+    'background': "url('http://bit.ly/2gPLxZ4')",
+    'background-repeat': "no-repeat",
+    'background-size': "cover",
+}
+
+export default function Signup(props) {
     const history = useHistory()
 
     const Signup = (values) => {
@@ -26,47 +32,60 @@ export default function Signup() {
         }
         fn()
     }
-
     return (
-        <div>
-            <Form
-                name="normal_login"
-                className="login-form"
-                initialValues={{ remember: true }}
-                onFinish={Signup}
-            >
-                <Form.Item
-                    name="email"
-                    rules={[{ required: true, message: '이메일을 빠뜨리셨어요!' }]}
+    <div>
+        <div className="h-screen bg-cover" style={loginStyle} className={props.className}>
+            <div className="container mx-auto h-full flex flex-1 justify-center items-center">
+                <div className="w-full max-w-lg">
+                    <div className="md:flex items-center justify-between">
+                        <div className="w-full md:w-1/2 mr-auto">
+                            <h1 className="text-6xl font-bold text-white">가입하여 더 많은 아이디어를 만나보세요.</h1>
+                        </div>
+                        <form className="item-center md:mx-w-md mt-6 card bg-white rounded-lg px-4 py-4 mb-6"
+                              onSubmit={Signup}>
+                            <p className="text-black font-medium text-center text-lg font-bold">회원가입</p>
+                            <div className="">
+                                <label className="block text-sm text-white" htmlFor="email">이메일</label>
+                                <input
+                                    className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white"
+                                    type="email" id="email" placeholder="이메일을 입력하세요." aria-label="email" required/>
+                            </div>
+                            <div className="mt-2">
+                                <label className="block  text-sm text-white">사용자 이름</label>
+                                <input
+                                    className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white"
+                                    type="username" id="username" placeholder="사용자 이름을 입력해주세요." arial-label="username"
+                                    required/>
+                            </div>
+                            <div className="mt-2">
+                                <label className="block  text-sm text-white">비밀번호</label>
+                                <input
+                                    className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white"
+                                    type="password" id="password" placeholder="비밀번호를 입력하세요." arial-label="password"
+                                    required/>
+                            </div>
 
-                >
-                    <Input placeholder="이메일" />
-                </Form.Item>
-                <Form.Item
-                    name="username"
-                    rules={[{ required: true, message: '사용자 이름을 입력해주세요.' }]}
+                            <div className="mt-4 items-center flex justify-between">
+                                <button
+                                    className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 hover:bg-gray-800 rounded"
+                                    type="submit">로그인
+                                </button>
+                                <a className="inline-block right-0 align-baseline font-bold text-sm text-500 text-black hover:text-red-400"
+                                   href="#">비밀번호를 잊으셨나요?</a>
+                            </div>
+                            <div className="text-center">
+                                <div onClick={() => props.toLoginClick()}
+                                   className="inline-block right-0 align-baseline font-light text-sm text-500 hover:text-red-400">
+                                    이미 아이디가 있으신가요?
+                                </div>
+                            </div>
 
-                >
-                    <Input placeholder="사용자 이름" />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[{ required: true, message: '비밀번호를 입력해주세요.' }]}
-                >
-                    <Input.Password placeholder="비밀번호"/>
-                </Form.Item>
+                        </form>
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                        Sign up
-                    </Button>
-                    <div>또는</div>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                        FaceBook
-                    </Button>
-                    <Link to={"/account/login"}>이미 회원이신가요? 로그인하기</Link>
-                </Form.Item>
-            </Form>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
     )
 }

@@ -3,6 +3,7 @@ import PostList from "../components/PostList";
 import Layout from "../components/Layout";
 import {useSelector} from "react-redux";
 import Login from "./account/login";
+import Signup from "./account/signup";
 
 
 
@@ -14,9 +15,11 @@ function Authenticated() {
     )
 }
 
+
+
 export default function Home() {
-    let {loginVisible, setLoginVisible} = useState("visible")
-    let {signupVisible, setSignupVisible} = useState("hidden")
+    let [loginVisible, setLoginVisible] = useState("visible")
+    let [signupVisible, setSignupVisible] = useState("hidden")
     const {isAuth} = useSelector(state => ({
         isAuth: state.userReducer.isAuth
     }))
@@ -30,7 +33,10 @@ export default function Home() {
     return(
         <>
             <Login className={loginVisible}
-                   onSignupClick={() => {setSignupVisible("visible"); setLoginVisible("hidden")}}
+                   toSignupClick={() => {setLoginVisible("hidden"); setSignupVisible("visible");}}
+            />
+            <Signup className={signupVisible}
+                   toLoginClick={() => {setLoginVisible("visible"); setSignupVisible("hidden");}}
             />
         </>
     )

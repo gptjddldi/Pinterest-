@@ -15,7 +15,8 @@ class Account(AbstractUser):
     # https://stackoverflow.com/questions/3748/storing-images-in-db-yea-or-nay
     # https://softwareengineering.stackexchange.com/questions/150669/is-it-a-bad-practice-to-store-large-files-10-mb-in-a-database
     interest = models.ManyToManyField(Tag, blank=True)
-    follow = models.ManyToManyField('self', blank=True)
+    following = models.ManyToManyField('self', blank=True, related_name="followings")
+    follower = models.ManyToManyField('self', blank=True, related_name="followers")
     first_name = models.CharField(max_length=10, verbose_name="성", blank=True)
     last_name = models.CharField(max_length=20, verbose_name="이름", blank=True)
     username = models.CharField(max_length=20)

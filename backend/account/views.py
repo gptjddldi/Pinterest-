@@ -20,5 +20,11 @@ class AccountCurrentView(ListAPIView):
         queryset = queryset.filter(pk=self.request.user.id)
         return queryset
 
-# class AccountLoginView(JSONWebTokenAPIView):
 
+class SuggestionList(ListAPIView):
+    queryset = Account.objects.all()
+    serializer_class = serializers.SuggestionUserSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.following.all())
+        return qs

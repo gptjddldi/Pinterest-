@@ -63,3 +63,9 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
 #             msg = 'Must include "{username_field}" and "password".'
 #             msg = msg.format(username_field=self.username_field)
 #             raise serializers.ValidationError(msg)
+
+
+class SuggestionUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['username', 'avatar', 'pins']

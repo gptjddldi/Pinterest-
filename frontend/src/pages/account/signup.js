@@ -4,7 +4,6 @@ import {login} from "../../actions/userAction";
 import Axios from "axios";
 import {Button, Form, Input, Modal} from "antd";
 import {Link, useHistory} from "react-router-dom";
-import './login.scss'
 
 const loginStyle = {
     'background': "url('http://bit.ly/2gPLxZ4')",
@@ -14,10 +13,15 @@ const loginStyle = {
 
 export default function Signup(props) {
     const history = useHistory()
+    const [email, setEmail] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
 
-    const Signup = (values) => {
+    const Signup = (e) => {
+        e.preventDefault()
         async function fn() {
-            const {email, username, password} = values;
+            // console.log(values)
+            // const {email, username, password} = values;
             const data = {email, username, password}
             try{
                 console.log(data)
@@ -28,7 +32,7 @@ export default function Signup(props) {
             catch (err){
                 console.log(err)
             }
-            history.push('/account/login')
+            // history.push('/account/login')
         }
         fn()
     }
@@ -48,20 +52,24 @@ export default function Signup(props) {
                                 <label className="block text-sm text-white" htmlFor="email">이메일</label>
                                 <input
                                     className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white"
-                                    type="email" id="email" placeholder="이메일을 입력하세요." aria-label="email" required/>
+                                    type="email" id="email" placeholder="이메일을 입력하세요." aria-label="email" value={email} required
+                                onChange={(e)=>setEmail(e.target.value)}
+                                />
                             </div>
                             <div className="mt-2">
                                 <label className="block  text-sm text-white">사용자 이름</label>
                                 <input
                                     className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white"
-                                    type="username" id="username" placeholder="사용자 이름을 입력해주세요." arial-label="username"
+                                    type="username" id="username" placeholder="사용자 이름을 입력해주세요." value={username} arial-label="username"
+                                    onChange={(e)=>setUsername(e.target.value)}
                                     required/>
                             </div>
                             <div className="mt-2">
                                 <label className="block  text-sm text-white">비밀번호</label>
                                 <input
                                     className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white"
-                                    type="password" id="password" placeholder="비밀번호를 입력하세요." arial-label="password"
+                                    type="password" id="password" placeholder="비밀번호를 입력하세요." value={password} arial-label="password"
+                                    onChange={(e)=>setPassword(e.target.value)}
                                     required/>
                             </div>
 

@@ -32,12 +32,15 @@ export default function Home() {
     }
     return(
         <>
-            <Login className={loginVisible}
-                   toSignupClick={() => {setLoginVisible("hidden"); setSignupVisible("visible");}}
-            />
-            <Signup className={signupVisible}
-                   toLoginClick={() => {setLoginVisible("visible"); setSignupVisible("hidden");}}
-            />
+            {loginVisible==="visible" ?
+                <Login className={loginVisible}
+                       toSignupClick={() => {setLoginVisible("hidden"); setSignupVisible("visible");}}
+                />
+            :
+                <Signup className={signupVisible}
+                        toLoginClick={() => {setLoginVisible("visible"); setSignupVisible("hidden");}}
+                />
+            }
         </>
     )
 }

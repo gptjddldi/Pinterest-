@@ -3,11 +3,14 @@ import axios from "axios";
 import {Image} from "antd";
 import PinCard from "./PinCard";
 import Masonry from "react-masonry-css";
+import {useSelector} from "react-redux";
 // react-masonry-css: pinterest 스타일 layout 느낌
-const apiRoot = 'http://localhost:8000/pins/'
+// const apiRoot = 'http://localhost:8000/pins/'
 
-const PostList = () => {
-
+const PostList = ({apiRoot}) => {
+    const {token} = useSelector((state) => ({
+        token: state.userReducer.token
+    }))
     const [postList, setPostList] = useState([])
 
     useEffect( () => {
@@ -16,7 +19,8 @@ const PostList = () => {
 
     async function render() {
         try{
-            const res = await axios.get(apiRoot)
+            const headers = {Authorization: `JWT ${token}`}
+            const res = await axios.get(apiRoot, {headers})
             const {data} = res
             setPostList(data)
         }

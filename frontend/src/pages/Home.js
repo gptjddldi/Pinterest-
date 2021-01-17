@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import Login from "./account/login";
 import Signup from "./account/signup";
 
+const apiRoot = 'http://localhost:8000/pins/'
 
 
 function Authenticated() {
@@ -26,7 +27,7 @@ export default function Home() {
     if (isAuth) {
         return (
             <Layout>
-                <PostList/>
+                <PostList apiRoot={apiRoot}/>
             </Layout>
         )
     }

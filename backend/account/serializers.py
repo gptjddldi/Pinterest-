@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
 
+from pin.serializers import PinListSerializer
 from .models import Account
 
 from rest_framework import serializers
@@ -26,6 +27,7 @@ class AccountSignupSerializer(serializers.ModelSerializer):
 
 
 class CurrentAccountSerializer(serializers.ModelSerializer):
+    # following = (many=True)
     class Meta:
         model = Account
         exclude = ['password']
@@ -68,4 +70,6 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
 class SuggestionUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['username', 'avatar', 'pins']
+        fields = ['username', 'avatar']
+
+# class FollowingUserPin

@@ -8,4 +8,5 @@ urlpatterns = [
     path('profile/', views.AccountCurrentView.as_view()),
     path('login/', obtain_jwt_token),
     path('suggestions/', views.SuggestionList.as_view()),
+    path('board/', views.BoardCreateListView.as_view()),
 ]

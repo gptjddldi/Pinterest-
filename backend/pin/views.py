@@ -17,11 +17,23 @@ class PinViewSet(ModelViewSet):
 
 class FollowingPinList(ListAPIView):
     queryset = Pin.objects.all()
-    serializer_class = serializers.FollowingPinListSerializer
+    serializer_class = serializers.PinListSerializer
 
     def get_queryset(self):
         qs = super().get_queryset()
         query = []
         for following in self.request.user.following.all():
             query += qs.filter(author=following.pk)
+        return query
+
+
+class BoardPinList(ListAPIView):
+    queryset = Pin.objects.all()
+    serializer_class = serializers.PinListSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        query = []
+        for board in self.request.user.boards.all():
+            query += qs.filter(boards=board.pk)
         return query

@@ -2,8 +2,9 @@ from django.contrib.auth import authenticate
 from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
 
+from pin.models import Pin
 from pin.serializers import PinListSerializer
-from .models import Account
+from .models import Account, Board
 
 from rest_framework import serializers
 
@@ -72,4 +73,17 @@ class SuggestionUserSerializer(serializers.ModelSerializer):
         model = Account
         fields = ['username', 'avatar']
 
-# class FollowingUserPin
+
+class PinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pin
+        fields = ['title', 'image', 'author']
+
+
+class BoardSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    pin = PinSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Board
+        fields = ['title', 'author', 'pin']

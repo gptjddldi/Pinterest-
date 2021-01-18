@@ -14,11 +14,11 @@ class Pin(TimestampedModel):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pins')
     title = models.CharField(max_length=100)
     image = models.ImageField(blank=True, upload_to="pins/%Y/%m/%d")
-    tag_set = models.ManyToManyField(to='Tag', blank=True)
 
 
-# Pin, Tag: Many To Many
+# Pin, Board: Many To Many
 
-
-class Tag(models.Model):
-    tag = models.CharField(max_length=50, blank=True)
+class Board(models.Model):
+    title = models.CharField(max_length=100)
+    pin = models.ManyToManyField(to=Pin, related_name='boards', blank=True)
+    author = models.ManyToManyField(to=settings.AUTH_USER_MODEL, related_name='boards')

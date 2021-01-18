@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from pin.models import Pin, Tag
+from pin.models import Pin, Board
 
 
 @admin.register(Pin)
@@ -8,6 +8,6 @@ class PinAdmin(admin.ModelAdmin):
     list_display = ['author', 'title', 'image', 'created_at']
 
 
-@admin.register(Tag)
+@admin.register(Board)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['tag']
+    list_display = ['title']

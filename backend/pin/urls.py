@@ -6,5 +6,6 @@ router = DefaultRouter()
 router.register('pins', views.PinViewSet)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('following/', views.FollowingPinList.as_view())
 ]

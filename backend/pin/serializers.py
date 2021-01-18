@@ -9,3 +9,11 @@ class PinListSerializer(serializers.ModelSerializer):
         model = Pin
         fields = '__all__'
 
+
+class FollowingPinListSerializer(serializers.ModelSerializer):
+    # author = serializers.ReadOnlyField(source='author.pk')
+
+    class Meta:
+        model = Pin
+        fields = '__all__'
+

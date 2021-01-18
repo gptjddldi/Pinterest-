@@ -2,6 +2,8 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from pin.models import Pin
+
 
 class AccountManager(BaseUserManager):
     pass
@@ -28,3 +30,9 @@ class Account(AbstractUser):
     REQUIRED_FIELDS = ['username']
 
 # <img src = "data: image / png; base64, {{image}}">
+
+
+class Board(models.Model):
+    author = models.ForeignKey(to=Account, on_delete=models.CASCADE, related_name='boards')
+    title = models.CharField(max_length=100)
+    pin = models.ManyToManyField(to=Pin, related_name='boards')

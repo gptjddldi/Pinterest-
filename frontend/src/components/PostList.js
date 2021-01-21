@@ -6,6 +6,7 @@ import Masonry from "react-masonry-css";
 import {useSelector} from "react-redux";
 // react-masonry-css: pinterest 스타일 layout 느낌
 // const apiRoot = 'http://localhost:8000/pins/'
+const boardRoot = 'http://localhost:8000/account/boards/'
 
 const PostList = ({apiRoot}) => {
     const {token} = useSelector((state) => ({
@@ -15,6 +16,7 @@ const PostList = ({apiRoot}) => {
 
     useEffect( () => {
         render()
+        // fn()
     }, [])
 
     async function render() {
@@ -26,6 +28,17 @@ const PostList = ({apiRoot}) => {
         }
         catch (err){
             console.log(err)
+        }
+    }
+    async function fn() {
+        try{
+            const headers = {Authorization: `JWT ${token}`}
+            const res = await axios.get(boardRoot, {headers})
+            // setBoard(res)
+            console.log(res)
+        }
+        catch (e) {
+            console.log(e)
         }
     }
     // 무한 스크롤 구현

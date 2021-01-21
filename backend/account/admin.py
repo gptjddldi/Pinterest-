@@ -10,4 +10,4 @@ class AccountAdmin(admin.ModelAdmin):
 
 @admin.register(Board)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['title', 'author']

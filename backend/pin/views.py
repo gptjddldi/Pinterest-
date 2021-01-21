@@ -12,6 +12,8 @@ class PinViewSet(ModelViewSet):
     serializer_class = serializers.PinListSerializer
 
     def perform_create(self, serializer):
+        print('123')
+        print(self.request.POST)
         serializer.save(author=self.request.user)
 
 

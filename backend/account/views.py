@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 from rest_framework_jwt.views import JSONWebTokenAPIView
 
+from pin.models import Pin
 from . import serializers
 from .models import Account, Board
 
@@ -30,14 +35,38 @@ class SuggestionList(ListAPIView):
         return qs
 
 
-class BoardCreateListView(ListAPIView, CreateAPIView):
+# class BoardCreateListView(ListAPIView, CreateAPIView):
+#     queryset = Board.objects.all()
+#     serializer_class = serializers.BoardSerializer
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset().filter(author=self.request.user)
+#         return qs
+#
+#     def perform_create(self, serializer):
+#         serializer.save(author=self.request.user)
+#
+#
+
+
+class BoardViewSet(ModelViewSet):
     queryset = Board.objects.all()
     serializer_class = serializers.BoardSerializer
-
-    def get_queryset(self):
-        qs = super().get_queryset().filter(author=self.request.user)
-        return qs
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    def get_queryset(self):
+        qs = super().get_queryset().filter(author=self.request.user)
+        print(self.request.data)
+        return qs
+
+
+@api_view(['POST', 'GET'])
+def add_pin(request, pk):
+    if request.method == 'POST':
+        board = get_object_or_404(Board, pk=pk)
+        print(request.data)
+        board.pin.add(Pin.objects.get(pk=request.data['id']))
+    # board.pin.add(pk=request.pin.pk)
+    return Response(status.HTTP_202_ACCEPTED)

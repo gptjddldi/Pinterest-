@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_jwt.views import JSONWebTokenAPIView
@@ -71,8 +71,15 @@ def add_pin(request, pk):
     return Response(status.HTTP_202_ACCEPTED)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def get_user_info_by_username(request, username):
     user = get_object_or_404(Account, username=username)
     serializer = serializers.CurrentAccountSerializer(user)
+    if request.method == 'PUT':
+        username = request.data['username']
+        avatar = request.data['avatar']
+        user.username = username
+        user.avatar = avatar
+        user.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
     return Response(serializer.data)

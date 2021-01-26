@@ -7,8 +7,9 @@ import AccountRoutes from "./account";
 import LoginRequiredRouter from "../components/routings/LoginRequiredRouter";
 import CssTest from "./CssTest";
 import Following from "./Following";
-import Profile from "./account/profile";
+import Profile from "./profile";
 import {useSelector} from "react-redux";
+import SettingsRoutes from "./account/settings";
 
 export default function Root() {
     let {username} = useSelector(state => ({
@@ -21,6 +22,7 @@ export default function Root() {
             <Route exact path={'/profile/:key1'} component={Profile}/>
             <Route path={'/account'} component={AccountRoutes}/>
             <Route path={'/test'} exact component={CssTest}/>
+            <Route path={'/settings'} component={SettingsRoutes}/>
         </div>
     )
 }

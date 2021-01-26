@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../actions/userAction";
-import Layout from "../../components/Layout";
-import ProfilePicture from "../../components/ProfilePicture";
+import {logout} from "../actions/userAction";
+import Layout from "../components/Layout";
+import ProfilePicture from "../components/ProfilePicture";
 import axios from "axios";
 
 export default function Profile(props) {

@@ -10,6 +10,7 @@ router.register('boards', views.BoardViewSet)
 urlpatterns = [
     path('signup/', views.AccountSignupView.as_view()),
     path('profile/', views.AccountCurrentView.as_view()),
+    path('user/<slug:username>/', views.get_user_info_by_username),
     path('login/', obtain_jwt_token),
     path('suggestions/', views.SuggestionList.as_view()),
     # path('board/', views.BoardCreateListView.as_view()),

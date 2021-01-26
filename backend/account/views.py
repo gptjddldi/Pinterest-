@@ -66,7 +66,13 @@ class BoardViewSet(ModelViewSet):
 def add_pin(request, pk):
     if request.method == 'POST':
         board = get_object_or_404(Board, pk=pk)
-        print(request.data)
         board.pin.add(Pin.objects.get(pk=request.data['id']))
     # board.pin.add(pk=request.pin.pk)
     return Response(status.HTTP_202_ACCEPTED)
+
+
+@api_view(['GET'])
+def get_user_info_by_username(request, username):
+    user = get_object_or_404(Account, username=username)
+    serializer = serializers.CurrentAccountSerializer(user)
+    return Response(serializer.data)

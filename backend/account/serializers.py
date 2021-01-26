@@ -81,7 +81,7 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
     # following = (many=True)
     class Meta:
         model = Account
-        exclude = ['password']
+        fields = ['id', 'avatar', 'username', 'email', 'following', 'follower']
 
 
 # class AccountLoginSerializer(serializers.ModelSerializer):

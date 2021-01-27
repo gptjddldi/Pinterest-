@@ -1,5 +1,5 @@
 import {login, logout} from "../actions/userAction";
-import {LOGIN, LOGOUT} from "../actions/types";
+import {LOGIN, LOGOUT, UPDATE} from "../actions/types";
 
 const defaultState = {
     token: '',
@@ -17,6 +17,14 @@ export default function(state=defaultState, action){
                 token: data.token,
                 user: data.user,
                 isAuth: true,
+            }
+        }
+        case UPDATE:{
+            const {payload:data} = action
+            return{
+                ...state,
+                user: data,
+                isAuth:true,
             }
         }
         case LOGOUT:{

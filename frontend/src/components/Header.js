@@ -4,7 +4,6 @@ import SearchBar from "./SearchBar";
 import {useSelector} from "react-redux";
 
 export default function Header(props) {
-    // let { loggedUserData } = useAuth()
     let {username} = useSelector(state => ({
         username: state.userReducer.user.username
     }))

@@ -12,9 +12,7 @@ import {useSelector} from "react-redux";
 import SettingsRoutes from "./account/settings";
 
 export default function Root() {
-    let {username} = useSelector(state => ({
-        username: state.userReducer.user.username
-    }))
+
     return(
         <div>
             <Route exact path={'/'} component={Home}/>

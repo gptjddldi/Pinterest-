@@ -81,5 +81,5 @@ def get_user_info_by_username(request, username):
         user.username = username
         user.avatar = avatar
         user.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.data)

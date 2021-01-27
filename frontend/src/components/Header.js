@@ -14,7 +14,7 @@ export default function Header(props) {
                 <li><a href="/following" className=" text-black px-4 font-bold py-2 rounded-3xl hover:bg-gray-300">팔로잉</a></li> {/* 클릭하면 bg-black text-white */}
                 <div>검색창</div>
                 <li><a href={`/profile/${username}`} className="text-black px-4 py-2 font-bold rounded-3xl hover:bg-gray-300">프로필</a></li> {/*원래는 아이콘으로 만들어져있음*/}
-                <li><a className="text-black px-4 py-2 font-bold rounded-3xl hover:bg-gray-300">세팅</a></li>
+                <li><a href={`/settings/edit-profile`} className="text-black px-4 py-2 font-bold rounded-3xl hover:bg-gray-300">세팅</a></li>
             </ul>
         </div>
     )

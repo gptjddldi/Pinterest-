@@ -20,6 +20,8 @@ export default function Profile(props) {
                 const headers = {Authorization: `JWT ${token}`}
                 const res = await axios.get(apiRoot, {headers})
                 const {data} = res
+                const image_root_data = 'http://localhost:8000' + data.avatar
+                data.avatar = image_root_data
                 setUserData(data)
             }
             catch (err){

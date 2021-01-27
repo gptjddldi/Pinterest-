@@ -29,7 +29,10 @@ export default function CssTest() {
             const headers = {Authorization: `JWT ${token}`}
             const response = await axios.put(apiRoot, fd, {headers})
             console.log(response.data)
-            onUpdate(response.data)
+            const image_root_data = 'http://localhost:8000' + response.data.avatar
+            const data = response.data
+            data.avatar = image_root_data
+            onUpdate(data)
         }
         fn()
     }

@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import password_validation
 from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
 
 from pin.models import Pin
-from pin.serializers import PinListSerializer
 from .models import Account, Board
 
 from rest_framework import serializers
@@ -142,3 +141,37 @@ class BoardSerializer(serializers.ModelSerializer):
     # def update(self, instance, validated_data):
     #     pin_data = validated_data.pop('pin')
     #     pin = instance.pin
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(max_length=128, write_only=True, required=True)
+    new_password1 = serializers.CharField(max_length=128, write_only=True, required=True)
+    new_password2 = serializers.CharField(max_length=128, write_only=True, required=True)
+
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError(
+                '현재 비밀번호가 정확하지 않습니다. 다시 확인해주세요.'
+            )
+        return value
+
+    def validate(self, attrs):
+        if attrs['new_password1'] != attrs['new_password2']:
+            raise serializers.ValidationError('두 비밀번호가 일치하지 않습니다. 다시 확인해주세요.')
+        password_validation.validate_password(attrs['new_password1'], self.context['request'].user)
+        return attrs
+
+    def save(self, **kwargs):
+        password = self.validated_data['new_password1']
+        user = self.context['request'].user
+        user.set_password(password)
+        user.save()
+        return user
+
+    # def save(self, **kwargs):
+    #     password = self.cleaned_data["new_password1"]
+    #     user = Account(**kwargs)
+    #     user.set_password(password)
+    #     user.save()
+    #     return self.user

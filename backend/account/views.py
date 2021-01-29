@@ -83,3 +83,13 @@ def get_user_info_by_username(request, username):
         user.save()
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.data)
+
+
+class PasswordChangeView(UpdateAPIView):
+    serializer_class = serializers.PasswordChangeSerializer
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

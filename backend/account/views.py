@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework_jwt.views import JSONWebTokenAPIView
 
 from pin.models import Pin
 from . import serializers
@@ -12,11 +11,25 @@ from .models import Account, Board
 
 
 class AccountSignupView(CreateAPIView):
+    '''
+    회원가입 API
+
+    ---
+
+    username, password, email 3개의 parameter 받아서 처리한다.
+
+    '''
     queryset = Account.objects.all()
     serializer_class = serializers.AccountSignupSerializer
 
 
 class AccountCurrentView(ListAPIView):
+    '''
+    유저 정보 API
+
+    ---
+    로그인한 User 의 사진, 이름, 이메일, 팔로잉, 팔로워를 제공한다.
+    '''
     queryset = Account.objects.all()
     serializer_class = serializers.CurrentAccountSerializer
 
@@ -27,6 +40,12 @@ class AccountCurrentView(ListAPIView):
 
 
 class SuggestionList(ListAPIView):
+    '''
+    유저 추천 API
+
+    ---
+    현재 User 가 following 하지 않는 User List 를 제공한다.
+    '''
     queryset = Account.objects.all()
     serializer_class = serializers.SuggestionUserSerializer
 
@@ -35,21 +54,13 @@ class SuggestionList(ListAPIView):
         return qs
 
 
-# class BoardCreateListView(ListAPIView, CreateAPIView):
-#     queryset = Board.objects.all()
-#     serializer_class = serializers.BoardSerializer
-#
-#     def get_queryset(self):
-#         qs = super().get_queryset().filter(author=self.request.user)
-#         return qs
-#
-#     def perform_create(self, serializer):
-#         serializer.save(author=self.request.user)
-#
-#
-
-
 class BoardViewSet(ModelViewSet):
+    '''
+    User 의 Board 관련 REST API 제공
+
+    ---
+
+    '''
     queryset = Board.objects.all()
     serializer_class = serializers.BoardSerializer
 
@@ -64,31 +75,52 @@ class BoardViewSet(ModelViewSet):
 
 @api_view(['POST', 'GET'])
 def add_pin(request, pk):
+    '''
+    Board Field 에 Pin 을 추가하는 API
+
+    ---
+    특정 보드에 핀을 추가할 수 있도록 한다.
+
+    '''
     if request.method == 'POST':
         board = get_object_or_404(Board, pk=pk)
         board.pin.add(Pin.objects.get(pk=request.data['id']))
-    # board.pin.add(pk=request.pin.pk)
     return Response(status.HTTP_202_ACCEPTED)
 
 
 @api_view(['GET', 'PUT'])
 def get_user_info_by_username(request, username):
+    '''
+    Username 으로 유저 정보를 제공, 수정하는 API
+
+    ---
+    username 을 slug 로 받아 해당 user 의 사진, 이름, 이메일, 팔로잉, 팔로워를 제공한다.
+    username 이 request.user.username 일 땐, 이름과 사진을 수정할 수 있다.
+    '''
     user = get_object_or_404(Account, username=username)
     serializer = serializers.CurrentAccountSerializer(user)
     if request.method == 'PUT':
-        username = request.data['username']
-        avatar = request.data['avatar']
-        user.username = username
-        user.avatar = avatar
-        user.save()
-        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        if request.user.username == username:
+            username = request.data['username']
+            avatar = request.data['avatar']
+            user.username = username
+            user.avatar = avatar
+            user.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.data)
 
 
 class PasswordChangeView(UpdateAPIView):
+    '''
+    비밀번호 변경 API
+
+    ---
+    old_password, new_password1, new_password2 를 받아 validation check 를 한 뒤 비밀번호를 변경한다.
+    '''
     serializer_class = serializers.PasswordChangeSerializer
 
     def update(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

@@ -8,6 +8,12 @@ from .models import Pin
 
 
 class PinViewSet(ModelViewSet):
+    '''
+    Pin 관련 REST API 제공
+
+    ---
+
+    '''
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
 
@@ -18,6 +24,14 @@ class PinViewSet(ModelViewSet):
 
 
 class FollowingPinList(ListAPIView):
+    '''
+    현재 User 의 Following User 의 Pin List 제공
+
+    ---
+
+
+
+    '''
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
 
@@ -30,6 +44,16 @@ class FollowingPinList(ListAPIView):
 
 
 class BoardPinList(ListAPIView):
+    '''
+
+    현재 user 의 Board 에 들어있는 모든 Pin List
+
+    ---
+
+
+    다른 Board 에 동일한 Pin 이 들어있을 수 있기 때문에,
+    동일한 id 의 Pin 이 2개 이상 있을 수 있음
+    '''
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
 

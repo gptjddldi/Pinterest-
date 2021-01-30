@@ -9,7 +9,7 @@ import {logger} from 'redux-logger'
 const persistConfig = {
     key: "userReducer",
     storage,
-    stateReconciler: hardSet
+    // stateReconciler: hardSet
 }
 
 const persistedReducer = persistReducer(persistConfig, RootReducer)

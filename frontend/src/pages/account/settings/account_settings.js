@@ -39,7 +39,6 @@ export default function AccountSetting() {
             const response = await axios.put(passChangeRoot, password, {headers})
             const data = response.data
             console.log(data)
-            onUpdate(data)
         }
         // fn()
         if (password !== init) fn2()

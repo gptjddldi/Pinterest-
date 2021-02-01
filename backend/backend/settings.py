@@ -128,6 +128,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {  # added
+    'SEARCH_PARAM': 'author',
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',

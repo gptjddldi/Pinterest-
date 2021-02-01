@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -16,9 +17,11 @@ class PinViewSet(ModelViewSet):
     '''
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_param = 'author'
+    search_fields = ['author__username']
 
     def perform_create(self, serializer):
-        print('123')
         print(self.request.POST)
         serializer.save(author=self.request.user)
 

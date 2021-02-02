@@ -14,12 +14,11 @@ class PinViewSet(ModelViewSet):
 
     ---
 
+    search: author__following__username => 현재 유저가 following 하는 유저의 pin list 제공
     '''
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_param = 'author'
-    search_fields = ['author__username']
+    filterset_fields = ['author__following__username', 'author__username',]
 
     def perform_create(self, serializer):
         print(self.request.POST)

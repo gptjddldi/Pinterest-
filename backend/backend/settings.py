@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'corsheaders',
     'drf_yasg',
+    'django_filters',
+
 
     # Apps
     'account',

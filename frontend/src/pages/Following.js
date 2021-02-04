@@ -1,10 +1,15 @@
 import React from 'react'
 import Layout from "../components/Layout";
 import PostList from "../components/PostList";
+import {useSelector} from "react-redux";
 
 const apiRoot = 'http://localhost:8000/following/'
 
-export default function Following() {
+
+function Following() {
+    const {user} = useSelector(state => ({
+        user: state.userReducer.user
+    }))
     return(
         <Layout>
             <div className="max-w-screen-md mx-auto my-10">
@@ -13,7 +18,7 @@ export default function Following() {
                     className={'px-4 py-2 rounded-3xl block ml-auto font-bold bg-red-500 text-white hover:bg-red-700'}
                     >팔로우할 만한 사람 찾기</button>
             </div>
-            <PostList apiRoot={apiRoot}/>
+            <PostList filter={`author__following__username=${user.username}`}/>
         </Layout>
     )
-}
+} export default React.memo(Following)

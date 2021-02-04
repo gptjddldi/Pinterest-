@@ -2,34 +2,37 @@ import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useSelector} from "react-redux";
 
-export default function Board({pin}) {
+function Board({pin}) {
     let [userBoard, setUserBoard] = useState([])
     let [dropdownVisibility, setDropdownVisibility] = useState("hidden")
     let [selectedBoard, setSelectedBoard] = useState({})
     let [newBoard, setNewBoard] = useState('')
     let [isUsed, setIsUsed] = useState(false)
     const boardRoot = 'http://localhost:8000/account/boards/'
+
     const {token} = useSelector(state => ({
         token: state.userReducer.token
     }))
     useEffect( () => {
+        async function getUserBoard() {
+            try{
+                console.log("getUserBOard")
+
+                const headers = {Authorization: `JWT ${token}`}
+                const res = await axios.get(boardRoot, {headers})
+                const {data} = res
+                setUserBoard(data)
+            }
+            catch (e) {
+                console.log(e)
+            }
+        }
         getUserBoard()
         if(userBoard && userBoard.length > 0){
             selectionHandler(userBoard[0])
         }
     }, [])
 
-    async function getUserBoard() {
-        try{
-            const headers = {Authorization: `JWT ${token}`}
-            const res = await axios.get(boardRoot, {headers})
-            const {data} = res
-            setUserBoard(data)
-            }
-        catch (e) {
-            console.log(e)
-        }
-    }
 
     async function addPin() {
         // let pinId = pin.id
@@ -37,8 +40,8 @@ export default function Board({pin}) {
         const headers = {Authorization: `JWT ${token}`}
         console.log(selectedBoard)
         if(selectedBoard.title === undefined) {
-            console.log(123)
             try {
+                console.log("AddPIN")
                 const res = await axios.post('http://localhost:8000/account/boards/', {
                     title: newBoard
                 }, {headers})
@@ -98,4 +101,4 @@ export default function Board({pin}) {
     else{
         return  <div>ㅠㅠ</div>
     }
-}
+} export default React.memo(Board)

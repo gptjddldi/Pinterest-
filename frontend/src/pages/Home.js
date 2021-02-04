@@ -7,17 +7,6 @@ import Signup from "./account/signup";
 
 const apiRoot = 'http://localhost:8000/pins/'
 
-
-function Authenticated() {
-    return(
-        <Layout>
-            <PostList/>
-        </Layout>
-    )
-}
-
-
-
 export default function Home() {
     let [loginVisible, setLoginVisible] = useState("visible")
     let [signupVisible, setSignupVisible] = useState("hidden")
@@ -27,7 +16,7 @@ export default function Home() {
     if (isAuth) {
         return (
             <Layout>
-                <PostList apiRoot={apiRoot}/>
+                <PostList/>
             </Layout>
         )
     }

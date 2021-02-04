@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 // const apiRoot = 'http://localhost:8000/pins/'
 const boardRoot = 'http://localhost:8000/account/boards/'
 
-const PostList = ({apiRoot}) => {
+const PostList = ({filter}) => {
     const {token} = useSelector((state) => ({
         token: state.userReducer.token
     }))
@@ -22,23 +22,12 @@ const PostList = ({apiRoot}) => {
     async function render() {
         try{
             const headers = {Authorization: `JWT ${token}`}
-            const res = await axios.get(apiRoot, {headers})
+            const res = await axios.get(`http://localhost:8000/pins/?${filter}`, {headers})
             const {data} = res
             setPostList(data)
         }
         catch (err){
             console.log(err)
-        }
-    }
-    async function fn() {
-        try{
-            const headers = {Authorization: `JWT ${token}`}
-            const res = await axios.get(boardRoot, {headers})
-            // setBoard(res)
-            console.log(res)
-        }
-        catch (e) {
-            console.log(e)
         }
     }
     // 무한 스크롤 구현
@@ -56,4 +45,4 @@ const PostList = ({apiRoot}) => {
         </div>
     )
 }
-export default PostList
+export default React.memo(PostList)

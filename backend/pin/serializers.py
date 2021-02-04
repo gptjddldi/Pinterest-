@@ -5,15 +5,15 @@ from account.serializers import BoardSerializer
 from .models import Pin
 
 
-class BoardSerializer(BoardSerializer):
+class BoardSerializerR(BoardSerializer):
     class Meta:
         model = Board
-        fields = ['id',]
+        fields = ['title']
 
 
 class PinListSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    boards = BoardSerializer(many=True)
+    boards = BoardSerializerR(many=True)
     class Meta:
         model = Pin
         fields = '__all__'

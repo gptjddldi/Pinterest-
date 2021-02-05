@@ -20,4 +20,6 @@ urlpatterns = [
     path('verify/', verify_jwt_token),
     path('', include(router.urls)),
     # path(r'(?P<pk>[0-9]+)/$',views.add_pin)
+    path('follow/', views.follow_user),
+    path('unfollow/', views.unfollow_user),
 ]

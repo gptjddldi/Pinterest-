@@ -125,3 +125,21 @@ class PasswordChangeView(UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+
+@api_view(['POST'])
+def follow_user(request):
+    username = request.data['username']
+    target_user = get_object_or_404(Account, username=username)
+    request.user.following.add(target_user)
+    target_user.follower.add(request.user)
+    return Response(status.HTTP_202_ACCEPTED)
+
+
+@api_view(['POST'])
+def unfollow_user(request):
+    username = request.data['username']
+    target_user = get_object_or_404(Account, username=username)
+    request.user.following.remove(target_user)
+    target_user.follower.remove(request.user)
+    return Response(status.HTTP_202_ACCEPTED)

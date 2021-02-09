@@ -64,7 +64,7 @@ export default function Pin(props) {
                     <div className="flex flex-wrap">
                         <div className="w-full md:w-1/2">
                             {/*<a href={pinData.link}>*/}
-                                <img className="w-full" src={pinData.image} />
+                                <img className="h-screen" src={pinData.image} sizes={"max-height: 400px"} />
                             {/*</a>*/}
                         </div>
                         <div className="p-5 pl-10 w-full md:w-1/2">

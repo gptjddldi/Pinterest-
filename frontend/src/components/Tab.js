@@ -1,10 +1,6 @@
 export default function Tabs(props){
     let items = [
         {
-            title: "Photos",
-            content: "photosContent"
-        },
-        {
             title: "1 comment",
             content: "CommentContent"
         }

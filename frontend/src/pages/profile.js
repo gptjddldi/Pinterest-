@@ -9,6 +9,7 @@ import PostList from "../components/PostList";
 import BoardsFeed from "../components/BoardsFeed";
 import BoardCreateModal from "../components/BoardCreateModal";
 import useOnClickOutside from "../utils/useOnClickOutside";
+import FollowButton from "../components/FollowButton";
 
 function Profile(props) {
     const [userData, setUserData] = useState([])
@@ -85,7 +86,7 @@ function Profile(props) {
                 <div>@{userData.username}</div>
                 <div>팔로워 {userData.follower ? userData.follower.length : 0} 명 · 팔로잉 {userData.following ? userData.following.length : 0} 명</div>
                 {userData.username != loggedUser.username &&
-                <div className="mt-5">Follow Button</div>
+                <div className="mt-5"><FollowButton user={userData}/></div>
                 }
             </div>
             <div className="container mx-auto mt-10">

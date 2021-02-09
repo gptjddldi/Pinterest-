@@ -10,6 +10,7 @@ import Following from "./Following";
 import Profile from "./profile";
 import {useSelector} from "react-redux";
 import SettingsRoutes from "./account/settings";
+import Pin from "./pin/pin";
 
 export default function Root() {
 
@@ -21,6 +22,7 @@ export default function Root() {
             <Route path={'/account'} component={AccountRoutes}/>
             <Route path={'/test'} exact component={CssTest}/>
             <Route path={'/settings'} component={SettingsRoutes}/>
+            <Route path={'/pin/:key1'} exact component={Pin}/>
         </div>
     )
 }

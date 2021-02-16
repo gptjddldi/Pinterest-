@@ -6,12 +6,12 @@ import {useSelector} from "react-redux";
 const apiRoot = 'http://localhost:8000/following/'
 
 
-function Following() {
+function Following(props) {
     const {user} = useSelector(state => ({
         user: state.userReducer.user
     }))
     return(
-        <Layout>
+        <Layout props={props}>
             <div className="max-w-screen-md mx-auto my-10">
                 <h1 className="text-2xl font-bold">팔로우 하는 사람들의</h1>
                 <button
@@ -21,4 +21,4 @@ function Following() {
             <PostList filter={`author__following__username=${user.username}`}/>
         </Layout>
     )
-} export default React.memo(Following)
+} export default Following

@@ -4,7 +4,7 @@ import Login from "./login";
 import Signup from "./signup";
 import Profile from "../profile";
 
-export default function AccountRoutes ({match}) {
+export default function AccountRoutes ({match}, props) {
     return(
         <div>
             <Route exact path={match.url + '/login'} component={Login}/>

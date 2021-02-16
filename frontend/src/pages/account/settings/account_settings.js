@@ -5,7 +5,7 @@ import axios from "axios";
 import Layout from "../../../components/Layout";
 import ProfilePicture from "../../../components/ProfilePicture";
 
-export default function AccountSetting() {
+export default function AccountSetting(props) {
     const init = {
         old_password: '',
         new_password1: '',
@@ -51,7 +51,7 @@ export default function AccountSetting() {
         })
     }
     return  (
-        <Layout>
+        <Layout props={props}>
             <div className="max-w-screen-sm mx-auto">
                 <h1 className="text-3xl font-bold">계정 설정</h1>
                 <p>로그인 환경을 설정하면 맞춤형 서비스를 제공하는 데 도움이 됩니다. 여기에서 계정을 크게 달라지게 할 수 있습니다.</p>

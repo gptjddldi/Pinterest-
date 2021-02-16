@@ -7,7 +7,7 @@ import Signup from "./account/signup";
 
 const apiRoot = 'http://localhost:8000/pins/'
 
-export default function Home() {
+export default function Home(props) {
     let [loginVisible, setLoginVisible] = useState("visible")
     let [signupVisible, setSignupVisible] = useState("hidden")
     const {isAuth} = useSelector(state => ({
@@ -15,7 +15,7 @@ export default function Home() {
     }))
     if (isAuth) {
         return (
-            <Layout>
+            <Layout props={props}>
                 <PostList/>
             </Layout>
         )

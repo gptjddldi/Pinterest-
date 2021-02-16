@@ -5,7 +5,7 @@ import axios from "axios";
 import Layout from "../../../components/Layout";
 import ProfilePicture from "../../../components/ProfilePicture";
 
-export default function ProfileEdit() {
+export default function ProfileEdit(props) {
 
     let [avatar, setAvatar] = useState()
     let imageInput = useRef()
@@ -44,7 +44,7 @@ export default function ProfileEdit() {
         setAvatar(e.target.files[0])
     }
     return  (
-        <Layout>
+        <Layout props={props}>
             <div className="max-w-screen-sm mx-auto">
                 <h1 className="text-3xl font-bold">프로필 수정</h1>
                 <p>Pinterest 사용자들이 아래 정보로 회원님을 파악하게 됩니다.</p>

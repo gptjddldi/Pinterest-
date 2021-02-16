@@ -77,7 +77,7 @@ function Profile(props) {
     }
 
     return(
-        <Layout>
+        <Layout props={props}>
             <div className="text-center">
                 <div className="flex justify-center">
                     <ProfilePicture user={userData} size="3"/>

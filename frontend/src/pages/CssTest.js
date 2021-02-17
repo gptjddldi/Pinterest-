@@ -24,17 +24,11 @@ export default function PinCreate(props){
         formData.append('image', image)
 
         async function fn() {
-            // const data = {username, avatar}
             try {
                 const headers = {Authorization: `JWT ${token}`}
                 const response = await axios.post(apiRoot, formData, {headers})
-                // console.log(response.data)
-                // const image_root_data = 'http://localhost:8000' + response.data.avatar
                 const {data} = response
-                // data.avatar = image_root_data
-                // onUpdate(data)
-                console.log(data)
-                history.push(data.id)
+                history.push(`pin/${data.id}`)
             }
             catch (err) { console.log(err.response)}
         }
@@ -45,7 +39,7 @@ export default function PinCreate(props){
         setImageURL(URL.createObjectURL(e.target.files[0]))
     }
     return (
-        <Layout>
+        <Layout props={props}>
             <div className="bg-gray-200">
                 <div className="max-w-screen-md py-10 mx-auto">
                     <Card>

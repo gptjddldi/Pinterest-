@@ -58,7 +58,7 @@ export default function Pin(props) {
     }, )
     // console.log(userData);
     return (
-        <Layout>
+        <Layout props={props}>
             <div className="md:container mx-auto max-w-lg">
                 <div className="overflow-hidden shadow-lg rounded-3xl bg-white">
                     <div className="flex flex-wrap">

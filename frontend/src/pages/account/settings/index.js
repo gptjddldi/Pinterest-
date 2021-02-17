@@ -3,7 +3,8 @@ import {Route} from "react-router-dom";
 import AccountSetting from "./account_settings";
 import ProfileEdit from "./edit_profile";
 
-export default function SettingsRoutes ({match}, props) {
+export default function SettingsRoutes ({match}) {
+    console.log(match.url + '/account-settings')
     return(
         <div>
             <Route exact path={match.url + '/account-settings'} component={AccountSetting}/>

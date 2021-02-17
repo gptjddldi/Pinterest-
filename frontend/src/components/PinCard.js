@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Card from "./Card";
 import Board from "./Board";
+import {Link} from "react-router-dom";
 
 
 export default function PinCard({ pin }) {
@@ -11,11 +12,11 @@ export default function PinCard({ pin }) {
                 <div className="absolute px-3 mt-3 z-10 w-full invisible group-hover:visible">
                     <Board pin={pin}>Save</Board>
                 </div>
-                <a>
                     <Card >
-                        <img className="w-full" src={pin.image}/>
+                        <Link to={`pin/${pin.id}`}>
+                            <img className="w-full" src={pin.image}/>
+                        </Link>
                     </Card>
-                </a>
             </div>
         </div>
     )

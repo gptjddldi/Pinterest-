@@ -39,7 +39,7 @@ const PostList = ({filter}) => {
                 columnClassName="mx-2"
             >
                 {postList.map((pin, index) =>
-                    <a href={`http://localhost:3000/pin/${pin.id}`}><PinCard className="my-10" pin={pin} key={index}/></a>
+                    <PinCard className="my-10" pin={pin} key={index}/>
                 )}
             </Masonry>
         </div>

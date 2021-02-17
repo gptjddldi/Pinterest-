@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../actions/userAction";
 import Layout from "../components/Layout";
@@ -67,7 +67,7 @@ function Profile(props) {
                 <div className="relative">
                     <div className={`rounded-xl px-4 py-2 w-40 bg-white shadow-xl ${addMenuVisibility} absolute right-0`}>
                         <div className="my-2 text-sm"> 만들기</div>
-                        <button className="text-left w-full block my-2 font-bold p-2 rounded-xl hover:bg-gray-300">핀</button>
+                        <Link to={'/pin-add'}><button className="text-left text-black w-full block my-2 font-bold p-2 rounded-xl hover:bg-gray-300 hover:text-black">핀</button></Link>
                         <button className="text-left w-full block my-2 font-bold p-2 rounded-xl hover:bg-gray-300" onClick={() => setCreateBoardModalVisibility("block")}>보드</button>
                     </div>
                 </div>

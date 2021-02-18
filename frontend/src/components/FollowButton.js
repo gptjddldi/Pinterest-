@@ -2,6 +2,7 @@ import React from 'react'
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import SecondaryButton from "./Button/SecondaryButton";
 
 export default function FollowButton({user}){
     let [isFollowing, setIsFollowing] = useState(false)
@@ -39,9 +40,9 @@ export default function FollowButton({user}){
         }
     }
     if(isFollowing){
-        return <button onClick={unfollow} className="px-4 py-2 rounded-3xl ml-auto font-bold" style={{backgroundColor:"#EFEFEF", color:"#000000"}}>팔로잉중</button>
+        return <SecondaryButton onClick={unfollow} className="px-4 py-2 rounded-3xl ml-auto ">팔로잉중</SecondaryButton>
     }
     else{
-        return <button onClick={follow} className="px-4 py-2 rounded-3xl ml-auto font-bold" style={{backgroundColor:"#EFEFEF", color:"#000000"}}>팔로우하기</button>
+        return <SecondaryButton onClick={follow} className="px-4 py-2 rounded-3xl ml-auto ">팔로우하기</SecondaryButton>
     }
 }

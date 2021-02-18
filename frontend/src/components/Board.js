@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useSelector} from "react-redux";
+import {Dropdown} from "antd";
+import PrimaryButton from "./Button/PrimaryButton";
 
 function Board({pin}) {
     let [userBoard, setUserBoard] = useState([])
@@ -16,8 +18,6 @@ function Board({pin}) {
     useEffect( () => {
         async function getUserBoard() {
             try{
-                console.log("getUserBOard")
-
                 const headers = {Authorization: `JWT ${token}`}
                 const res = await axios.get(boardRoot, {headers})
                 const {data} = res
@@ -35,8 +35,6 @@ function Board({pin}) {
 
 
     async function addPin() {
-        // let pinId = pin.id
-        const boardAddRoot= 'http://localhost:8000/account/boards/'
         const headers = {Authorization: `JWT ${token}`}
         console.log(selectedBoard)
         if(selectedBoard.title === undefined) {
@@ -72,17 +70,18 @@ function Board({pin}) {
 
     function selectionHandler(board){
         setSelectedBoard(board);
-        setDropdownVisibility("hidden")
-        // if(onChange){
-        //     onChange(board)
-        // }
+    }
+    function dropDownHandler(){
+        if(dropdownVisibility === "block")
+            setDropdownVisibility("hidden")
+        else setDropdownVisibility("block")
     }
     if(userBoard && userBoard.length > 0){
         return(
             <div>
                 <div className="flex">
-                    <button type="button" onClick={() => setDropdownVisibility("block")} className="bg-gray-200 px-4 py-2 rounded-l-lg flex items-center justify-between w-48"><div className="">{selectedBoard.title || newBoard}</div></button>
-                    <button className="font-bold text-white px-4 py-2 rounded-r-lg" style={{backgroundColor: '#E60023'}} onClick={() =>{addPin(); setDropdownVisibility("hidden")}} >Save</button>
+                    <button type="button" onClick={() => dropDownHandler()} className="bg-gray-200 px-4 py-2 rounded-l-lg flex items-center justify-between w-48"><div className="">{selectedBoard.title || newBoard}</div></button>
+                    <PrimaryButton className="px-4 py-2 rounded-r-lg" style={{backgroundColor: '#E60023'}} onClick={() =>{addPin(); setDropdownVisibility("hidden")}} >Save</PrimaryButton>
                 </div>
                 <div className={`bg-white border-2 border-gray-300 rounded-xl p-2 mt-2 overflow-y-scroll absolute w-48 ${dropdownVisibility}`} style={{maxHeight: "20em"}}>
                     {userBoard.map((board,index) => (
@@ -99,6 +98,6 @@ function Board({pin}) {
         )
     }
     else{
-        return  <div>ㅠㅠ</div>
+        return  <div></div>
     }
 } export default React.memo(Board)

@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useSelector} from "react-redux";
 import {Dropdown} from "antd";
-import PrimaryButton from "./Button/PrimaryButton";
+import PrimaryButton from "../Button/PrimaryButton";
+import {axiosInstance} from "../../utils/axios";
 
 function Board({pin}) {
     let [userBoard, setUserBoard] = useState([])
@@ -10,60 +11,32 @@ function Board({pin}) {
     let [selectedBoard, setSelectedBoard] = useState({})
     let [newBoard, setNewBoard] = useState('')
     let [isUsed, setIsUsed] = useState(false)
-    const boardRoot = 'http://localhost:8000/account/boards/'
 
-    const {token} = useSelector(state => ({
-        token: state.userReducer.token
-    }))
     useEffect( () => {
-        async function getUserBoard() {
-            try{
-                const headers = {Authorization: `JWT ${token}`}
-                const res = await axios.get(boardRoot, {headers})
-                const {data} = res
-                setUserBoard(data)
-            }
-            catch (e) {
-                console.log(e)
-            }
-        }
-        getUserBoard()
+        axiosInstance.get('account/boards')
+            .then((res)=> setUserBoard(res.data))
+            .catch((e)=>console.log(e))
+
         if(userBoard && userBoard.length > 0){
             selectionHandler(userBoard[0])
         }
     }, [])
 
 
-    async function addPin() {
-        const headers = {Authorization: `JWT ${token}`}
-        console.log(selectedBoard)
+    function addPin() {
         if(selectedBoard.title === undefined) {
-            try {
-                console.log("AddPIN")
-                const res = await axios.post('http://localhost:8000/account/boards/', {
-                    title: newBoard
-                }, {headers})
-                const {data} = res;
-                setSelectedBoard(data)
-                try {
-                    await axios.post(`http://localhost:8000/account/board/${data.id}/add_pin`, {
-                        id: pin.id
-                    }, {headers})
-                } catch (e) {
-                    console.log(e)
-                }
-            } catch (e) {
-                console.log(e)
-            }
+
+            axiosInstance.post('account/boards/', {title: newBoard})
+                .then((res)=> {
+                    setSelectedBoard(res.data);
+                    axiosInstance.post(`account/board/${res.data.id}/add_pin`, {id:pin.id})
+                        .catch((e)=>console.log(e))
+                })
+                .catch((e)=>console.log(e))
         }
         else {
-            try {
-                await axios.post(`http://localhost:8000/account/board/${selectedBoard.id}/add_pin`, {
-                    id: pin.id
-                }, {headers})
-            } catch (e) {
-                console.log(e)
-            }
+            axiosInstance.post(`account/board/${selectedBoard.id}/add_pin`, {id:pin.id})
+                .catch((e)=>console.log(e))
         }
 
     }

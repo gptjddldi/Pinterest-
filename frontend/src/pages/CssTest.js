@@ -9,9 +9,11 @@ import PrimaryButton from "../components/Button/PrimaryButton";
 
 
 export default function PinCreate(props){
-    const {token} = useSelector(state => ({
-        token: state.userReducer.token,
-    }))
+    let item = {}
+    item = JSON.parse(localStorage.getItem('persist:userReducer')).userReducer
+    // console.log(token["userReducer"])
+    console.log(item.split('"')[3])
+    const token = item.split('"')[3]
 
     return (
         <div>
@@ -19,3 +21,4 @@ export default function PinCreate(props){
         </div>
     )
 }
+

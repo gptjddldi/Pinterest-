@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Card from "./Card";
-import Board from "./Board";
+import Board from "./Board/Board";
 import {Link} from "react-router-dom";
 
 

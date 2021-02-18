@@ -6,8 +6,8 @@ import Layout from "../components/Layout";
 import ProfilePicture from "../components/ProfilePicture";
 import axios from "axios";
 import PostList from "../components/PostList";
-import BoardsFeed from "../components/BoardsFeed";
-import BoardCreateModal from "../components/BoardCreateModal";
+import BoardsFeed from "../components/Board/BoardsFeed";
+import BoardCreateModal from "../components/Board/BoardCreateModal";
 import useOnClickOutside from "../utils/useOnClickOutside";
 import FollowButton from "../components/FollowButton";
 
@@ -19,7 +19,6 @@ function Profile(props) {
         token: state.userReducer.token,
         loggedUser: state.userReducer.user,
     }))
-    // console.log(props.match.params.key1)
     const username = props.match.params.key1;
     useEffect(() => {
         async function getUserData(username){

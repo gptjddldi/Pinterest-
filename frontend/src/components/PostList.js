@@ -1,36 +1,22 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
-import {Image} from "antd";
 import PinCard from "./PinCard";
 import Masonry from "react-masonry-css";
 import {useSelector} from "react-redux";
+import {axiosInstance} from "../utils/axios";
 // react-masonry-css: pinterest 스타일 layout 느낌
-// const apiRoot = 'http://localhost:8000/pins/'
-const boardRoot = 'http://localhost:8000/account/boards/'
 
 const PostList = ({filter}) => {
-    const {token} = useSelector((state) => ({
-        token: state.userReducer.token
-    }))
+
     const [postList, setPostList] = useState([])
 
     useEffect( () => {
-        render()
-        // fn()
+        axiosInstance.get(`pins/?${filter}`)
+            .then((res) => setPostList(res.data))
+            .catch((err)=>console.log(err))
     }, [])
 
-    async function render() {
-        try{
-            const headers = {Authorization: `JWT ${token}`}
-            const res = await axios.get(`http://localhost:8000/pins/?${filter}`, {headers})
-            const {data} = res
-            setPostList(data)
-        }
-        catch (err){
-            console.log(err)
-        }
-    }
     // 무한 스크롤 구현
+
     return(
         <div>
             <Masonry

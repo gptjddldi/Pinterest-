@@ -10,7 +10,7 @@ const PostList = ({filter}) => {
     const [postList, setPostList] = useState([])
 
     useEffect( () => {
-        axiosInstance.get(`pins/?${filter}`)
+        axiosInstance.get(filter ? `${filter}` : 'pins/')
             .then((res) => setPostList(res.data))
             .catch((err)=>console.log(err))
     }, [])

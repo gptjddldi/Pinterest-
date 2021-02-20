@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
 import {useSelector} from "react-redux";
-import {Dropdown} from "antd";
 import PrimaryButton from "../Button/PrimaryButton";
 import {axiosInstance} from "../../utils/axios";
 
@@ -12,8 +10,11 @@ function Board({pin}) {
     let [newBoard, setNewBoard] = useState('')
     let [isUsed, setIsUsed] = useState(false)
 
+    const {loggedUser} = useSelector(state => ({
+        loggedUser: state.userReducer.user,
+    }))
     useEffect( () => {
-        axiosInstance.get('account/boards')
+        axiosInstance.get(`account/boards/?author__username=${loggedUser.username}`)
             .then((res)=> setUserBoard(res.data))
             .catch((e)=>console.log(e))
 

@@ -1,10 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../actions/userAction";
 import Layout from "../components/Layout";
 import ProfilePicture from "../components/ProfilePicture";
-import axios from "axios";
 import PostList from "../components/PostList";
 import BoardsFeed from "../components/Board/BoardsFeed";
 import BoardCreateModal from "../components/Board/BoardCreateModal";
@@ -16,8 +14,7 @@ function Profile(props) {
     const [userData, setUserData] = useState([])
     const [boards, setBoards] = useState([])
     let [addMenuVisibility, setAddMenuVisibility] = useState("hidden")
-    const {token, loggedUser} = useSelector(state => ({
-        token: state.userReducer.token,
+    const {loggedUser} = useSelector(state => ({
         loggedUser: state.userReducer.user,
     }))
     const username = props.match.params.key1;
@@ -43,7 +40,7 @@ function Profile(props) {
             setUserData(res.data)
         }).catch((e) => console.log(e))
 
-        axiosInstance(`account/boards/?${username}`).then((res) => setBoards(res.data))
+        axiosInstance(`account/boards/?author__username=${username}`).then((res) => setBoards(res.data))
             .catch((e) => console.log(e));
     },[] )
 
@@ -92,7 +89,7 @@ function Profile(props) {
                                 <BoardsFeed username={userData.username} boards={boards}/>
                             </>
                         ) : (
-                            <PostList filter={`author__username=${userData.username}`}/>
+                            <PostList filter={`pins/?author__username=${userData.username}`}/>
                         )}
                     </>
                 )}

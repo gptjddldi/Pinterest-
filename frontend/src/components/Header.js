@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import {Link} from "react-router-dom";
 import SearchBar from "./SearchBar";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../actions/userAction";
 
 export default function Header(props) {
 
@@ -9,7 +10,15 @@ export default function Header(props) {
     let {username} = useSelector(state => ({
         username: state.userReducer.user.username
     }))
-
+    const dispatch = useDispatch()
+    const onLogout = async () => {
+        try{
+            dispatch(logout());
+        }
+        catch (e){
+            console.log(e)
+        }
+    }
     const dropDownHandler = () => {
         if(dropdownVisibility === "hidden") setDropdownVisibility("bolck")
         else setDropdownVisibility("hidden")
@@ -53,7 +62,7 @@ export default function Header(props) {
                     <Link to="/settings/account-settings" className="block text-black px-4 py-2 font-bold rounded-3xl hover:bg-gray-300 hover:text-black">
                         계정 설정
                     </Link>
-                    <Link to="#" className="block text-black px-4 py-2 font-bold rounded-3xl hover:bg-gray-300 hover:text-black">
+                    <Link to="#" className="block text-black px-4 py-2 font-bold rounded-3xl hover:bg-gray-300 hover:text-black" onClick={onLogout}>
                         로그아웃
                     </Link>
                     </div>

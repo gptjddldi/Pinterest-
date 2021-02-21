@@ -49,7 +49,7 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
 #
 #             if user:
 #                 if not user.is_active:
-#                     msg = 'User account is disabled.'
+#                     msg = 'User pinterestAccounts is disabled.'
 #                     raise serializers.ValidationError(msg)
 #
 #                 payload = jwt_payload_handler(user)

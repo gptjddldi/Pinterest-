@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from account.models import Account, Board
-from account.serializers import BoardSerializer
+from pinterestAccounts.models import Account, Board
+from pinterestAccounts.serializers import BoardSerializer
 from .models import Pin
 
 

@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
 
-from account import views
+from pinterestAccounts import views
 
 router = DefaultRouter()
 router.register('boards', views.BoardViewSet)

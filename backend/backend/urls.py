@@ -10,7 +10,7 @@ from rest_framework import permissions
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pin.urls')),
-    path('account/', include('account.urls')),
+    path('pinterestAccounts/', include('pinterestAccounts.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls'))
 

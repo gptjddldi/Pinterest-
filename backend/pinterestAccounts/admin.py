@@ -1,5 +1,5 @@
 from django.contrib import admin
-from account.models import Account, Board
+from pinterestAccounts.models import Account, Board
 
 
 @admin.register(Account)

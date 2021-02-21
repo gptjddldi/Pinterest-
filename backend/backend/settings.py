@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sites',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
     # 3rd
     'rest_framework',
     'rest_framework_jwt',
+    'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
     'django_filters',
@@ -36,13 +38,12 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 
     # Apps
-    'account',
+    'pinterestAccounts',
     'pin',
 ]
 
 SITE_ID = 1
-
-AUTH_USER_MODEL = 'account.Account'
+AUTH_USER_MODEL = 'pinterestAccounts.Account'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -144,9 +145,15 @@ REST_FRAMEWORK = {  # added
 }
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'account.utils.my_jwt_response_handler',  # jwt_response_handler 커스텀
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'pinterestAccounts.utils.my_jwt_response_handler',  # jwt_response_handler 커스텀
     'JWT_ALGORITHM': 'HS256',
     'JWT_ALLOW_REFRESH': True,
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
 }
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]

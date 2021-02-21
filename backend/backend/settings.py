@@ -30,12 +30,17 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'django_filters',
-
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 
     # Apps
     'account',
     'pin',
 ]
+
+SITE_ID = 1
 
 AUTH_USER_MODEL = 'account.Account'
 

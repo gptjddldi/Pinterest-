@@ -13,7 +13,7 @@ class BoardSerializerR(BoardSerializer):
 
 class PinListSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    boards = BoardSerializerR(many=True)
+    boards = BoardSerializerR(many=True, required=False)
     class Meta:
         model = Pin
         fields = '__all__'

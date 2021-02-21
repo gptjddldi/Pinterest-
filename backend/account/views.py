@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -63,15 +64,20 @@ class BoardViewSet(ModelViewSet):
     '''
     queryset = Board.objects.all()
     serializer_class = serializers.BoardSerializer
+    filterset_fields = ['author__username']
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    def get_queryset(self):
-        qs = super().get_queryset().filter(author=self.request.user)
-        print(self.request.data)
-        return qs
+    # def get_queryset(self):
+    #     qs = super().get_queryset().filter()
+    #     print(self.request.data)
+    #     return qs
 
+    # def retrieve(self, request, *args, **kwargs):
+    #     board = get_object_or_404(Board, pk=request.pk)
+    #     serializer = self.get_serializer(board)
+    #     return Response(serializer.data)
 
 @api_view(['POST', 'GET'])
 def add_pin(request, pk):
@@ -101,10 +107,15 @@ def get_user_info_by_username(request, username):
     serializer = serializers.CurrentAccountSerializer(user)
     if request.method == 'PUT':
         if request.user.username == username:
-            username = request.data['username']
-            avatar = request.data['avatar']
-            user.username = username
-            user.avatar = avatar
+            if request.data['username']:
+                username = request.data['username']
+                user.username = username
+            try:
+                avatar = request.data['avatar']
+                user.avatar = avatar
+            except KeyError:  # avatar element 가 없는 경우 pass 이렇게 처리하는 게 맞나?
+                pass
+
             user.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.data)
@@ -143,3 +154,14 @@ def unfollow_user(request):
     request.user.following.remove(target_user)
     target_user.follower.remove(request.user)
     return Response(status.HTTP_202_ACCEPTED)
+
+
+@api_view(['POST', 'GET'])
+def login_user(request):
+    print(request.data)
+    password = request.data['password']
+    email = request.data['email']
+    user = authenticate(request, email=email, password=password)
+    if user is not None:
+        login(request, user)
+    return Response(status.HTTP_200_OK)

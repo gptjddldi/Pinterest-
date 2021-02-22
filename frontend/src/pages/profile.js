@@ -19,21 +19,6 @@ function Profile(props) {
     }))
     const username = props.match.params.key1;
     useEffect(() => {
-        // async function getUserData(username){
-        //     const apiRoot = `http://localhost:8000/account/user/${username}/`
-        //     try{
-        //         const headers = {Authorization: `JWT ${token}`}
-        //         const res = await axios.get(apiRoot, {headers})
-        //         const {data} = res
-        //         const image_root_data = 'http://localhost:8000' + data.avatar
-        //         data.avatar = image_root_data
-        //         setUserData(data)
-        //     }
-        //     catch (err){
-        //         console.log(err)
-        //     }
-        // }
-        // getUserData(username);
         axiosInstance(`account/user/${username}`).then((res) => {
             const image_root_data = 'http://localhost:8000' + res.data.avatar;
             res.data.avatar = image_root_data;

@@ -20,7 +20,7 @@ export default function AccountSetting(props) {
 
     const onEdit = (e) => {
         e.preventDefault()
-        axiosInstance.put('account/password_change/', password).catch((e)=>console.log(e))
+        axiosInstance.post('rest-auth/password/change/', password).catch((e)=>console.log(e.response))
     }
 
     const updatePassword = (e) => {

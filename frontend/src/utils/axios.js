@@ -1,9 +1,12 @@
 import axios from 'axios'
 import {useSelector} from "react-redux";
 
-const item = JSON.parse(localStorage.getItem('persist:userReducer')).userReducer
+let item, token
+if(localStorage.getItem(('persist:userReducer'))) {
+    item = JSON.parse(localStorage.getItem('persist:userReducer')).userReducer
 // console.log(token["userReducer"])
-const token = item.split('"')[3]
+    token = item.split('"')[3]
+}
 
 
 

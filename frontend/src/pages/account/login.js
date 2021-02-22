@@ -19,7 +19,7 @@ const Login = (props) => {
     const Login = (e) => {
         e.preventDefault()
         const data = {email, password}
-        axiosInstance.post('account/login/', data).then((res)=> {
+        axiosInstance.post('rest-auth/login/', data).then((res)=> {
             onLogin(res.data);
             history.push(loginRedirectUrl)
         }).catch((e) => console.log(e))

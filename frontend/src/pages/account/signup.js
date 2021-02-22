@@ -9,12 +9,13 @@ export default function Signup(props) {
     const history = useHistory()
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const [password1, setPassword1] = useState("")
+    const [password2, setPassword2] = useState("")
 
     const Signup = (e) => {
         e.preventDefault()
-        const data = {email, username, password}
-        axiosInstance.post('account/signup/', data).then(props.toLoginClick).catch((e)=>console.log(e))
+        const data = {email, username, password1, password2}
+        axiosInstance.post('rest-auth/registration/', data).then(props.toLoginClick).catch((e)=>console.log(e))
     }
     return(
         <div className="w-full flex flex-wrap bg-white h-screen">
@@ -49,10 +50,22 @@ export default function Signup(props) {
                         </div>
 
                         <div className="flex flex-col pt-4">
-                            <label for="password" className="text-lg">비밀번호</label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"type="password" id="password" placeholder="비밀번호를 입력하세요." value={password} arial-label="password"
-                                   onChange={(e)=>setPassword(e.target.value)}
-                                   required/>
+                            <label htmlFor="password" className="text-lg">비밀번호</label>
+                            <input
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                                type="password" id="password" placeholder="비밀번호를 입력하세요." value={password1}
+                                arial-label="password"
+                                onChange={(e) => setPassword1(e.target.value)}
+                                required/>
+                        </div>
+                        <div className="flex flex-col pt-4">
+                            <label htmlFor="password" className="text-lg">비밀번호 확인</label>
+                            <input
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                                type="password" id="password" placeholder="비밀번호를 다시 입력해주세요." value={password2}
+                                arial-label="password"
+                                onChange={(e) => setPassword2(e.target.value)}
+                                required/>
                         </div>
 
                         <input type="submit" value="회원가입" className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"/>

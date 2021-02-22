@@ -155,6 +155,10 @@ SITE_ID = 1
 REST_USE_JWT = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# user serializer custom
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'pinterestAccounts.serializers.CurrentAccountSerializer'
+}
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'pinterestAccounts.utils.my_jwt_response_handler',  # jwt_response_handler 커스텀
@@ -169,3 +173,4 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+

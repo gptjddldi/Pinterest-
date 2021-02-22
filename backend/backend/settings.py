@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'pin',
 ]
 
-SITE_ID = 1
 AUTH_USER_MODEL = 'pinterestAccounts.Account'
 
 MIDDLEWARE = [
@@ -139,10 +138,23 @@ REST_FRAMEWORK = {  # added
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ]
 }
+# django - allauth config
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/rest-auth/registration/?verification=1'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/rest-auth/registration/?verification=1'
+SITE_ID = 1
+REST_USE_JWT = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'pinterestAccounts.utils.my_jwt_response_handler',  # jwt_response_handler 커스텀

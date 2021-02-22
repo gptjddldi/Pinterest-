@@ -29,6 +29,9 @@ class Account(AbstractUser):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    def __str__(self):
+        return self.username
+
 # <img src = "data: image / png; base64, {{image}}">
 
 

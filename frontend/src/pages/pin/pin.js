@@ -15,23 +15,21 @@ export default function Pin(props) {
     }))
     let [pinData, setPinData] = useState([]);
     let [userData, setUserData] = useState([]);
-    function getPinData() {
-        axiosInstance.get(`/pins/${pinNum}`).then((res) => setPinData(res.data))
-            .catch((e)=>console.log(e.response))
-    }
-    function getUserData(username) {
-        axiosInstance.get(`/pinterestAccounts/user/${username}/`).then((res) =>{
-            const image_root_data = 'http://localhost:8000' + res.data.avatar
-            res.data.avatar = image_root_data
-            setUserData(res.data)
-        }).catch((e) => console.log(e.response))
+
+    function getData() {
+        axiosInstance.get(`/pins/${pinNum}`)
+            .then((res) => {
+                setPinData(res.data);
+                axiosInstance.get(`/pinterestAccounts/user/${res.data.author}/`).then((res) =>{
+                    const image_root_data = res.data.avatar? 'http://localhost:8000' + res.data.avatar : '';
+                    res.data.avatar = image_root_data;
+                    setUserData(res.data);
+                }).catch((e) => console.log(e.response))
+            }).catch((e)=>console.log(e.response))
     }
     useEffect(() => {
-        getPinData();
-        getUserData(pinData.author);
-
+        getData();
     }, [pinNum])
-    // console.log(userData);
     return (
         <Layout props={props}>
             <div className="md:container mx-auto max-w-lg">

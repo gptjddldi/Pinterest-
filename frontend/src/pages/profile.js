@@ -19,13 +19,13 @@ function Profile(props) {
     }))
     const username = props.match.params.key1;
     useEffect(() => {
-        axiosInstance(`account/user/${username}`).then((res) => {
+        axiosInstance(`pinterestAccounts/user/${username}`).then((res) => {
             const image_root_data = 'http://localhost:8000' + res.data.avatar;
             res.data.avatar = image_root_data;
             setUserData(res.data)
         }).catch((e) => console.log(e))
 
-        axiosInstance(`account/boards/?author__username=${username}`).then((res) => setBoards(res.data))
+        axiosInstance(`pinterestAccounts/boards/?author__username=${username}`).then((res) => setBoards(res.data))
             .catch((e) => console.log(e));
     },[] )
 

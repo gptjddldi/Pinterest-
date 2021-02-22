@@ -12,7 +12,7 @@ export default function BoardCreateModal(props){
     async function createBoardSubmitHandler(e){
         e.preventDefault()
         try {
-            const res = await axios.post('http://localhost:8000/account/boards/', {
+            const res = await axios.post('http://localhost:8000/pinterestAccounts/boards/', {
                 title: boardTitle
             }, {headers})
             const {data} = res;

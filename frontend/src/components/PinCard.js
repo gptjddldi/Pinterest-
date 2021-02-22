@@ -13,7 +13,7 @@ export default function PinCard({ pin }) {
                     <Board pin={pin}>Save</Board>
                 </div>
                     <Card >
-                        <Link to={`pin/${pin.id}`}>
+                        <Link to={`/pin/${pin.id}`}>
                             <img className="w-full" src={pin.image}/>
                         </Link>
                     </Card>

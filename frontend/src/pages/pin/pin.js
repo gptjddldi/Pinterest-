@@ -6,56 +6,31 @@ import Tabs from "../../components/Tab";
 import PostList from "../../components/PostList";
 import FollowButton from "../../components/FollowButton";
 import UserSignature from "../../components/UserSignature";
+import {axiosInstance} from "../../utils/axios";
 
 export default function Pin(props) {
     let pinNum = props.match.params.key1;
-    const {token, loggedUser} = useSelector(state => ({
-        token: state.userReducer.token,
+    const {loggedUser} = useSelector(state => ({
         loggedUser: state.userReducer.user,
     }))
     let [pinData, setPinData] = useState([]);
     let [userData, setUserData] = useState([]);
-    async function getPinData() {
-        const apiRoot = `http://localhost:8000/pins/${pinNum}/`
-        try{
-            const headers = {Authorization: `JWT ${token}`}
-            const res = await axios.get(apiRoot, {headers})
-            const {data} = res
-            setPinData(data);
-            // return data;
-            console.log(">>",pinData);
-        }catch (e) {
-            console.log(e);
-        }
+    function getPinData() {
+        axiosInstance.get(`/pins/${pinNum}`).then((res) => setPinData(res.data))
+            .catch((e)=>console.log(e.response))
     }
-    async function getUserData(username){
-        const apiRoot = `http://localhost:8000/account/user/${username}/`
-        try{
-            const headers = {Authorization: `JWT ${token}`}
-            const res = await axios.get(apiRoot, {headers})
-            const {data} = res
-            const image_root_data = 'http://localhost:8000' + data.avatar
-            data.avatar = image_root_data
-            setUserData(data)
-            // console.log(data);
-            // return data;
-            // console.log(userData)
-
-        }
-        catch (err){
-            console.log(err)
-        }
+    function getUserData(username) {
+        axiosInstance.get(`/pinterestAccounts/user/${username}/`).then((res) =>{
+            const image_root_data = 'http://localhost:8000' + res.data.avatar
+            res.data.avatar = image_root_data
+            setUserData(res.data)
+        }).catch((e) => console.log(e.response))
     }
-    // getPinData();
     useEffect(() => {
-        if(pinData.length === 0)
-            getPinData();
-        if(userData.length === 0)
-           getUserData(pinData.author);
-        return () => {
+        getPinData();
+        getUserData(pinData.author);
 
-        };
-    }, )
+    }, [pinNum])
     // console.log(userData);
     return (
         <Layout props={props}>

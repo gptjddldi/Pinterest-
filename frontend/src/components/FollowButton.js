@@ -18,12 +18,12 @@ export default function FollowButton({user}){
     }, [user])
 
     function follow(){
-        axiosInstance.post('account/follow/', {'username': user.username})
+        axiosInstance.post('pinterestAccounts/follow/', {'username': user.username})
             .then(()=>setIsFollowing(true))
             .catch((e)=>console.log(e))
     }
     function unfollow(){
-        axiosInstance.post('account/unfollow/', {'username': user.username})
+        axiosInstance.post('pinterestAccounts/unfollow/', {'username': user.username})
             .then(()=>setIsFollowing(false))
             .catch((e)=>console.log(e))
     }

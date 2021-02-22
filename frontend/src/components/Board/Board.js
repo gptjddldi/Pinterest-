@@ -14,7 +14,7 @@ function Board({pin}) {
         loggedUser: state.userReducer.user,
     }))
     useEffect( () => {
-        axiosInstance.get(`account/boards/?author__username=${loggedUser.username}`)
+        axiosInstance.get(`pinterestAccounts/boards/?author__username=${loggedUser.username}`)
             .then((res)=> setUserBoard(res.data))
             .catch((e)=>console.log(e))
 
@@ -27,16 +27,16 @@ function Board({pin}) {
     function addPin() {
         if(selectedBoard.title === undefined) {
 
-            axiosInstance.post('account/boards/', {title: newBoard})
+            axiosInstance.post('pinterestAccounts/boards/', {title: newBoard})
                 .then((res)=> {
                     setSelectedBoard(res.data);
-                    axiosInstance.post(`account/board/${res.data.id}/add_pin`, {id:pin.id})
+                    axiosInstance.post(`pinterestAccounts/board/${res.data.id}/add_pin`, {id:pin.id})
                         .catch((e)=>console.log(e))
                 })
                 .catch((e)=>console.log(e))
         }
         else {
-            axiosInstance.post(`account/board/${selectedBoard.id}/add_pin`, {id:pin.id})
+            axiosInstance.post(`pinterestAccounts/board/${selectedBoard.id}/add_pin`, {id:pin.id})
                 .catch((e)=>console.log(e))
         }
 

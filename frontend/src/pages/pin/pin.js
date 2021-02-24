@@ -36,9 +36,7 @@ export default function Pin(props) {
                 <div className="overflow-hidden shadow-lg rounded-3xl bg-white">
                     <div className="flex flex-wrap">
                         <div className="w-full md:w-1/2">
-                            {/*<a href={pinData.link}>*/}
                                 <img className="h-screen" src={pinData.image} sizes={"max-height: 400px"} />
-                            {/*</a>*/}
                         </div>
                         <div className="p-5 pl-10 w-full md:w-1/2">
                             {/*<div className="flex items-center justify-between">*/}

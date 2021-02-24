@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import SearchBar from "./SearchBar";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../actions/userAction";
+import {axiosInstance} from "../utils/axios";
 
 export default function Header(props) {
 
@@ -11,13 +12,9 @@ export default function Header(props) {
         username: state.userReducer.user.username
     }))
     const dispatch = useDispatch()
-    const onLogout = async () => {
-        try{
-            dispatch(logout());
-        }
-        catch (e){
-            console.log(e)
-        }
+    function onLogout() {
+        axiosInstance.post('/rest-auth/logout/').then(()=>dispatch(logout())).catch((e)=>console.log(e.response))
+
     }
     const dropDownHandler = () => {
         if(dropdownVisibility === "hidden") setDropdownVisibility("bolck")

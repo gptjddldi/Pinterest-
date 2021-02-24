@@ -32,8 +32,6 @@ class Account(AbstractUser):
     def __str__(self):
         return self.username
 
-# <img src = "data: image / png; base64, {{image}}">
-
 
 class Board(models.Model):
     author = models.ForeignKey(to=Account, on_delete=models.CASCADE, related_name='boards')

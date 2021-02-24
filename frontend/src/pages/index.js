@@ -16,14 +16,14 @@ export default function Root() {
 
     return(
         <div>
-            <Route exact path={'/following'}  component={Following}/>
+            <LoginRequiredRouter exact path={'/following'}  component={Following}/>
             <Route exact path={'/'}  component={Home}/>
-            <Route exact path={'/profile/:key1'}  component={Profile}/>
-            <Route exact path={'/account'} component={AccountRoutes}/>
-            <Route exact path={'/test'} component={CssTest}/>
-            <Route path={'/settings'} component={SettingsRoutes}/>
-            <Route exact path={'/pin/:key1'} component={Pin}/>
-            <Route exact={true} path={'/pin-add'} component={PinCreate}/>
+            <LoginRequiredRouter exact path={'/profile/:key1'}  component={Profile}/>
+            <LoginRequiredRouter exact path={'/account'} component={AccountRoutes}/>
+            <LoginRequiredRouter exact path={'/test'} component={CssTest}/>
+            <LoginRequiredRouter path={'/settings'} component={SettingsRoutes}/>
+            <LoginRequiredRouter exact path={'/pin/:key1'} component={Pin}/>
+            <LoginRequiredRouter exact={true} path={'/pin-add'} component={PinCreate}/>
         </div>
     )
 }

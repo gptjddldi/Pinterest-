@@ -4,11 +4,16 @@ DEBUG = False
 
 STATICFILES_STORAGE = "backend.storages.StaticAzureStorage"
 DEFAULT_FILE_STORAGE = "backend.storages.MediaAzureStorage"
+AZURE_ACCOUNT_NAME = get_secret("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = get_secret("AZURE_ACCOUNT_KEY")
+
 
 ALLOWED_HOSTS += ['gptjddl123.azurewebsites.net']
 
-AZURE_ACCOUNT_NAME = get_secret("AZURE_ACCOUNT_NAME")
-AZURE_ACCOUNT_KEY = get_secret("AZURE_ACCOUNT_KEY")
+# CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+CORS_ALLOW_ALL_ORIGINS = True
+
+
 
 DATABASES = {
     "default": {

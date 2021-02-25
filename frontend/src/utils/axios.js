@@ -11,6 +11,6 @@ if(localStorage.getItem(('persist:userReducer'))) {
 
 
 export const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8000/',
+    baseURL: process.env.REACT_APP_API_HOST,
     headers: token? {Authorization: `JWT ${token}`} : ''
 })

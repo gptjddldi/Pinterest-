@@ -12,6 +12,7 @@
     "antd": "^4.10.0",
     "autoprefixer": "9",
     "axios": "^0.21.1",
+    "global": "^4.4.0",
     "logger": "^0.0.1",
     "node-sass": "4.14.1",
     "postcss": "7",
@@ -26,6 +27,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
+    "serve": "^11.3.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "web-vitals": "^0.2.4"
   },

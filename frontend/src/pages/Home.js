@@ -5,7 +5,6 @@ import {useSelector} from "react-redux";
 import Login from "./account/login";
 import Signup from "./account/signup";
 
-const apiRoot = 'http://localhost:8000/pins/'
 
 export default function Home(props) {
     let [loginVisible, setLoginVisible] = useState("visible")

@@ -28,7 +28,7 @@ export default function ProfileEdit(props) {
             fd.append("avatar", avatar)
         // console.log(fd)
         fd.append("email", user.email)
-        axiosInstance.put(`rest-auth/user/`, fd).then((res) => {
+        axiosInstance.put(`rest-auth/user/`, fd).then((res  ) => {
             // const image_root_data = 'http://localhost:8000' + res.data.avatar;
             const data = res.data;
             // data.avatar = image_root_data

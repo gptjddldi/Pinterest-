@@ -22,7 +22,7 @@ class Pin(TimestampedModel):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pins')
     title = models.CharField(max_length=100)
     image = models.ImageField(blank=True, upload_to="pins/%Y/%m/%d")
-
+    image_url = models.CharField(max_length=400)
     # def clean(self):
     #     if self.image.url:
     #         self.image.url = cloudinary.utils.cloudinary_url(str(self.image), width=502)[0]
@@ -31,15 +31,15 @@ class Pin(TimestampedModel):
     #
 
     def save(self, *args, **kwargs):
-        url = "https://i.pinimg.com/236x/76/d0/ce/76d0ced78f2bf72370d753afaead0d63.jpg"
-        data = utils.retrieve_image(url)
-        # img = utils.decode_design_image(data)
-        # img_io = BytesIO()
-        # img.save(img_io, format='JPEG') # img : PIL 파일임
-        # img_file = InMemoryUploadedFile(img_io, field_name=None,
-        #                                 name="test.jpg", content_type=img_io.tell, charset=None,size=img_io.tell)
-        # img_file = ContentFile(img_io.getvalue())
-        # self.image = img_file
-        self.image.save("123.jpg", File(data))
-        print(self.image.url)
+        if self.image_url:
+            data = utils.retrieve_image(self.image_url)
+            # img = utils.decode_design_image(data)
+            # img_io = BytesIO()
+            # img.save(img_io, format='JPEG') # img : PIL 파일임
+            # img_file = InMemoryUploadedFile(img_io, field_name=None,
+            #                                 name="test.jpg", content_type=img_io.tell, charset=None,size=img_io.tell)
+            # img_file = ContentFile(img_io.getvalue())
+            # self.image = img_file
+            self.image.save("123.jpg", File(data), save=False)
+            # https://stackoverflow.com/questions/12119988/django-save-a-filefield-before-calling-super
         super().save(*args, **kwargs)

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     # Apps
     'pinterestAccounts',
     'pin',
+    'tags',
 
     # Providers
     'allauth.socialaccount.providers.google'

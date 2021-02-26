@@ -13,7 +13,7 @@ CLOUDINARY_STORAGE = {
     "API_KEY":  get_secret("API_KEY")
 }
 cloudinary.config(cloud_name=get_secret("CLOUD_NAME"),
-                  api_key='get_secret("API_KEY")',
+                  api_key=get_secret("API_KEY"),
                   api_secret=get_secret("API_SECRET"))
 ALLOWED_HOSTS += ['gptjddl123.azurewebsites.net']
 

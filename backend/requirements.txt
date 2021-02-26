@@ -13,6 +13,7 @@ PyJWT==1.7.1
 requests==2.25.1
 djangorestframework-jwt
 
+dj3-cloudinary-storage
 
 gunicorn
 django-storages[azure]

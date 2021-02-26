@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-
+    'cloudinary',
     # Apps
     'pinterestAccounts',
     'pin',
@@ -65,6 +65,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'pinterestAccounts.Account'
 
 MIDDLEWARE = [
+    # 'backend.middleware.AuthenticationMiddlewareJWT',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -156,6 +157,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {  # added
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser',
+    ],
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.SessionAuthentication',

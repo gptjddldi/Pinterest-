@@ -1,3 +1,4 @@
+import cloudinary
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -24,7 +25,6 @@ class PinViewSet(ModelViewSet):
     def perform_create(self, serializer):
         print(self.request.POST)
         serializer.save(author=self.request.user)
-
 
 class FollowingPinList(ListAPIView):
     '''

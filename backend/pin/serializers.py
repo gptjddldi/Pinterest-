@@ -14,6 +14,7 @@ class BoardSerializerR(BoardSerializer):
 class PinListSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     boards = BoardSerializerR(many=True, required=False)
+    # image = serializers.ImageField(required=True)
     class Meta:
         model = Pin
         fields = '__all__'

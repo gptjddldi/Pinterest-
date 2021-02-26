@@ -2,24 +2,12 @@ import React, {useState} from 'react'
 import Modal from "../Modal";
 import axios from "axios";
 import {useSelector} from "react-redux";
+import {axiosInstance} from "../../utils/axios";
 
 export default function BoardCreateModal(props){
-    const {token} = useSelector(state => ({
-        token: state.userReducer.token
-    }))
     let [boardTitle, setBoardTitle] = useState("")
-    const headers = {Authorization: `JWT ${token}`}
-    async function createBoardSubmitHandler(e){
-        e.preventDefault()
-        try {
-            const res = await axios.post('http://localhost:8000/pinterestAccounts/boards/', {
-                title: boardTitle
-            }, {headers})
-            const {data} = res;
-        }
-        catch (e) {
-            console.log(e);
-        }
+    function createBoardSubmitHandler(e) {
+        axiosInstance.post('/pinterestAccounts/boards/', {title:boardTitle}).catch((e)=>console.log(e.response))
     }
     return(
         <Modal className={props.className} onClickOutside={props.onClickOutside}>

@@ -26,6 +26,27 @@ class PinViewSet(ModelViewSet):
         print(self.request.POST)
         serializer.save(author=self.request.user)
 
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.data['image'] = cloudinary.utils.cloudinary_url(str(request.data.image), width=502)[0]
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        serializer = self.get_serializer(instance)
+        new_dict = {'image_w_502': cloudinary.utils.cloudinary_url(str(instance.image), width=502)[0]}
+
+        new_dict.update(serializer.data)
+
+        return Response(new_dict)
+
+
+
+
 class FollowingPinList(ListAPIView):
     '''
     현재 User 의 Following User 의 Pin List 제공

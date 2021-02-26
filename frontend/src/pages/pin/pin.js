@@ -21,8 +21,6 @@ export default function Pin(props) {
             .then((res) => {
                 setPinData(res.data);
                 axiosInstance.get(`/pinterestAccounts/user/${res.data.author}/`).then((res) =>{
-                    const image_root_data = res.data.avatar? 'http://localhost:8000' + res.data.avatar : '';
-                    res.data.avatar = image_root_data;
                     setUserData(res.data);
                 }).catch((e) => console.log(e.response))
             }).catch((e)=>console.log(e.response))
@@ -35,10 +33,10 @@ export default function Pin(props) {
             <div className="md:container mx-auto max-w-lg">
                 <div className="overflow-hidden shadow-lg rounded-3xl bg-white">
                     <div className="flex flex-wrap">
-                        <div className="w-full md:w-1/2">
-                                <img className="h-screen" src={pinData.image} sizes={"max-height: 400px"} />
+                        <div className="">
+                                <img className="" src={pinData.image_w_502}/>
                         </div>
-                        <div className="p-5 pl-10 w-full md:w-1/2">
+                        <div className="p-5 pl-10 ">
                             {/*<div className="flex items-center justify-between">*/}
 
                             {/*    { pinSaved ? (*/}

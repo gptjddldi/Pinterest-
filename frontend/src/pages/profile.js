@@ -20,8 +20,6 @@ function Profile(props) {
     const username = props.match.params.key1;
     useEffect(() => {
         axiosInstance(`pinterestAccounts/user/${username}`).then((res) => {
-            const image_root_data = res.data.avatar? process.env.REACT_APP_API_HOST + res.data.avatar : '';
-            res.data.avatar = image_root_data;
             setUserData(res.data)
         }).catch((e) => console.log(e))
 

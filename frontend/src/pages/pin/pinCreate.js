@@ -4,14 +4,13 @@ import axios from "axios";
 import Layout from "../../components/Layout";
 import Card from "../../components/Card";
 import {useRef, useState} from "react";
+import {axiosInstance} from "../../utils/axios";
 
 export default function PinCreate(props){
-    const {token} = useSelector(state => ({
-        token: state.userReducer.token,
-    }))
+
     const history = useHistory()
     const fileInputRef = useRef()
-    const apiRoot = 'http://localhost:8000/pins/'
+
     let[title, setTitle] = useState('')
     let[image, setImage] = useState('')
     let[imageURL, setImageURL] = useState('')
@@ -20,17 +19,8 @@ export default function PinCreate(props){
         const formData = new FormData();
         formData.append('title', title)
         formData.append('image', image)
-
-        async function fn() {
-            try {
-                const headers = {Authorization: `JWT ${token}`}
-                const response = await axios.post(apiRoot, formData, {headers})
-                const {data} = response
-                history.push(`pin/${data.id}`)
-            }
-            catch (err) { console.log(err.response)}
-        }
-        fn();
+        axiosInstance.post('/pins/', formData).then((res)=>history.push(`pin/${res.data.id}`))
+            .catch((e)=>console.log(e.response))
     }
     const handleChange = (e) => {
         setImage(e.target.files[0])

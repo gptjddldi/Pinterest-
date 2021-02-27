@@ -38,12 +38,15 @@ try:
             cnt += 1
             url = driver.current_url
             if url.__contains__('_'):
+                cnt -= 1
                 driver.back()
                 time.sleep(0.5)
                 continue
+            time.sleep(1)
             image = driver.find_elements_by_tag_name("img")
             link = image[1].get_attribute('src')  # image 에서 두번째 녀석을 다운로드 받을거임. 얘가 첫 번째 보다 크거든.
             urlretrieve(link, f'C:\images\{cnt}.jpg')
+            print("{0} 번째 이미지 저장됨ㅋ;".format(cnt))
             # 태그 추출 작업해야함.
             driver.back()
             time.sleep(0.7)

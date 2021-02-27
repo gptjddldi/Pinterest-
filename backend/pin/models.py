@@ -1,3 +1,4 @@
+import re
 from io import BytesIO
 
 import cloudinary
@@ -6,6 +7,10 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from tags.models import Tag
 from . import utils
 
 
@@ -31,6 +36,14 @@ class Pin(TimestampedModel):
 
     #
 
+    def get_tags_from_title(self):
+        tag_name_list = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", self.title)
+        tag_list = []
+        for tag_name in tag_name_list:
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)  # 객체와 bool 이 리턴되므로 뒤에껀 버림
+            tag_list.append(tag)
+        return tag_list
+
     def save(self, *args, **kwargs):
         if self.image_url:
             data = utils.retrieve_image(self.image_url)
@@ -43,4 +56,5 @@ class Pin(TimestampedModel):
             # self.image = img_file
             self.image.save("123.jpg", File(data), save=False)
             # https://stackoverflow.com/questions/12119988/django-save-a-filefield-before-calling-super
+
         super().save(*args, **kwargs)

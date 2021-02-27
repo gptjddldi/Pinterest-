@@ -54,7 +54,7 @@ class Pin(TimestampedModel):
             #                                 name="test.jpg", content_type=img_io.tell, charset=None,size=img_io.tell)
             # img_file = ContentFile(img_io.getvalue())
             # self.image = img_file
-            self.image.save("123.jpg", File(data), save=False)
+            self.image.save("gPtjddl.jpg", File(data), save=False)
             # https://stackoverflow.com/questions/12119988/django-save-a-filefield-before-calling-super
 
         super().save(*args, **kwargs)

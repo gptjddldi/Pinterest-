@@ -7,4 +7,4 @@ from .models import Pin
 def insert_tags(sender, instance, created, **kwargs):
     if created:
         for name in Pin.get_tags_from_title(instance):
-            print(instance.tag_set.add(name))
+            instance.tag_set.add(name)

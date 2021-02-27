@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pin.urls')),
     path('pinterestAccounts/', include('pinterestAccounts.urls')),
+    path('tags/', include('tags.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     url('account-confirm-email/(?P<key>.+)/$', confirm_email,

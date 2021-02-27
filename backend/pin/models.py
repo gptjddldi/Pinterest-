@@ -22,7 +22,8 @@ class Pin(TimestampedModel):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pins')
     title = models.CharField(max_length=100)
     image = models.ImageField(blank=True, upload_to="pins/%Y/%m/%d")
-    image_url = models.CharField(max_length=400)
+    image_url = models.CharField(max_length=400, blank=True)
+    tag_set = models.ManyToManyField("tags.Tag", blank=True)
     # def clean(self):
     #     if self.image.url:
     #         self.image.url = cloudinary.utils.cloudinary_url(str(self.image), width=502)[0]

@@ -72,7 +72,7 @@ function Profile(props) {
                                 <BoardsFeed username={userData.username} boards={boards}/>
                             </>
                         ) : (
-                            <PostList filter={`pins/?author__username=${userData.username}`}/>
+                            <PostList filter={`author__username=${userData.username}`}/>
                         )}
                     </>
                 )}

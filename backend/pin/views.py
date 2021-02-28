@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from . import serializers
 from .models import Pin
+from .pagination import CustomCursorPagination
 
 
 class PinViewSet(ModelViewSet):
@@ -21,6 +22,7 @@ class PinViewSet(ModelViewSet):
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
     filterset_fields = ['author__following__username', 'author__username', 'boards__id']
+    pagination_class = CustomCursorPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

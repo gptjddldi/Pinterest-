@@ -34,7 +34,7 @@ export default function Pin(props) {
                 <div className="overflow-hidden shadow-lg rounded-3xl bg-white">
                     <div className="flex flex-wrap">
                         <div className="">
-                                <img className="" src={pinData.image_w_502}/>
+                                <img className="" src={pinData.image}/>
                         </div>
                         <div className="p-5 pl-10 ">
                             {/*<div className="flex items-center justify-between">*/}
@@ -66,7 +66,7 @@ export default function Pin(props) {
                     </div>
                 </div>
                 <h2 className="font-bold text-center mt-10 text-xl">More like this</h2>
-                <PostList filters={`ordering=-created_at`} />
+                <PostList/>
             </div>
         </Layout>
     )

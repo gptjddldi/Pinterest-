@@ -32,18 +32,6 @@ class PinViewSet(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-
-        serializer = self.get_serializer(instance)
-        new_dict = {'image_w_502': cloudinary.utils.cloudinary_url(str(instance.image), width=502)[0]}
-
-        new_dict.update(serializer.data)
-
-        return Response(new_dict)
-
-
-
 
 class FollowingPinList(ListAPIView):
     '''

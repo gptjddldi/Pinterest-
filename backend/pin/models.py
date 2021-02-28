@@ -1,7 +1,6 @@
 import re
 from io import BytesIO
 
-import cloudinary
 from django.core.files import File
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -29,12 +28,6 @@ class Pin(TimestampedModel):
     image = models.ImageField(blank=True, upload_to="pins/%Y/%m/%d")
     image_url = models.CharField(max_length=400, blank=True)
     tag_set = models.ManyToManyField("tags.Tag", blank=True)
-    # def clean(self):
-    #     if self.image.url:
-    #         self.image.url = cloudinary.utils.cloudinary_url(str(self.image), width=502)[0]
-    #         print(self.image.url)
-
-    #
 
     def get_tags_from_title(self):
         tag_name_list = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", self.title)
@@ -52,7 +45,6 @@ class Pin(TimestampedModel):
             # img.save(img_io, format='JPEG') # img : PIL 파일임
             # img_file = InMemoryUploadedFile(img_io, field_name=None,
             #                                 name="test.jpg", content_type=img_io.tell, charset=None,size=img_io.tell)
-            # img_file = ContentFile(img_io.getvalue())
             # self.image = img_file
             self.image.save("gPtjddl.jpg", File(data), save=False)
             # https://stackoverflow.com/questions/12119988/django-save-a-filefield-before-calling-super

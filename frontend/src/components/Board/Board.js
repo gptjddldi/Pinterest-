@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import PrimaryButton from "../Button/PrimaryButton";
 import {axiosInstance} from "../../utils/axios";
 
-function Board({pin}) {
+function Board({pin_id}) {
     let [userBoard, setUserBoard] = useState([])
     let [dropdownVisibility, setDropdownVisibility] = useState("hidden")
     let [selectedBoard, setSelectedBoard] = useState({})
@@ -30,13 +30,13 @@ function Board({pin}) {
             axiosInstance.post('pinterestAccounts/boards/', {title: newBoard})
                 .then((res)=> {
                     setSelectedBoard(res.data);
-                    axiosInstance.post(`pinterestAccounts/board/${res.data.id}/add_pin`, {id:pin.id})
+                    axiosInstance.post(`pinterestAccounts/board/${res.data.id}/add_pin`, {id:pin_id})
                         .catch((e)=>console.log(e))
                 })
                 .catch((e)=>console.log(e))
         }
         else {
-            axiosInstance.post(`pinterestAccounts/board/${selectedBoard.id}/add_pin`, {id:pin.id})
+            axiosInstance.post(`pinterestAccounts/board/${selectedBoard.id}/add_pin`, {id:pin_id})
                 .catch((e)=>console.log(e))
         }
 

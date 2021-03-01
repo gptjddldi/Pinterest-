@@ -10,7 +10,7 @@ export default function PinCard({ index, data:{id, name, image}, width }) {
         <div className="w-full group my-10">
             <div className="relative">
                 <div className="absolute px-3 mt-3 z-10 w-full invisible group-hover:visible">
-                    {/*<Board pin={pin}>Save</Board>*/}
+                    <Board pin={id}>Save</Board>
                 </div>
                     <Card >
                         <Link to={`/pin/${id}`}>

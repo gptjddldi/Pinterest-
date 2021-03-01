@@ -17,7 +17,8 @@ const PostList = ({filter}) => {
         setLoading(true)
         axiosInstance.get('pins/?' + (filter ? `${filter}` : '') + `&cursor=`)
             .then((res) => {
-                setNextCursor(res.data.next)
+                const cursor = res.data.next.split('=')[1]
+                setNextCursor(cursor)
                 setPostList(res.data.results)
             })
             .catch((err)=>console.log(err))
@@ -40,9 +41,10 @@ const PostList = ({filter}) => {
     // 무한 스크롤 구현
     const fetchFeed = async() => {
         setLoading(true)
-        axiosInstance.get(`${nextCursor}`)
+        axiosInstance.get('pins/?' + (filter ? `${filter}` : '') + `&cursor=${nextCursor}`)
             .then((res) => {
-                setNextCursor(res.data.next)
+                const cursor = res.data.next.split('=')[1]
+                setNextCursor(cursor)
                 // const fetchedPost = postList.concat(postList, res.data.results)
                 setPostList([...postList, ...res.data.results])
             })
@@ -57,12 +59,12 @@ const PostList = ({filter}) => {
 
     return (
             <Masonry
-            className="my-4"
+            // className="my-4"
             items={postList}
             onRender={maybeLoadMore}
             columnGutter={8}
             columnWidth={240}
-            overscanBy={3}
+            overscanBy={1.75}
             render={PinCard}
             />
     )

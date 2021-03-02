@@ -6,7 +6,6 @@ if(localStorage.getItem(('persist:userReducer'))) {
     item = JSON.parse(localStorage.getItem('persist:userReducer')).userReducer
 // console.log(token["userReducer"])
     token = item.split('"')[3]
-    console.log(token)
 }
 
 

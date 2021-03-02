@@ -11,6 +11,7 @@ import {useSelector} from "react-redux";
 import SettingsRoutes from "./account/settings";
 import Pin from "./pin/pin";
 import PinCreate from "./pin/pinCreate";
+import Board from "./account/Board"
 
 export default function Root() {
 
@@ -19,6 +20,7 @@ export default function Root() {
             <LoginRequiredRouter exact path={'/following'}  component={Following}/>
             <Route exact path={'/'}  component={Home}/>
             <LoginRequiredRouter exact path={'/profile/:key1'}  component={Profile}/>
+            <LoginRequiredRouter exact path={'/:username/:boardname'} component={Board}/>
             <LoginRequiredRouter exact path={'/account'} component={AccountRoutes}/>
             <LoginRequiredRouter exact path={'/test'} component={CssTest}/>
             <LoginRequiredRouter path={'/settings'} component={SettingsRoutes}/>

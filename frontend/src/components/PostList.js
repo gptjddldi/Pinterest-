@@ -6,67 +6,70 @@ import {Masonry, useInfiniteLoader} from "masonic";
 // react-masonry-css: pinterest 스타일 layout 느낌
 
 const PostList = ({filter}) => {
-
-    const [postList, setPostList] = useState([])
-    const [newPostList, setNewPostList] = useState([])
+    const [fakeItems, setFakeItems] = useState([])
+    const [startIndex, setStartIndex] = useState(0)
     const [loading, setLoading] = useState(false)
     const [nextCursor, setNextCursor] = useState('')
     const [moreFeeds, setMoreFeeds] = useState(false)
 
-    const initFeed = async() => {
+    const fetchFeed = (startIdx=0) => {
         setLoading(true)
-        axiosInstance.get('pins/?' + (filter ? `${filter}` : '') + `&cursor=`)
+        axiosInstance.get('pins/?' + (filter ? `${filter}` : '') + `&limit=32&offset=${startIdx}`)
             .then((res) => {
-                const cursor = res.data.next.split('=')[1]
-                setNextCursor(cursor)
-                setPostList(res.data.results)
+                // if(res.data.next)
+                //     setStartIndex(startIdx+32)
+                // console.log(res.data.results)
+                setFakeItems(res.data.results)
+                console.log(fakeItems)
+                return fakeItems
             })
             .catch((err)=>console.log(err))
-        setLoading(false)
+        // setLoading(false)
+        // console.log(fakeItems)
+        // return fakeItems
     }
-    useEffect(()=>{
-        initFeed()
-    }, [])
+    const [postList, setPostList] = useState(fetchFeed)
+    console.log(postList)
+    // const fetchFeedPromise = (startIdx) => {
+    //     Promise.resolve(fetchFeed(startIdx))
+    // }
 
-    // const handleScroll = () => {
-    //     const scrollHeight = document.documentElement.scrollHeight;
-    //     const scrollTop = document.documentElement.scrollTop;
-    //     const clientHeight = document.documentElement.clientHeight;
-    //     if (scrollTop + clientHeight+300 >= scrollHeight) {
-    //         // 페이지 끝에 도달하면 추가 데이터를 받아온다
-    //         console.log("More Feeds")
-    //         fetchFeed();
-    //     }
-    // };
-    // 무한 스크롤 구현
-    const fetchFeed = async() => {
-        setLoading(true)
-        axiosInstance.get('pins/?' + (filter ? `${filter}` : '') + `&cursor=${nextCursor}`)
-            .then((res) => {
-                const cursor = res.data.next.split('=')[1]
-                setNextCursor(cursor)
-                // const fetchedPost = postList.concat(postList, res.data.results)
-                setPostList([...postList, ...res.data.results])
-            })
-            .catch((err)=>console.log(err))
-        setLoading(false)
-    }
-    const maybeLoadMore = useInfiniteLoader(fetchFeed, {
-        // isItemLoaded: (index, postList) => !!postList[index],
-        threshold: 3
-    })
+    // const fetchFeed = async() => {
+    //     setLoading(true)
+    //     axiosInstance.get('pins/?' + (filter ? `${filter}` : '') + `&cursor=${nextCursor}`)
+    //         .then((res) => {
+    //             if(res.data.next)
+    //                 setNextCursor(res.data.next.split('=')[1])
+    //             // const fetchedPost = postList.concat(postList, res.data.results)
+    //             // setPostList(fetchedPost)
+    //             setPostList([...postList, ...res.data.results])
+    //             console.log(postList)
+    //         })
+    //         .catch((err)=>console.log(err))
+    //     setLoading(false)
+    // }
+    // const maybeLoadMore = useInfiniteLoader(
+    //     async (startIndex, stopIndex, postList) => {
+    //         const nextItems = await fetchFeedPromise(startIndex);
+    //         setPostList(current => [...current, ...nextItems])
+    //     }, {
+    //     isItemLoaded: (index, postList) => !!postList[index],
+    //     minimumBatchSize: 32,
+    //     threshold: 3
+    // })
 
 
     return (
-            <Masonry
-            // className="my-4"
-            items={postList}
-            onRender={maybeLoadMore}
-            columnGutter={8}
-            columnWidth={240}
-            overscanBy={3}
-            render={PinCard}
-            />
+        <div>123</div>
+            // <Masonry
+            // // className="my-4"
+            // items={postList}
+            // onRender={maybeLoadMore}
+            // columnGutter={8}
+            // columnWidth={240}
+            // overscanBy={1.75}
+            // render={PinCard}
+            // />
     )
 }
 export default React.memo(PostList)

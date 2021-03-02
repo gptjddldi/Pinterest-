@@ -90,6 +90,7 @@ def add_pin(request, pk):
     '''
     if request.method == 'POST':
         board = get_object_or_404(Board, pk=pk)
+        print(request)
         board.pin.add(Pin.objects.get(pk=request.data['id']))
     return Response(status.HTTP_202_ACCEPTED)
 

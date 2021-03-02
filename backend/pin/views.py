@@ -3,10 +3,12 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from . import serializers
 from .models import Pin
+# from .pagination import CustomLimitOffsetPagination
 from .pagination import CustomCursorPagination
 
 
@@ -21,8 +23,8 @@ class PinViewSet(ModelViewSet):
     '''
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
-    filterset_fields = ['author__following__username', 'author__username', 'boards__id']
-    pagination_class = CustomCursorPagination
+    filterset_fields = ['author__follower__username', 'author__username', 'boards__title']
+    pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

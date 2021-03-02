@@ -2,8 +2,12 @@ import React from 'react'
 import Layout from "../components/Layout";
 import PostList from "../components/PostList";
 import PrimaryButton from "../components/Button/PrimaryButton";
+import {useSelector} from "react-redux";
 
 function Following(props) {
+    const {loggedUser} = useSelector(state => ({
+        loggedUser: state.userReducer.user
+    }))
 
     return(
         <Layout props={props}>
@@ -13,7 +17,7 @@ function Following(props) {
                     className={'px-4 py-2 rounded-3xl block ml-auto hover:bg-red-700'}
                     >팔로우할 만한 사람 찾기</PrimaryButton>
             </div>
-            <PostList filter={`following/`}/>
+            <PostList filter={`author__follower__username=${loggedUser.username}`}/>
         </Layout>
     )
 } export default Following

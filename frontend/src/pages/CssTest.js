@@ -15,11 +15,13 @@ const CssTest = (props) => {
 
     const initFeed = async() => {
         setLoading(true)
-        axiosInstance.get('pins/?' + `&limit=30&offset=0`)
+        axiosInstance.get('pins/?' + 'author__username=park' +`&limit=30&offset=0`)
             .then((res) => {
                 console.log(res.data)
                 // const cursor = res.data.next.split('=')[1]
                 // setNextCursor(cursor)
+
+
                 setPostList(res.data.results)
             })
             .catch((err)=>console.log(err))
@@ -54,20 +56,33 @@ const CssTest = (props) => {
             .catch((err)=>console.log(err))
         setLoading(false)
     }
+
     const fetchMoreItems = async (startIndex, stopIndex, currentItems) => {
-        console.log(startIndex, stopIndex)
+        // console.log(stopIndex)
         const nextItems = await axiosInstance(
-            `/pins/?author__username=park&limit=${stopIndex - startIndex}&offset=${startIndex}`
+            '/pins/?author__username=park'+`&limit=${stopIndex - startIndex}&offset=${startIndex}`
         )
+        // for(let i=0; i<28; i++){
+        //     console.log(nextItems.data.results[i].id)
+        // }
         setPostList((current) => [...current, ...nextItems.data.results])
+        // for(let i=startIndex; i<stopIndex; i++){
+        //     console.log(postList[i].id)
+        // }
+        // console.log(postList)
+    }
+    const wiz = (index, postList) => {
+        console.log(postList[index])
+        return !!postList[index]
     }
     const maybeLoadMore = useInfiniteLoader(fetchMoreItems, {
-        // isItemLoaded: ((index, postList) => {
-        //     console.log(postList[index]);
-        //
-        // }),
-        minimumBatchSize:30,
-        threshold: 3
+        isItemLoaded: ((index, postList) =>(
+                wiz(index, postList)
+
+            )
+        ),
+        minimumBatchSize:20,
+        threshold: 5
     })
 
 
@@ -77,7 +92,7 @@ const CssTest = (props) => {
             onRender={maybeLoadMore}
             columnGutter={8}
             columnWidth={240}
-            overscanBy={3}
+            overscanBy={1.75}
             render={PinCard}
         />
     )

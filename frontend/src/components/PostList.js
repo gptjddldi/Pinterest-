@@ -64,7 +64,7 @@ const PostList = ({filter}) => {
             onRender={maybeLoadMore}
             columnGutter={8}
             columnWidth={240}
-            overscanBy={1.75}
+            overscanBy={3}
             render={PinCard}
             />
     )

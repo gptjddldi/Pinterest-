@@ -22,8 +22,8 @@ export default function Header(props) {
     }
 
     return (
-        <div className="fixed top-0 z-10 bg-white w-full">
-            <ul className="py-3 container mx-auto flex items-center">
+        <div className="fixed top-0 z-10 bg-white w-full shadow-md">
+            <ul className="py-1 container mx-auto flex items-center">
                 {props.props.location.pathname === '/following' ?
                     <>
                         <li><Link to="/" className=" text-black px-4 font-bold py-2 rounded-3xl hover:bg-gray-300 hover:text-black">홈</Link></li>

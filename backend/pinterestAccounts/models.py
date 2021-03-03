@@ -31,9 +31,3 @@ class Account(AbstractUser):
 
     def __str__(self):
         return self.username
-
-
-class Board(models.Model):
-    author = models.ForeignKey(to=Account, on_delete=models.CASCADE, related_name='boards')
-    title = models.CharField(max_length=100)
-    pin = models.ManyToManyField(to=Pin, related_name='boards', blank=True)

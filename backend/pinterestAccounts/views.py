@@ -8,7 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from pin.models import Pin
 from . import serializers
-from .models import Account, Board
+from .models import Account
 
 
 class AccountSignupView(CreateAPIView):
@@ -53,31 +53,6 @@ class SuggestionList(ListAPIView):
     def get_queryset(self):
         qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.following.all())
         return qs
-
-
-class BoardViewSet(ModelViewSet):
-    '''
-    User 의 Board 관련 REST API 제공
-
-    ---
-
-    '''
-    queryset = Board.objects.all()
-    serializer_class = serializers.BoardSerializer
-    filterset_fields = ['author__username']
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-    # def get_queryset(self):
-    #     qs = super().get_queryset().filter()
-    #     print(self.request.data)
-    #     return qs
-
-    # def retrieve(self, request, *args, **kwargs):
-    #     board = get_object_or_404(Board, pk=request.pk)
-    #     serializer = self.get_serializer(board)
-    #     return Response(serializer.data)
 
 @api_view(['POST', 'GET'])
 def add_pin(request, pk):

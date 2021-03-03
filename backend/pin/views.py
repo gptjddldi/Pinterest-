@@ -24,7 +24,7 @@ class PinViewSet(ModelViewSet):
     queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
     filterset_fields = ['author__follower__username', 'author__username', 'boards__title']
-    pagination_class = LimitOffsetPagination
+    pagination_class = CustomCursorPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

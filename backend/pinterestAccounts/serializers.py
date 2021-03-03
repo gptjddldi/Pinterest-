@@ -3,7 +3,7 @@ from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
 
 from pin.models import Pin
-from .models import Account, Board
+from .models import Account
 
 from rest_framework import serializers
 
@@ -71,26 +71,6 @@ class SuggestionUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['username', 'avatar']
-
-
-class PinSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Pin
-        fields = ['title', 'image', 'author']
-
-
-class BoardSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    pin = PinSerializer(many=True, required=False)
-
-    class Meta:
-        model = Board
-        fields = ['id', 'title', 'author', 'pin']
-
-    # def update(self, instance, validated_data):
-    #     pin_data = validated_data.pop('pin')
-    #     pin = instance.pin
 
 
 class PasswordChangeSerializer(serializers.Serializer):

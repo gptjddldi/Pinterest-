@@ -11,7 +11,8 @@ from rest_framework import permissions
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('pin.urls')),
+    path('pins/', include('pin.urls')),
+    path('boards/', include('boards.urls')),
     path('pinterestAccounts/', include('pinterestAccounts.urls')),
     path('tags/', include('tags.urls')),
     path('rest-auth/', include('rest_auth.urls')),

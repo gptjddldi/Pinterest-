@@ -7,5 +7,5 @@ class CustomLimitOffsetPagination(LimitOffsetPagination):
 
 
 class CustomCursorPagination(CursorPagination):
-    page_size = 32
+    page_size = 52
     ordering = '-created_at'

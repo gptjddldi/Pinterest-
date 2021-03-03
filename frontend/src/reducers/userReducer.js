@@ -1,10 +1,11 @@
 import {login, logout} from "../actions/userAction";
-import {LOGIN, LOGOUT, UPDATE} from "../actions/types";
+import {CURSOR, LOGIN, LOGOUT, UPDATE} from "../actions/types";
 
 const defaultState = {
     token: '',
     user: {},
-    isAuth: false
+    isAuth: false,
+    cursor: '',
 }
 
 
@@ -17,6 +18,8 @@ export default function(state=defaultState, action){
                 token: data.token,
                 user: data.user,
                 isAuth: true,
+                cursor: '',
+
             }
         }
         case UPDATE:{
@@ -25,20 +28,29 @@ export default function(state=defaultState, action){
                 ...state,
                 user: data,
                 isAuth:true,
+                cursor: '',
+
             }
         }
         case LOGOUT:{
-            console.log("logout")
             return {
                 ...state,
                 token: '',
                 user: '',
-                isAuth: false
+                isAuth: false,
+                cursor: '',
+
             }
         }
-
+        case CURSOR:{
+            const {payload:data} = action
+            console.log(data)
+            return{
+                ...state,
+                cursor: data
+            }
+        }
         default:
             return state
-
     }
 }

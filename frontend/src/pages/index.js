@@ -20,7 +20,7 @@ export default function Root() {
             <LoginRequiredRouter exact path={'/following'}  component={Following}/>
             <Route exact path={'/'}  component={Home}/>
             <LoginRequiredRouter exact path={'/profile/:key1'}  component={Profile}/>
-            <LoginRequiredRouter exact path={'/:username/:boardname'} component={Board}/>
+            <LoginRequiredRouter exact path={'/:username/board/:boardname'} component={Board}/>
             <LoginRequiredRouter exact path={'/account'} component={AccountRoutes}/>
             <LoginRequiredRouter exact path={'/test'} component={CssTest}/>
             <LoginRequiredRouter path={'/settings'} component={SettingsRoutes}/>

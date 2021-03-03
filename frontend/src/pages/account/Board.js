@@ -6,7 +6,6 @@ import Layout from "../../components/Layout";
 const Board = (props) => {
     const userName = props.match.params.username
     const boardName = props.match.params.boardname;
-    console.log(boardName)
     return (
         <Layout props={props}>
             <div className="max-w-screen-md mx-auto my-10">

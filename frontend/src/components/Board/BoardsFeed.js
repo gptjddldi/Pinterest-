@@ -12,7 +12,7 @@ export default function BoardsFeed({ boards, username }){
 
             {boards && boards.map((board, index) => (
                 <div key={index} className="mx-5">
-                    <a href={`/${username}/${board.title}/`}>
+                    <a href={`/${username}/board/${board.title}/`}>
                         <div className="rounded-xl overflow-hidden bg-gray-300 w-64 h-32" >
                             <img className="w-full" src={getBoardDisplayImage(board)} />
                         </div>

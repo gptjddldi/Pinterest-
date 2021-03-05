@@ -45,17 +45,16 @@ class FollowingPinList(ListAPIView):
     ---
 
     '''
+    queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
 
     def get_queryset(self):
         qs = super().get_queryset()
-        query = []
-        # qs.filter(Q(Tag='') | Q(author=''))
-        for following in self.request.user.following_user.all():
-            query += qs.filter(author=following)
-        for following in self.request.user.following_tag.all():
-            query += qs.filter(tag_set=following)
-        return query
+        author_list = self.request.user.following_user.all()
+        tag_list = self.request.user.following_tag.all()
+
+        qs = qs.filter(Q(author__in=author_list) | Q(tag_set__in=tag_list))
+        return qs
 
 
 # class BoardPinList(ListAPIView):

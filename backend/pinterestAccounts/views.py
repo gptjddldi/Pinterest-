@@ -54,21 +54,6 @@ class SuggestionList(ListAPIView):
         qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.following.all())
         return qs
 
-@api_view(['POST', 'GET'])
-def add_pin(request, pk):
-    '''
-    Board Field 에 Pin 을 추가하는 API
-
-    ---
-    특정 보드에 핀을 추가할 수 있도록 한다.
-
-    '''
-    if request.method == 'POST':
-        board = get_object_or_404(Board, pk=pk)
-        print(request)
-        board.pin.add(Pin.objects.get(pk=request.data['id']))
-    return Response(status.HTTP_202_ACCEPTED)
-
 
 @api_view(['GET', 'PUT'])
 def get_user_info_by_username(request, username):

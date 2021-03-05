@@ -7,9 +7,8 @@ from pinterestAccounts import views
 urlpatterns = [
 
     path('user/<slug:username>/', views.get_user_info_by_username),
-    path('password_change/', views.PasswordChangeView.as_view()),
+    # path('password_change/', views.PasswordChangeView.as_view()),
     path('suggestions/', views.SuggestionList.as_view()),
-    path('board/<int:pk>/add_pin', views.add_pin),
     path('follow/', views.follow_user),
     path('unfollow/', views.unfollow_user),
 ]

@@ -1,5 +1,6 @@
 from django.db import models
 
+from backend.validators import validate_title
 from pin.models import Pin
 from pinterestAccounts.models import Account
 

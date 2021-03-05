@@ -30,7 +30,7 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
     # following = (many=True)
     class Meta:
         model = Account
-        fields = ['id', 'avatar', 'username', 'email', 'following', 'follower']
+        fields = ['id', 'avatar', 'username', 'email', 'followingUser', 'followingTag', 'follower']
 
 
 # class AccountLoginSerializer(serializers.ModelSerializer):

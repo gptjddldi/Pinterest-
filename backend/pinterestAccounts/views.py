@@ -51,7 +51,7 @@ class SuggestionList(ListAPIView):
     serializer_class = serializers.SuggestionUserSerializer
 
     def get_queryset(self):
-        qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.following.all())
+        qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.followingUser.all())
         return qs
 
 
@@ -103,7 +103,7 @@ class PasswordChangeView(UpdateAPIView):
 def follow_user(request):
     username = request.data['username']
     target_user = get_object_or_404(Account, username=username)
-    request.user.following.add(target_user)
+    request.user.followingUser.add(target_user)
     target_user.follower.add(request.user)
     return Response(status.HTTP_202_ACCEPTED)
 
@@ -112,7 +112,7 @@ def follow_user(request):
 def unfollow_user(request):
     username = request.data['username']
     target_user = get_object_or_404(Account, username=username)
-    request.user.following.remove(target_user)
+    request.user.followingUser.remove(target_user)
     target_user.follower.remove(request.user)
     return Response(status.HTTP_202_ACCEPTED)
 

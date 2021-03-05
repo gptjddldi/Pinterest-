@@ -20,7 +20,7 @@ const PostList = ({filter}) => {
     const onCursor = (data) => dispatch(cursor(data));
 
     const initFeed = async(cursorTo) => {
-        axiosInstance.get(cursorTo? `${cursorTo.curCursor}` : `pins/?${filter}` )
+        axiosInstance.get(cursorTo? `pins/${cursorTo}` : `pins/?${filter}` )
             .then((res) => {
                 setNextCursor(res.data.next)
                 setPrevCursor(res.data.previous)
@@ -29,7 +29,7 @@ const PostList = ({filter}) => {
             .catch((err)=>console.log(err))
     }
     useEffect(()=>{
-        initFeed(curCursor)
+        initFeed(curCursor.curCursor)
     }, [])
 
     const fetchFeed = async(cursorTo) => {

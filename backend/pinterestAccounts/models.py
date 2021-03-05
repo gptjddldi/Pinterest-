@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from pin.models import Pin
+from tags.models import Tag
 
 
 class AccountManager(BaseUserManager):
@@ -11,10 +12,8 @@ class AccountManager(BaseUserManager):
 
 class Account(AbstractUser):
     avatar = models.ImageField(blank=True, upload_to="pinterestAccounts/profile/%Y/%m/%d")
-    # image 를 db에 저장할 것인가? 아니면 파일 시스템에 저장할 것인가?
-    # https://stackoverflow.com/questions/3748/storing-images-in-db-yea-or-nay
-    # https://softwareengineering.stackexchange.com/questions/150669/is-it-a-bad-practice-to-store-large-files-10-mb-in-a-database
-    following = models.ManyToManyField('self', blank=True, related_name="followings", symmetrical=False)
+    followingUser = models.ManyToManyField('self', blank=True, related_name="followingUsers", symmetrical=False)
+    followingTag = models.ManyToManyField(Tag, blank=True, related_name="followingTag", symmetrical=False)
     follower = models.ManyToManyField('self', blank=True, related_name="followers", symmetrical=False)
     first_name = models.CharField(max_length=10, verbose_name="성", blank=True)
     last_name = models.CharField(max_length=20, verbose_name="이름", blank=True)

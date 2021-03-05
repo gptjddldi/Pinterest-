@@ -39,7 +39,7 @@ class PinViewSet(ModelViewSet):
 
 class FollowingPinList(ListAPIView):
     '''
-    현재 User 의 Following User 의 Pin List 제공
+    현재 User 가 Following 하는 User or Tag 하는 Pin List 제공
 
     ---
 
@@ -52,28 +52,28 @@ class FollowingPinList(ListAPIView):
     def get_queryset(self):
         qs = super().get_queryset()
         query = []
-        for following in self.request.user.following.all():
+        for following in self.request.user.followingUser.all():
             query += qs.filter(author=following.pk)
         return query
 
 
-class BoardPinList(ListAPIView):
-    '''
-
-    현재 user 의 Board 에 들어있는 모든 Pin List
-
-    ---
-
-
-    다른 Board 에 동일한 Pin 이 들어있을 수 있기 때문에,
-    동일한 id 의 Pin 이 2개 이상 있을 수 있음
-    '''
-    queryset = Pin.objects.all()
-    serializer_class = serializers.PinListSerializer
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        query = []
-        for board in self.request.user.boards.all():
-            query += qs.filter(boards=board.pk)
-        return query
+# class BoardPinList(ListAPIView):
+#     '''
+#
+#     현재 user 의 Board 에 들어있는 모든 Pin List
+#
+#     ---
+#
+#
+#     다른 Board 에 동일한 Pin 이 들어있을 수 있기 때문에,
+#     동일한 id 의 Pin 이 2개 이상 있을 수 있음
+#     '''
+#     queryset = Pin.objects.all()
+#     serializer_class = serializers.PinListSerializer
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         query = []
+#         for board in self.request.user.boards.all():
+#             query += qs.filter(boards=board.pk)
+#         return query

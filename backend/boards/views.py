@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -39,9 +40,15 @@ def add_pin(request, pk):
     /board/[board_id]/pin
     [board_id] 에 Pin 을 추가할 수 있도록 한다.
     Pin 의 id 는 request.data['id'] 로 받는당.
+    하나의 보드에 중복된 핀이 올 경우 ValidationError
     '''
     if request.method == 'POST':
         board = get_object_or_404(Board, pk=pk)
+        for pin in board.pin.all():
+            if pin.id == request.data['id']:
+                msg = {"pin": "{1}번 핀은 이미 {1} 보드에 존재합니다.".format(request.data['id'], board.title)}
+                raise ValidationError(msg)
+
         board.pin.add(Pin.objects.get(pk=request.data['id']))
     return Response({"success": "{0}번 핀이 '{1}' 보드에 추가되었습니다.".format(request.data['id'], board.title)},
                     status.HTTP_201_CREATED)

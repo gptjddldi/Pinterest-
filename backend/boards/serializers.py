@@ -22,15 +22,6 @@ class BoardSerializer(serializers.ModelSerializer):
         model = Board
         fields = ['id', 'title', 'author', 'pin']
 
-    # def validate_title(self, title):
-    #     if len(title):
-    #         print(title)
-    #         pass
-    #     else:
-    #         msg = "제목을 입력해주세요."
-    #         raise ValidationError(msg)
-    #     return title
-
     def validate(self, attrs):
         '''
         생성한 보드가 현재 로그인한 유저가 가진 보드의 이름과 중복되면 에러 발생

@@ -7,7 +7,9 @@ import {axiosInstance} from "../../utils/axios";
 export default function BoardCreateModal(props){
     let [boardTitle, setBoardTitle] = useState("")
     function createBoardSubmitHandler(e) {
-        axiosInstance.post('/pinterestAccounts/boards/', {title:boardTitle}).catch((e)=>console.log(e.response))
+        e.preventDefault()
+        axiosInstance.post('/boards/', {title:boardTitle})
+            .catch((e)=>console.log(e.response))
     }
     return(
         <Modal className={props.className} onClickOutside={props.onClickOutside}>

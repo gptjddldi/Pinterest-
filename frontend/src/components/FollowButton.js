@@ -12,7 +12,7 @@ export default function FollowButton({user}){
     }))
 
     useEffect(() => {
-        if(loggedUser.following.indexOf(user) !== -1){
+        if(loggedUser.following_user.indexOf(user) !== -1){
             setIsFollowing(true)
         } else setIsFollowing(false)
     }, [user])

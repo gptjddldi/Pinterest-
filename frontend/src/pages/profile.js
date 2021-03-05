@@ -58,7 +58,7 @@ function Profile(props) {
                 </div>
                 <h1 className="text-3xl font-bold">{userData.email}</h1>
                 <div>@{userData.username}</div>
-                <div>팔로워 {userData.follower ? userData.follower.length : 0} 명 · 팔로잉 {userData.followingUser ? userData.followingUser.length : 0} 명</div>
+                <div>팔로워 {userData.follower ? userData.follower.length : 0} 명 · 팔로잉 {userData.following_user ? userData.following_user.length : 0} 명</div>
                 {userData.username != loggedUser.username &&
                 <div className="mt-5"><FollowButton user={userData}/></div>
                 }

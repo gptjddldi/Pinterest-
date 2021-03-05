@@ -1,4 +1,5 @@
 import cloudinary
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -39,21 +40,21 @@ class PinViewSet(ModelViewSet):
 
 class FollowingPinList(ListAPIView):
     '''
-    현재 User 가 Following 하는 User or Tag 하는 Pin List 제공
+    현재 User 가 Following(User or Tag) 하는 Pin List 제공
 
     ---
 
-
-
     '''
-    queryset = Pin.objects.all()
     serializer_class = serializers.PinListSerializer
 
     def get_queryset(self):
         qs = super().get_queryset()
         query = []
-        for following in self.request.user.followingUser.all():
-            query += qs.filter(author=following.pk)
+        # qs.filter(Q(Tag='') | Q(author=''))
+        for following in self.request.user.following_user.all():
+            query += qs.filter(author=following)
+        for following in self.request.user.following_tag.all():
+            query += qs.filter(tag_set=following)
         return query
 
 

@@ -2,6 +2,7 @@ import cloudinary
 from django.db.models import Q
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import LimitOffsetPagination
@@ -37,24 +38,21 @@ class PinViewSet(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-
-class FollowingPinList(ListAPIView):
-    '''
-    현재 User 가 Following(User or Tag) 하는 Pin List 제공
-
-    ---
-
-    '''
-    queryset = Pin.objects.all()
-    serializer_class = serializers.PinListSerializer
-
-    def get_queryset(self):
-        qs = super().get_queryset()
+    @action(methods=['get'], detail=False)
+    def following_pin_list(self, *args, **kwargs):
+        qs = self.filter_queryset(self.get_queryset())
         author_list = self.request.user.following_user.all()
         tag_list = self.request.user.following_tag.all()
 
-        qs = qs.filter(Q(author__in=author_list) | Q(tag_set__in=tag_list))
-        return qs
+        qs = qs.filter(Q(author__in=author_list) | Q(tag_set__in=tag_list)).distinct().order_by('-created_at')
+        page = self.paginate_queryset(qs)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
 
 
 # class BoardPinList(ListAPIView):

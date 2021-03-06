@@ -7,7 +7,7 @@ import SecondaryButton from "./Button/SecondaryButton";
 import Masonry from "react-masonry-css";
 // react-masonry-css: pinterest 스타일 layout 느낌
 
-const PostList = ({filter}) => {
+const PostList = ({url}) => {
 
     const [postList, setPostList] = useState([])
     const [nextCursor, setNextCursor] = useState('')
@@ -20,7 +20,7 @@ const PostList = ({filter}) => {
     const onCursor = (data) => dispatch(cursor(data));
 
     const initFeed = async(cursorTo) => {
-        axiosInstance.get(cursorTo? `pins/${cursorTo}` : `pins/?${filter}` )
+        axiosInstance.get(url? `pins/${url}/?` : 'pins/?' + cursorTo)
             .then((res) => {
                 setNextCursor(res.data.next)
                 setPrevCursor(res.data.previous)

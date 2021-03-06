@@ -17,7 +17,7 @@ function Following(props) {
                     className={'px-4 py-2 rounded-3xl block ml-auto hover:bg-red-700'}
                     >팔로우할 만한 사람 찾기</PrimaryButton>
             </div>
-            <PostList filter={`author__follower__username=${loggedUser.username}`}/>
+            <PostList url={'following_pin_list'}/>
         </Layout>
     )
 } export default Following

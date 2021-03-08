@@ -66,7 +66,7 @@ export default function Pin(props) {
                     </div>
                 </div>
                 <h2 className="font-bold text-center mt-10 text-xl">More like this</h2>
-                <PostList/>
+                <PostList url={`${pinNum}/sim_pin_list`}/>
             </div>
         </Layout>
     )

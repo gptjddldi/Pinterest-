@@ -24,7 +24,12 @@ const PostList = ({url}) => {
             .then((res) => {
                 setNextCursor(res.data.next)
                 setPrevCursor(res.data.previous)
-                setPostList(res.data.results)
+
+                if(res.data.results)
+                    setPostList(res.data.results)
+                else
+                    setPostList(res.data)
+
             })
             .catch((err)=>console.log(err))
     }
@@ -51,8 +56,9 @@ const PostList = ({url}) => {
             behavior: "auto"
         })
     }
-    return(
-        <div>
+
+    const RenderItems = () => {
+        return(
             <Masonry
                 breakpointCols={{default: 5, 1280: 4, 1024: 3, 768: 2, 640: 1}}
                 className="container mx-auto flex"
@@ -62,6 +68,13 @@ const PostList = ({url}) => {
                     <PinCard className="my-10" pin={pin} key={index}/>
                 )}
             </Masonry>
+        )}
+
+    return(
+        <div>
+            <div>
+                {postList ? <RenderItems/> : <div>로딩중</div> }
+            </div>
             <div className=" fixed right-0 bottom-0 mb-5 mr-5 flex z-10">
                 {prevCursor ? <>
                         <SecondaryButton className="px-4 py-2 rounded-3xl ml-auto " onClick={() =>fetchFeed(prevCursor)}>이전</SecondaryButton>

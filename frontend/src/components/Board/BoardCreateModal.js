@@ -7,7 +7,7 @@ import {axiosInstance} from "../../utils/axios";
 export default function BoardCreateModal(props){
     let [boardTitle, setBoardTitle] = useState("")
     function createBoardSubmitHandler(e) {
-        e.preventDefault()
+        // e.preventDefault()
         axiosInstance.post('/boards/', {title:boardTitle})
             .catch((e)=>console.log(e.response))
     }

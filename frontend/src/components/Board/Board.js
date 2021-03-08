@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import PrimaryButton from "../Button/PrimaryButton";
 import {axiosInstance} from "../../utils/axios";
+import BoardCreateModal from "./BoardCreateModal";
 
 function Board({pin_id}) {
     let [userBoard, setUserBoard] = useState([])
@@ -9,20 +10,22 @@ function Board({pin_id}) {
     let [selectedBoard, setSelectedBoard] = useState({})
     let [newBoard, setNewBoard] = useState('')
     let [isUsed, setIsUsed] = useState(false)
-
+    let [createBoardModalVisibility, setCreateBoardModalVisibility] = useState("hidden")
     const {loggedUser} = useSelector(state => ({
         loggedUser: state.userReducer.user,
     }))
     useEffect( () => {
         // axiosInstance.get(`boards/?author__username=${loggedUser.username}`)
-        axiosInstance.get(`boards/`)
-            .then((res)=> setUserBoard(res.data))
-            .catch((e)=>console.log(e))
+        if(userBoard === {}) {
+            axiosInstance.get(`boards/`)
+                .then((res) => setUserBoard(res.data))
+                .catch((e) => console.log(e))
 
-        if(userBoard && userBoard.length > 0){
-            selectionHandler(userBoard[0])
+            if (userBoard && userBoard.length > 0) {
+                selectionHandler(userBoard[0])
+            }
         }
-    }, [])
+        }, [])
 
 
     function addPin() {
@@ -66,15 +69,20 @@ function Board({pin_id}) {
                             {board.title}
                         </div>
                     ))}
-                    <input type="text" placeholder="보드 만들기" value={newBoard} onChange={(e) => {
-                        setNewBoard(e.target.value);
-                        setSelectedBoard({})
-                    }}/>
+                    {/*<input type="text" placeholder="보드 만들기" value={newBoard} onChange={(e) => {*/}
+                    {/*    setNewBoard(e.target.value);*/}
+                    {/*    setSelectedBoard({})*/}
+                    {/*}}/>*/}
                 </div>
             </div>
         )
     }
     else{
-        return  <div></div>
+        return  (
+            <div>
+                <PrimaryButton onClick={()=>setCreateBoardModalVisibility("block")}>보드 만들기</PrimaryButton>
+                <BoardCreateModal className={createBoardModalVisibility} onClickOutside={() => setCreateBoardModalVisibility("hidden")} />
+            </div>
+        )
     }
 } export default React.memo(Board)

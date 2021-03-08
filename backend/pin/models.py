@@ -1,14 +1,12 @@
+import csv
 import re
-from io import BytesIO
 
 from django.core.files import File
 from django.conf import settings
-from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
+from django.db import models
+
+import pandas as pd
 from tags.models import Tag
 from . import utils
 
@@ -53,4 +51,15 @@ class Pin(TimestampedModel):
 
     def delete(self, using=None, keep_parents=False):
         self.image.storage.delete(self.image.name)
+        # csv 파일에서도 찾아서 지워야 함
+        data = pd.read_csv('data_set.csv', engine='python', encoding='UTF8')
+        df = pd.DataFrame(data, columns=['id', 'created_at', 'updated_at', 'title', 'image', 'author_id', 'image_url'])
+        tar_idx = df[df['image']==self.image.name].index
+        df = df.drop(tar_idx)
+        df.to_csv('data_set.csv')
+        # with open('data_set.csv', newline='') as inp, open('data_set_edited.csv', 'a', newline='') as out:
+        #     writer = csv.writer(out)
+        #     for row in csv.reader(inp):
+        #         if row[4] != self.image.name:
+        #             writer.writerow(row)
         super().delete()

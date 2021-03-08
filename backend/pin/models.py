@@ -50,3 +50,7 @@ class Pin(TimestampedModel):
             # https://stackoverflow.com/questions/12119988/django-save-a-filefield-before-calling-super
 
         super().save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()

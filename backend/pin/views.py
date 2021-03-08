@@ -1,5 +1,5 @@
 import cloudinary
-from django.db.models import Q
+from django.db.models import Q, Case, When
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import action
@@ -8,6 +8,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+
+from utils2 import write_data_csv, recommend_pin
 from . import serializers
 from .models import Pin
 # from .pagination import CustomLimitOffsetPagination
@@ -35,12 +37,14 @@ class PinViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        # print(serializer.data)
+        write_data_csv(serializer.data)  # data 를 data_set.csv 파일에 쓰기
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     @action(methods=['get'], detail=False)
     def following_pin_list(self, *args, **kwargs):
-        qs = self.filter_queryset(self.get_queryset())
+        qs = self.get_queryset()
         author_list = self.request.user.following_user.all()
         tag_list = self.request.user.following_tag.all()
 
@@ -54,24 +58,13 @@ class PinViewSet(ModelViewSet):
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
-
-# class BoardPinList(ListAPIView):
-#     '''
-#
-#     현재 user 의 Board 에 들어있는 모든 Pin List
-#
-#     ---
-#
-#
-#     다른 Board 에 동일한 Pin 이 들어있을 수 있기 때문에,
-#     동일한 id 의 Pin 이 2개 이상 있을 수 있음
-#     '''
-#     queryset = Pin.objects.all()
-#     serializer_class = serializers.PinListSerializer
-#
-#     def get_queryset(self):
-#         qs = super().get_queryset()
-#         query = []
-#         for board in self.request.user.boards.all():
-#             query += qs.filter(boards=board.pk)
-#         return query
+    @action(methods=['get'], detail=True)
+    def sim_pin_list(self, request, pk):
+        qs = self.get_queryset()
+        pin = Pin.objects.get(pk=pk)
+        lis = recommend_pin(pin)
+        qs = qs.filter(id__in=lis)
+        preserved = Case(*[When(pk=pk, then=position) for position, pk in enumerate(lis)])
+        qs = qs.order_by(preserved)
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)

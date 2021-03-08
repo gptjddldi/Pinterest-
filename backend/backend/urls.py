@@ -17,8 +17,8 @@ urlpatterns = [
     path('tags/', include('tags.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    url('account-confirm-email/(?P<key>.+)/$', confirm_email,
-        name='account_confirm_email'),
+    # url('account-confirm-email/(?P<key>.+)/$', confirm_email,
+    #     name='account_confirm_email'),
     re_path(r'^account-confirm-email/', VerifyEmailView.as_view(),
             name='account_email_verification_sent'),
 

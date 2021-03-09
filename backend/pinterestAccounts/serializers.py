@@ -3,6 +3,7 @@ from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
 
 from boards.models import Board
+from boards.serializers import BoardSerializer
 from pin.models import Pin
 from .models import Account
 
@@ -25,11 +26,6 @@ class AccountSignupSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-
-class BoardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Board
-        fields = ['id', 'title']
 
 
 class CurrentAccountSerializer(serializers.ModelSerializer):

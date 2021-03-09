@@ -7,7 +7,7 @@ import SecondaryButton from "./Button/SecondaryButton";
 import Masonry from "react-masonry-css";
 // react-masonry-css: pinterest 스타일 layout 느낌
 
-const PostList = ({url}) => {
+const PostList = ({filter, url}) => {
 
     const [postList, setPostList] = useState([])
     const [nextCursor, setNextCursor] = useState('')
@@ -20,18 +20,49 @@ const PostList = ({url}) => {
     const onCursor = (data) => dispatch(cursor(data));
 
     const initFeed = async(cursorTo) => {
-        axiosInstance.get(url? `pins/${url}/?` : 'pins/?' + cursorTo)
-            .then((res) => {
-                setNextCursor(res.data.next)
-                setPrevCursor(res.data.previous)
+        if(url){
+            axiosInstance.get(`pins/${url}/?`)
+                .then((res) => {
+                    setNextCursor(res.data.next)
+                    setPrevCursor(res.data.previous)
 
-                if(res.data.results)
-                    setPostList(res.data.results)
-                else
-                    setPostList(res.data)
+                    if(res.data.results)
+                        setPostList(res.data.results)
+                    else
+                        setPostList(res.data)
 
-            })
-            .catch((err)=>console.log(err))
+                })
+                .catch((err)=>console.log(err))
+        }
+        else if(filter){
+            axiosInstance.get(`pins/?${filter}&`)
+                .then((res) => {
+                    setNextCursor(res.data.next)
+                    setPrevCursor(res.data.previous)
+
+                    if(res.data.results)
+                        setPostList(res.data.results)
+                    else
+                        setPostList(res.data)
+
+                })
+                .catch((err)=>console.log(err))
+        }
+        else{
+            axiosInstance.get(`pins/?`)
+                .then((res) => {
+                    setNextCursor(res.data.next)
+                    setPrevCursor(res.data.previous)
+
+                    if(res.data.results)
+                        setPostList(res.data.results)
+                    else
+                        setPostList(res.data)
+
+                })
+                .catch((err)=>console.log(err))
+        }
+
     }
     useEffect(()=>{
         initFeed(curCursor.curCursor)

@@ -26,7 +26,7 @@ export default function ProfileEdit(props) {
         else
             fd.append("avatar", avatar)
         fd.append("email", user.email)
-        axiosInstance.put(`rest-auth/user/`, fd).then((res  ) => {
+        axiosInstance.patch(`rest-auth/user/`, fd).then((res  ) => {
             const data = res.data;
             onUpdate(data)
         })

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -22,13 +22,19 @@ class BoardViewSet(ModelViewSet):
     '''
     queryset = Board.objects.all()
     serializer_class = serializers.BoardSerializer
+    filterset_fields = ['author__username']
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    def get_queryset(self):
-        qs = super().get_queryset().filter(author=self.request.user)
-        return qs
+    # def get_queryset(self):
+    #     qs = super().get_queryset().filter(author=self.request.user)
+    #     return qs
+
+    # @action(methods=['GET'], detail=False)
+    # def user_board_list(self, request, slug):
+    #     qs = self.get_queryset()
+    #     qs.filter()
 
 
 @api_view(['POST'])

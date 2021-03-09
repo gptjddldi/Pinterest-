@@ -2,6 +2,7 @@ from django.contrib.auth import password_validation
 from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
 
+from boards.models import Board
 from pin.models import Pin
 from .models import Account
 
@@ -25,12 +26,18 @@ class AccountSignupSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class BoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Board
+        fields = ['id', 'title']
+
 
 class CurrentAccountSerializer(serializers.ModelSerializer):
     # following = (many=True)
+    boards = BoardSerializer(many=True)
     class Meta:
         model = Account
-        fields = ['id', 'avatar', 'username', 'email', 'following_user', 'following_tag', 'follower']
+        fields = ['id', 'avatar', 'username', 'email', 'following_user', 'following_tag', 'follower', 'boards']
 
 
 # class AccountLoginSerializer(serializers.ModelSerializer):

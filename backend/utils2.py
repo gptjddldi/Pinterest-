@@ -1,4 +1,5 @@
 import csv
+import re
 import time
 
 import pandas as pd
@@ -9,6 +10,7 @@ from sklearn.metrics.pairwise import linear_kernel
 def tokenizer(raw, pos=["Noun","Alpha","Verb","Number"], stopword=[]):
     from konlpy.tag import Okt
     m = Okt()
+    raw = ' '.join(re.findall(r"([a-zA-Z\dㄱ-힣]+)", raw))
     return [word for word, tag in m.pos(raw)
             # if tag in pos and word not in stopword
         ]
@@ -42,7 +44,6 @@ def write_data_csv(pin):
     time.sleep(1)
     return pin['title']
 
-# print(get_recommendations('#풍경 사진 #여행 #나무 #꽃'))
 
 
 def get_cosine_sim(metadata):
@@ -55,7 +56,7 @@ def get_cosine_sim(metadata):
 
 
 def get_indices(metadata):
-    indices = pd.Series(metadata.index, index=metadata["title"]).drop_duplicates()
+    indices = pd.Series(metadata.index, index=metadata["id"]).drop_duplicates()
     return indices
 
 
@@ -64,4 +65,7 @@ def recommend_pin(pin):
     metadata = pd.read_csv('data_set.csv', engine='python', encoding='CP949')
     cosine_sim = get_cosine_sim(metadata)
     indices = get_indices(metadata)
-    return get_recommendations(pin.title, cosine_sim, indices, metadata)
+    return get_recommendations(pin.id, cosine_sim, indices, metadata)
+
+
+# print(get_recommendations('#풍경 사진 #여행 #나무 #꽃'))

@@ -2,7 +2,7 @@ import time
 from urllib.request import urlretrieve
 from selenium import webdriver
 from bs4 import BeautifulSoup as Bs
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -24,7 +24,7 @@ loginModal = '//*[@id="__PWS_ROOT__"]/div[1]/div/div/div/div[1]/div[1]/div[2]/di
 loginButton = '//*[@id="__PWS_ROOT__"]/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div/div/div/div/div/div/div[4]' \
               '/form/div[5]/button/div'
 
-driver = webdriver.Chrome('C:\chromedriver_win32/chromedriver')
+driver = webdriver.Chrome('C:\Chrome_driver/chromedriver')
 
 # for _ in range(100):
 #     count = 0
@@ -96,27 +96,31 @@ def post_pin_from_pin_set(driver, pin_set):
         element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '.PinBetterSave__DownArrowContainer.PinBetterSave__'
                                                              'DownArrowContainer--lego')))  # 10초 기다릴 때까지 js 로딩 확인
+        try:
+            image = driver.find_element_by_css_selector(".MIw.QLY.Rym.ojN.p6V.sLG.zI7.iyn.Hsu")
+            link = image.find_element_by_xpath('./div/img').get_attribute('src')
 
-        image = driver.find_elements_by_tag_name("img")
-        link = image[1].get_attribute('src')  # image 에서 두번째 녀석을 다운로드 받을거임. 얘가 첫 번째 보다 크거든.
-        # driver.find_elements_by_css_selector(".gUZ.pBj.U9O.kVc")[1].click()  # 두번째 인덱스를 클릭해야함
-        driver.find_element_by_css_selector(".PinBetterSave__DownArrowContainer.PinBetterSave__DownArrowContainer--lego"
-                                            ).click()
-        time.sleep(1)
-        tag_set = driver.find_elements_by_css_selector(".tBJ.dyH.iFc.yTZ.pBj.DrD.IZT.mWe.z-6")
-        title = ''.join(["#"+tag.text for tag in tag_set[1:4]])
-        print(title)
-        Pin(author_id=2, title=title, image_url=link).save()
+            driver.find_element_by_css_selector(".PinBetterSave__DownArrowContainer.PinBetterSave__DownArrowContainer--lego"
+                                                ).click()
+            time.sleep(1)
+            tag_set = driver.find_elements_by_css_selector(".tBJ.dyH.iFc.yTZ.pBj.DrD.IZT.mWe.z-6")
+            title = ''.join(["#"+tag.text+" " for tag in tag_set[1:4]])
+            print(title)
+            Pin(author_id=2, title=title, image_url=link).save()
+        except NoSuchElementException:  # 이미지가 아니라 gif 일 경우는 그냥 넘어감
+            pass
 
 
 if __name__ == '__main__':
+    st = time.time()
     login(driver=driver)
     print("---------Pin id 를 수집합니다.. ---------")
     time.sleep(0.2)
-    while len(pin_set) < 100:
+    while len(pin_set) < 400:
         get_pin_id_set(driver)
     print("---------수집 완료---------")
     print("---------포스팅 시작---------")
     post_pin_from_pin_set(driver, pin_set)
     print("---------포스팅 종료---------")
+    print("소요 시간 : {}초".format(time.time() - st))
     # print(len(pin_set))

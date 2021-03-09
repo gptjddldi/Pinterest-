@@ -60,7 +60,12 @@ export default function Pin(props) {
                                     </>
                                     }
                                 </div>
-                                <Tabs />
+                                <div className="text-bold">
+                                    <br/>
+
+                                    태그
+                                    <Tabs pin_tags={pinData.tag_set}/>
+                                </div>
                             </div>
                         </div>
                     </div>

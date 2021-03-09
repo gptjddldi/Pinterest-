@@ -15,7 +15,7 @@ export default function PinCard({pin}) {
             <div className="relative">
                 <div className="absolute px-3 mt-3 z-1 w-full invisible group-hover:visible">
                     {loggedUser.username !== pin.author ?
-                        <Board pin_id={pin.id}>Save</Board>
+                        <Board pin_id={pin.id} boards={loggedUser.boards}>저장</Board>
                     : <Delete pin_id={pin.id}/>
                     }
                 </div>

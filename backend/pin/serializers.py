@@ -20,7 +20,7 @@ class TagSetSerializer(serializers.ModelSerializer):
 class PinListSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     boards = BoardSerializerR(many=True, required=False)
-    tag_set = TagSetSerializer(many=True)
+    tag_set = TagSetSerializer(many=True, required=False)
     # image = serializers.ImageField(required=True)
     class Meta:
         model = Pin

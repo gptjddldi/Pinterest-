@@ -17,6 +17,7 @@ AZURE_ACCOUNT_KEY = get_secret("AZURE_ACCOUNT_KEY")
 #                   api_secret=get_secret("API_SECRET"))
 ALLOWED_HOSTS += ['gptjddl123.azurewebsites.net']
 
+
 # CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
 CORS_ALLOW_ALL_ORIGINS = True
 

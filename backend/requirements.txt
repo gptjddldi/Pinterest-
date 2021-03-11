@@ -12,7 +12,10 @@ psycopg2-binary==2.8.6
 PyJWT==1.7.1
 requests==2.25.1
 djangorestframework-jwt
-
+pandas
+konlpy
+sklearn
+django-pandas
 dj3-cloudinary-storage
 
 gunicorn

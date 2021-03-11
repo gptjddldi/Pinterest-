@@ -3,8 +3,11 @@ import re
 import time
 
 import pandas as pd
+from django_pandas.io import read_frame
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+
+from pin.models import Pin
 
 
 def tokenizer(raw, pos=["Noun","Alpha","Verb","Number"], stopword=[]):
@@ -62,7 +65,8 @@ def get_indices(metadata):
 
 def recommend_pin(pin):
     # title = write_data_csv(pin)
-    metadata = pd.read_csv('data_set.csv', engine='python', encoding='CP949')
+    # metadata = pd.read_csv('data_set.csv', engine='python', encoding='CP949')
+    metadata = read_frame(Pin.objects.all(), fieldnames=['id', 'title'])
     cosine_sim = get_cosine_sim(metadata)
     indices = get_indices(metadata)
     return get_recommendations(pin.id, cosine_sim, indices, metadata)

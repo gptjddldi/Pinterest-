@@ -9,7 +9,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from utils2 import write_data_csv, recommend_pin
+from utils2 import recommend_pin
 from . import serializers
 from .models import Pin
 # from .pagination import CustomLimitOffsetPagination

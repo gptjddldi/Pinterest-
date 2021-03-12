@@ -12,7 +12,7 @@ from tags.serializers import TagSerializer
 class TagViewSet(ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-
+    filterset_fields = ['users__username']
     @action(methods=['POST'], detail=True)
     def follow_tag(self, request, pk):
         target_tag = get_object_or_404(Tag, id=pk)

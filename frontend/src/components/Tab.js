@@ -1,6 +1,7 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import PrimaryButton from "./Button/PrimaryButton";
 import SecondaryButton from "./Button/SecondaryButton";
+import FollowTagButton from "./FollowButton/FollowTagButton";
 
 export default function Tabs(pin_tags){
     const [tags, setTags] = useState([])
@@ -16,9 +17,9 @@ export default function Tabs(pin_tags){
         return (
             <div>
                 <ul className="flex">
-                        {tags.map((tag, index) => (
-                            <SecondaryButton key={index} className="rounded-sm px-4 py-4 mx-2">#{tag.tag_name}</SecondaryButton>
-                        ))}
+                    {tags.map((tag, index) => (
+                        <FollowTagButton tag={tag} key={index}/>
+                    ))}
 
                 </ul>
             </div>
@@ -26,6 +27,6 @@ export default function Tabs(pin_tags){
     }
     else
         return(
-            <div>1234..</div>
+            <div>로딩즁..</div>
         )
 }

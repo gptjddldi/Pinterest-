@@ -2,11 +2,11 @@ import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import SecondaryButton from "./Button/SecondaryButton";
-import {axiosInstance} from "../utils/axios";
-import {update} from "../actions/userAction";
+import SecondaryButton from "../Button/SecondaryButton";
+import {axiosInstance} from "../../utils/axios";
+import {update} from "../../actions/userAction";
 
-export default function FollowButton({user}){
+export default function FollowUserButton({user}){
     let [isFollowing, setIsFollowing] = useState(false)
     const {loggedUser} = useSelector(state => ({
         loggedUser: state.userReducer.user,

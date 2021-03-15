@@ -10,6 +10,7 @@ function Board({pin_id, boards}) {
     let [selectedBoard, setSelectedBoard] = useState({})
     let [newBoard, setNewBoard] = useState('')
     let [isUsed, setIsUsed] = useState(false)
+    let[userInfo, setUserInfo] = useState()
     let [createBoardModalVisibility, setCreateBoardModalVisibility] = useState("hidden")
     const {loggedUser} = useSelector(state => ({
         loggedUser: state.userReducer.user,

@@ -8,11 +8,13 @@ import Masonry from "react-masonry-css";
 // react-masonry-css: pinterest 스타일 layout 느낌
 
 const PostList = ({filter, url}) => {
-
+    const {loggedUser} = useSelector(state => ({
+        loggedUser: state.userReducer.user
+    }))
     const [postList, setPostList] = useState([])
     const [nextCursor, setNextCursor] = useState('')
     const [prevCursor, setPrevCursor] = useState('')
-
+    const [userInfo, setUserInfo] = useState()
     const curCursor = useSelector(state => ({
         curCursor: state.userReducer.cursor
     }))
@@ -64,9 +66,22 @@ const PostList = ({filter, url}) => {
         }
 
     }
+    const [boards, setBoards] = useState()
+    useEffect(()=> {
+
+        axiosInstance(`boards/?author__username=${loggedUser.username}`).then((res) => setBoards(res.data))
+            .catch((e) => console.log(e));
+    }, [])
+    // const getUserInfo = async() => {
+    //     axiosInstance.get('rest-auth/user/').then((res)=>setUserInfo(res.data))
+    //         .catch((e)=>console.log(e.response))
+    // }
     useEffect(()=>{
         initFeed(curCursor.curCursor)
+        // getUserInfo()
     }, [])
+
+
 
     const fetchFeed = async(cursorTo) => {
         axiosInstance.get(`${cursorTo}`)
@@ -96,7 +111,7 @@ const PostList = ({filter, url}) => {
                 columnClassName="mx-2"
             >
                 {postList.map((pin, index) =>
-                    <PinCard className="my-10" pin={pin} key={index}/>
+                    <PinCard className="my-10" pin={pin} boards={boards} key={index}/>
                 )}
             </Masonry>
         )}

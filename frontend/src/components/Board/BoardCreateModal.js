@@ -1,15 +1,19 @@
 import React, {useState} from 'react'
 import Modal from "../Modal";
 import axios from "axios";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {axiosInstance} from "../../utils/axios";
+import {update} from "../../actions/userAction";
 
 export default function BoardCreateModal(props){
     let [boardTitle, setBoardTitle] = useState("")
+    const dispatch = useDispatch()
+    const onUpdate = (data) => dispatch(update(data))
     function createBoardSubmitHandler(e) {
-        // e.preventDefault()
-        axiosInstance.post('/boards/', {title:boardTitle})
+        e.preventDefault()
+        axiosInstance.post('/boards/', {title:boardTitle}).then((res)=>console.log(res))
             .catch((e)=>console.log(e.response))
+
     }
     return(
         <Modal className={props.className} onClickOutside={props.onClickOutside}>

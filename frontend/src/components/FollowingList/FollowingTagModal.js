@@ -1,9 +1,10 @@
 import React from 'react'
 import {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {axiosInstance} from "../../utils/axios";
 import Modal from "../Modal";
 import SecondaryButton from "../Button/SecondaryButton";
+import {update} from "../../actions/userAction";
 
 
 const FollowingTagModal = (props) => {
@@ -11,6 +12,10 @@ const FollowingTagModal = (props) => {
     const {loggedUser} = useSelector(state => ({
         loggedUser: state.userReducer.user
     }))
+
+    const dispatch = useDispatch()
+    const onUpdate = (data) => dispatch(update(data));
+
     function unfollow(tag){
         axiosInstance.post(`tags/${tag.id}/unfollow_tag/`)
             .catch((e)=>console.log(e.response))
@@ -27,7 +32,7 @@ const FollowingTagModal = (props) => {
                 {tagList.map((tag, index) => (
                     <div className={"flex justify-between my-2"}>
                         <div className={"font-bold"}>{tag.tag_name}</div>
-                        <SecondaryButton onClick={unfollow(tag)} className={"rounded-sm"}>언팔로우</SecondaryButton>
+                        <SecondaryButton onClick={(e) => unfollow(tag)} className={"rounded-sm"}>언팔로우</SecondaryButton>
                     </div>
                 ))}
 

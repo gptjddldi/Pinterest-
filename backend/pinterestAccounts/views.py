@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -40,19 +41,19 @@ class AccountCurrentView(ListAPIView):
         return queryset
 
 
-class SuggestionList(ListAPIView):
-    '''
-    유저 추천 API
-
-    ---
-    현재 User 가 following 하지 않는 User List 를 제공한다.
-    '''
-    queryset = Account.objects.all()
-    serializer_class = serializers.SuggestionUserSerializer
-
-    def get_queryset(self):
-        qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.following_user.all())
-        return qs
+# class SuggestionList(ListAPIView):
+#     '''
+#     유저 추천 API
+#
+#     ---
+#     현재 User 가 following 하지 않는 User List 를 제공한다.
+#     '''
+#     queryset = Account.objects.all()
+#     serializer_class = serializers.SuggestionUserSerializer
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset().exclude(pk=self.request.user.id).exclude(pk__in=self.request.user.following_user.all())
+#         return qs
 
 
 @api_view(['GET', 'PUT'])
@@ -126,3 +127,19 @@ def login_user(request):
     if user is not None:
         login(request, user)
     return Response(status.HTTP_200_OK)
+
+
+class FollowingList(ListAPIView):
+    '''
+    Following User View
+
+    ---
+    현재 User 가 following 하는 User List 를 제공한다.
+    '''
+    queryset = Account.objects.all()
+    serializer_class = serializers.FollowingUserSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        print(self.request.user)
+        qs = super().get_queryset().filter(pk__in=self.request.user.following_user.all())
+        return qs

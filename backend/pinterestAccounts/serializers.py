@@ -70,7 +70,7 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
 #             raise serializers.ValidationError(msg)
 
 
-class SuggestionUserSerializer(serializers.ModelSerializer):
+class FollowingUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['username', 'avatar']

@@ -3,19 +3,44 @@ import {useDispatch} from "react-redux";
 import Axios from "axios";
 import {Link, useHistory} from "react-router-dom";
 import {axiosInstance} from "../../utils/axios";
+import {notification} from "antd";
 
 
 export default function Signup(props) {
     const history = useHistory()
+    const [errors, setErrors] = useState()
+
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("")
 
-    const Signup = (e) => {
+    const Signup = async(e) => {
         e.preventDefault()
         const data = {email, username, password1, password2}
-        axiosInstance.post('rest-auth/registration/', data).then(props.toLoginClick).catch((e)=>console.log(e))
+        try{
+            const res = await axiosInstance.post('rest-auth/registration/', data)
+            console.log(res.data)
+            notification.open({
+                message: "회원가입 되었습니다.",
+                description: "로그인해주세요.",
+            })
+            props.toLoginClick()
+        }
+        catch (error) {
+            console.log(error.response)
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: "회원가입 실패",
+                description: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        console.log(acc)
+                        return acc
+                    }
+                ),
+            })
+        }
     }
     return(
         <div className="w-full flex flex-wrap bg-white h-screen">
@@ -71,7 +96,7 @@ export default function Signup(props) {
                         <input type="submit" value="회원가입" className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"/>
                     </form>
                     <div className="text-center pt-12 pb-12">
-                        <p className="hover:text-red-500" onClick={()=> props.toLoginClick()}>이미 Pinterest의 계정이 있으신가요?</p>
+                        <p className="hover:text-red-500 cursor-pointer" onClick={()=> props.toLoginClick()}>이미 Pinterest의 계정이 있으신가요?</p>
                     </div>
                 </div>
 

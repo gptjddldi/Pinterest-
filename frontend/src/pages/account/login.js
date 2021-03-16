@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux";
 import {login} from "../../actions/userAction";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {axiosInstance} from "../../utils/axios";
+import {notification} from "antd";
 
 const Login = (props) => {
     const history = useHistory()
@@ -16,13 +17,34 @@ const Login = (props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const Login = (e) => {
+    const Login = async(e) => {
         e.preventDefault()
         const data = {email, password}
-        axiosInstance.post('rest-auth/login/', data).then((res)=> {
+        try{
+            const res = await axiosInstance.post('rest-auth/login/', data)
             onLogin(res.data);
             history.push(loginRedirectUrl)
-        }).catch((e) => console.log(e))
+            window.location.reload()
+
+            notification.open({
+                message:"로그인 성공."
+            })
+        }
+        catch(error) {
+            console.log(error.response)
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: "로그인 실패",
+                description: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        console.log(acc)
+                        return acc
+                    }
+                ),
+            })
+
+        }
     }
     return(
         <div className="bg-white h-screen w-full flex flex-wrap">
@@ -58,7 +80,7 @@ const Login = (props) => {
                         <input type="submit" value="로그인" className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"/>
                     </form>
                     <div className="text-center pt-12 pb-12">
-                        <p className="hover:text-red-500" onClick={()=> props.toSignupClick()}>아직 Pinterest 를 사용하고 있지 않으신가요? 가입하기</p>
+                        <p className="hover:text-red-500 cursor-pointer" onClick={()=> props.toSignupClick()}>아직 Pinterest 를 사용하고 있지 않으신가요? 가입하기</p>
                     </div>
                 </div>
 

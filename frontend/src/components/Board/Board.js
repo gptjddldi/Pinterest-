@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import PrimaryButton from "../Button/PrimaryButton";
 import {axiosInstance} from "../../utils/axios";
 import BoardCreateModal from "./BoardCreateModal";
+import {notification} from "antd";
 
 function Board({pin_id, boards}) {
     let [userBoard, setUserBoard] = useState([])
@@ -32,11 +33,19 @@ function Board({pin_id, boards}) {
         }, [userBoard, pin_id])
 
 
-    function addPin() {
-        axiosInstance.post(`boards/${selectedBoard.id}/add_pin`, {id:pin_id})
-            .then((res)=>console.log(res.data['success']))
-            .catch((e)=>console.log(e))
-
+    async function addPin() {
+        try {
+            const res = await axiosInstance.post(`boards/${selectedBoard.id}/add_pin`, {id: pin_id})
+            console.log(res)
+            notification.open({
+                message: res.data['success'],
+            })
+        }
+        catch(e){
+            notification.open({
+                message: e.response.data['pin']
+            })
+        }
     }
 
     function selectionHandler(board){

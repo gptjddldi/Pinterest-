@@ -4,6 +4,7 @@ import {update} from "../../../actions/userAction";
 import Layout from "../../../components/Layout";
 import ProfilePicture from "../../../components/ProfilePicture";
 import {axiosInstance} from "../../../utils/axios";
+import {notification} from "antd";
 
 export default function ProfileEdit(props) {
 
@@ -17,20 +18,34 @@ export default function ProfileEdit(props) {
     const dispatch = useDispatch()
     const onUpdate = (data) => dispatch(update(data));
 
-    const onEdit = (e) => {
+    const onEdit = async(e) => {
         e.preventDefault()
         const fd = new FormData()
         fd.append("username", username)
-        if(avatar === undefined)
+        if (avatar === undefined)
             ;
         else
             fd.append("avatar", avatar)
         fd.append("email", user.email)
-        axiosInstance.patch(`rest-auth/user/`, fd).then((res  ) => {
+        try {
+            const res = await axiosInstance.patch(`rest-auth/user/`, fd)
             const data = res.data;
             onUpdate(data)
-        })
-            .catch((e)=>console.log(e.response))
+            notification.open({
+                message: "변경되었습니다."
+            })
+        } catch (error) {
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                description: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        console.log(acc)
+                        return acc
+                    }
+                ),
+            })
+        }
     }
     const handleChange = (e) => {
         setAvatar(e.target.files[0])

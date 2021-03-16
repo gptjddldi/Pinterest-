@@ -138,7 +138,6 @@ class FollowingList(ListAPIView):
     '''
     queryset = Account.objects.all()
     serializer_class = serializers.FollowingUserSerializer
-    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         print(self.request.user)
         qs = super().get_queryset().filter(pk__in=self.request.user.following_user.all())

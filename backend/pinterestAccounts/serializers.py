@@ -1,6 +1,9 @@
+from allauth.utils import email_address_exists
 from django.contrib.auth import password_validation
+from rest_auth.registration.app_settings import RegisterSerializer
 from rest_framework_jwt.compat import PasswordField
 from rest_framework_jwt.settings import api_settings
+from allauth.account import app_settings as allauth_settings
 
 from boards.models import Board
 from boards.serializers import BoardSerializer
@@ -26,6 +29,29 @@ class AccountSignupSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+# class SignupSerializer(RegisterSerializer):
+#
+#     def validate_username(self, username):
+#         username = get_adapter().clean_username(username)
+#         return username
+#
+#     def validate_email(self, email):
+#         email = get_adapter().clean_email(email)
+#         if allauth_settings.UNIQUE_EMAIL:
+#             if email and email_address_exists(email):
+#                 raise serializers.ValidationError(
+#                     "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요.")
+#         return email
+#
+#     def validate_password1(self, password):
+#         return get_adapter().clean_password(password)
+#
+#     def validate(self, data):
+#         if data['password1'] != data['password2']:
+#             raise serializers.ValidationError("비밀번호가 서로 다릅니다. 다시 입력해주세요.")
+#         return data
 
 
 class CurrentAccountSerializer(serializers.ModelSerializer):

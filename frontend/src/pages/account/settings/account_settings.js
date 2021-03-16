@@ -5,6 +5,7 @@ import axios from "axios";
 import Layout from "../../../components/Layout";
 import ProfilePicture from "../../../components/ProfilePicture";
 import {axiosInstance} from "../../../utils/axios";
+import {notification} from "antd";
 
 export default function AccountSetting(props) {
     const init = {
@@ -18,9 +19,29 @@ export default function AccountSetting(props) {
     let [password, setPassword] = useState(init)
     const dispatch = useDispatch()
 
-    const onEdit = (e) => {
+    const onEdit = async(e) => {
         e.preventDefault()
-        axiosInstance.post('rest-auth/password/change/', password).catch((e)=>console.log(e.response))
+        try {
+            const res = await axiosInstance.post('rest-auth/password/change/', password)
+            console.log(res)
+            notification.open({
+                message: "변경되었습니다."
+            })
+            window.location.reload()
+        }
+        catch (error){
+            console.log(error.response)
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                description: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        console.log(acc)
+                        return acc
+                    }
+                ),
+            })
+        }
     }
 
     const updatePassword = (e) => {

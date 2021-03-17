@@ -1,8 +1,7 @@
 import base64
-from io import BytesIO, StringIO
-from urllib import request
-
+from io import BytesIO
 import requests
+
 from PIL import Image
 
 VALID_IMAGE_EXTENSION = [
@@ -19,13 +18,10 @@ def valid_url_extension(url, extension_list=VALID_IMAGE_EXTENSION):
 
 def retrieve_image(url):
     response = requests.get(url)
-    # temp_file = Image.open(BytesIO(response.content))
     temp_file = BytesIO()
     temp_file.write(response.content)
     temp_file.seek(0)
-    # img = temp_file.open()
     return temp_file
-    # return response.content
 
 
 def decode_design_image(data):

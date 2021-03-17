@@ -1,9 +1,4 @@
-from rest_framework.pagination import LimitOffsetPagination, CursorPagination
-
-
-class CustomLimitOffsetPagination(LimitOffsetPagination):
-    page_size = 30
-    ordering = '-created_at'
+from rest_framework.pagination import CursorPagination
 
 
 class CustomCursorPagination(CursorPagination):

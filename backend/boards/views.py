@@ -52,7 +52,7 @@ def add_pin(request, pk):
         board = get_object_or_404(Board, pk=pk)
         for pin in board.pin.all():
             if pin.id == request.data['id']:
-                msg = {"pin": "{1}번 핀은 이미 {1} 보드에 존재합니다.".format(request.data['id'], board.title)}
+                msg = {"pin": "{0}번 핀은 이미 {1} 보드에 존재합니다.".format(request.data['id'], board.title)}
                 raise ValidationError(msg)
 
         board.pin.add(Pin.objects.get(pk=request.data['id']))

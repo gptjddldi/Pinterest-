@@ -15,18 +15,10 @@ class Account(AbstractUser):
     following_user = models.ManyToManyField('self', blank=True, related_name="following_users", symmetrical=False)
     following_tag = models.ManyToManyField(Tag, blank=True, related_name="users", symmetrical=False)
     follower = models.ManyToManyField('self', blank=True, related_name="followers", symmetrical=False)
-    first_name = models.CharField(max_length=10, verbose_name="성", blank=True)
-    last_name = models.CharField(max_length=20, verbose_name="이름", blank=True)
-    username = models.CharField(max_length=20)
+    username = models.CharField(max_length=20, unique=True)
     email = models.EmailField(unique=True, verbose_name="이메일")
-    bio = models.TextField(verbose_name="프로필 정보", blank=True)
-    url = models.TextField(verbose_name="웹사이트 URL", blank=True)
-    location = models.TextField(verbose_name="위치", blank=True)
 # follow : User many to many field
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-
-    def __str__(self):
-        return self.username

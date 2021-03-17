@@ -60,7 +60,8 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['id', 'avatar', 'username', 'email', 'following_user', 'following_tag', 'follower', 'boards']
-
+        # extra_kwargs = {'url': {'lookup_field': 'username'}}
+        lookup_field = 'username'
 
 # class AccountLoginSerializer(serializers.ModelSerializer):
 #     class Meta:

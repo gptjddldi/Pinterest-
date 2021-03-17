@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.validators import UniqueValidator
 
 from boards.models import Board
 from pin.models import Pin
-from pinterestAccounts.models import Account
 
 
 class PinSerializer(serializers.ModelSerializer):
@@ -26,8 +24,6 @@ class BoardSerializer(serializers.ModelSerializer):
         '''
         생성한 보드가 현재 로그인한 유저가 가진 보드의 이름과 중복되면 에러 발생
 
-        :param attrs:
-        :return:
         '''
         author = self.context['request'].user
         title = attrs.get('title')

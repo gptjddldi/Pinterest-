@@ -22,7 +22,7 @@ function Following(props) {
             <FollowingTagModal className={followingTagModalVisibility} onClickOutside={() => setFollowingTagModalVisibility("hidden")}/>
             <FollowingUserModal className={followingUserModalVisibility} onClickOutside={() => setFollowingUserModalVisibility("hidden")}/>
 
-            <PostList url={'following_pin_list'}/>
+            <PostList url={'following_pin'}/>
         </Layout>
     )
 } export default Following

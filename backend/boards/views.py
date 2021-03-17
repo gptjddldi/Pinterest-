@@ -27,28 +27,17 @@ class BoardViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    # def get_queryset(self):
-    #     qs = super().get_queryset().filter(author=self.request.user)
-    #     return qs
+    @action(methods=['POST'], detail=True)
+    def add_pin(self, request, pk):
+        '''
+        Board Field 에 Pin 을 추가하는 API
 
-    # @action(methods=['GET'], detail=False)
-    # def user_board_list(self, request, slug):
-    #     qs = self.get_queryset()
-    #     qs.filter()
-
-
-@api_view(['POST'])
-def add_pin(request, pk):
-    '''
-    Board Field 에 Pin 을 추가하는 API
-
-    ---
-    /board/[board_id]/pin
-    [board_id] 에 Pin 을 추가할 수 있도록 한다.
-    Pin 의 id 는 request.data['id'] 로 받는당.
-    하나의 보드에 중복된 핀이 올 경우 ValidationError
-    '''
-    if request.method == 'POST':
+        ---
+        /board/[board_id]/pin
+        [board_id] 에 Pin 을 추가할 수 있도록 한다.
+        Pin 의 id 는 request.data['id'] 로 받는당.
+        하나의 보드에 중복된 핀이 올 경우 ValidationError
+        '''
         board = get_object_or_404(Board, pk=pk)
         for pin in board.pin.all():
             if pin.id == request.data['id']:
@@ -56,5 +45,5 @@ def add_pin(request, pk):
                 raise ValidationError(msg)
 
         board.pin.add(Pin.objects.get(pk=request.data['id']))
-    return Response({"success": "{0}번 핀이 '{1}' 보드에 추가되었습니다.".format(request.data['id'], board.title)},
-                    status.HTTP_201_CREATED)
+        return Response({"success": "{0}번 핀이 '{1}' 보드에 추가되었습니다.".format(request.data['id'], board.title)},
+                        status.HTTP_201_CREATED)

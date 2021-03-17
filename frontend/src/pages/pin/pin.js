@@ -71,7 +71,7 @@ export default function Pin(props) {
                     </div>
                 </div>
                 <h2 className="font-bold text-center mt-10 text-xl">비슷한 사진들이에요.</h2>
-                <PostList url={`${pinNum}/sim_pin_list`}/>
+                <PostList url={`${pinNum}/similar_pin`}/>
             </div>
         </Layout>
     )

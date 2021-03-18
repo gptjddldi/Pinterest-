@@ -86,7 +86,9 @@ target/
 *.pyc
 __pycache__/
 local_settings.py
-
+backend/static/
+backend/secrets.json
 .env
 db.sqlite3
 media/
+static/

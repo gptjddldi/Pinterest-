@@ -58,15 +58,11 @@ INSTALLED_APPS = [
     'pin',
     'tags',
     'boards',
-
-    # Providers
-    'allauth.socialaccount.providers.google'
 ]
 
 AUTH_USER_MODEL = 'pinterestAccounts.Account'
 
 MIDDLEWARE = [
-    # 'backend.middleware.AuthenticationMiddlewareJWT',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -107,7 +103,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pinterest',
         'USER': 'park',
-        'PASSWORD': 'a4848684',
+        'PASSWORD': '12341234',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -138,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -165,7 +161,6 @@ REST_FRAMEWORK = {  # added
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ]
 }
@@ -175,7 +170,6 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 OLD_PASSWORD_FIELD_ENABLED = True
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/rest-auth/registration/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/rest-auth/registration/?verification=1'

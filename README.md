@@ -1,3 +1,4 @@
+
 # Django React Pinterest Clone Page
 
 #### Django 와 React 를 이용해 만든 Pinterest Clone Page
@@ -167,3 +168,4 @@ class Pin(models.Model)
 >   - 오류를 못고치겠음 → 차선책으로 무한스크롤 없이 만들자.
 > - Pin Recommend Algorithm 이 배포 환경에서 오래걸려서 계속 Time Out 이 나옴 -> gunicorn 의 timeout 설정 "--timeout", "120"
 > - csv 파일로 읽고 쓰기를 하면 유지보수의 어려움이 예상됨 -> django-pandas 패키지 설치 후, 쿼리로 알고리즘을 처리하기로 함
+

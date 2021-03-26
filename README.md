@@ -152,18 +152,41 @@ class Pin(models.Model)
 ## issue
 
 > - No 'Access-Control-Allow-Origin' header is present on the requested resource. 
+    >    - 현재 사이트에서 Access Control 하기 위한 header 가 없음 -> backend.settings.prod 파일에 배포한 react 사이트 주소를 CORS WHITE 에 추가해준다.
+
 > - azure.common.AzureHttpError: Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature. ErrorCode: AuthenticationFailed
+    >    - azure 서버의 시간과 Django 서버의 시간이 일치하지 않아 발생한 문제
+    
 > - 로그인을 한 뒤 다른 곳에서 request.user 를 호출하면 anonymoususer 가 나옴;;
-> - 미디어 파일을 로컬이에서 선택해서가 아니라 url([https://i.pinimg.com/236x/76/d0/ce/76d0ced78f2bf72370d753afaead0d63.jpg](https://i.pinimg.com/236x/76/d0/ce/76d0ced78f2bf72370d753afaead0d63.jpg)) 을 통해 업로드하는 방법 
->   - InMemoryUploadedFile 로 시도 → 로컬에선 되지만 cloudinary 로 업로드할 때 'Empty File' 에러 
->   - ContentFile 로 시도 →  url 이미지가 cloudinary 에 업로드 되는데, 무한으로 업로드됨
-> - 많은 쿼리를 이용해 최적화를 경험하고 싶음 → 더 많은 용량이 필요함. 
->   - cloudinary 는 이용하기 쉽지만 transaction 도 카운트되어 적절하지 않다고 생각.(비쌈) azure storage 로 변경하기로 함
+    >    - 모든 user 을 필요로 하는 요청에 jwt 인증 헤더를 같이 보내줘야 함.
+
+> - 미디어 파일을 로컬에서 선택해서가 아니라 [url](https://i.pinimg.com/236x/76/d0/ce/76d0ced78f2bf72370d753afaead0d63.jpg) 을 통해 업로드하는 방법 
+    >    - 기본 : url 속의 이미지를 메모리에 저장한 뒤 메모리에서 Django file 로 변환 후 업로드한다.
+    >    - InMemoryUploadedFile 로 시도 → 로컬에선 되지만 cloudinary 로 업로드할 때 'Empty File' 에러 
+    >    - ContentFile 로 시도 →  url 이미지가 cloudinary 에 업로드 되는데, 멈추지 않고 계속 업로드됨
+    >    - fileField 의 save 메서드 사용 -> save 옵션을 false 로 수정해서 한번만 업로드 되도록 수정
+
+> - 많은 쿼리를 이용해 최적화를 경험하고 싶음 → 더 많은 사진을 담기 위한 큰 용량이 필요함. 
+    >   - cloudinary 는 이용하기 쉽지만 transaction 도 카운트되어 적절하지 않다고 생각.(요청이 많아질 수 록 비싸짐) azure storage 로 변경하기로 함
+
 > - infinite scroll 은 구현했지만 스크롤을 해서 쌓이는 데이터가 많아질 수록 로딩이 길어짐 → 현재 보고있는 데이터만 저장하고 이전 데이터는 쓰지 않도록 해야 함
->   - [https://medium.com/naver-fe-platform/무한-dom-렌더링-최적화-경험기-237e6e9088e8](https://medium.com/naver-fe-platform/%EB%AC%B4%ED%95%9C-dom-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%B5%9C%EC%A0%81%ED%99%94-%EA%B2%BD%ED%97%98%EA%B8%B0-237e6e9088e8)
->   - [https://coffeeandcakeandnewjeong.tistory.com/52](https://coffeeandcakeandnewjeong.tistory.com/52)
+    >   - [참고1](https://medium.com/naver-fe-platform/%EB%AC%B4%ED%95%9C-dom-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%B5%9C%EC%A0%81%ED%99%94-%EA%B2%BD%ED%97%98%EA%B8%B0-237e6e9088e8)
+    >   - [참고2](https://coffeeandcakeandnewjeong.tistory.com/52)
 > - 무한스크롤 관련 에러가 계속 나오는데 react-virtualize 를 완전히 이해하고 써야 할 것 같음
->   - [https://ko.reactjs.org/docs/optimizing-performance.html#virtualize-long-lists](https://ko.reactjs.org/docs/optimizing-performance.html#virtualize-long-lists)
->   - 오류를 못고치겠음 → 차선책으로 무한스크롤 없이 만들자.
-> - Pin Recommend Algorithm 이 배포 환경에서 오래걸려서 계속 Time Out 이 나옴 -> gunicorn 의 timeout 설정 "--timeout", "120"
-> - csv 파일로 읽고 쓰기를 하면 유지보수의 어려움이 예상됨 -> django-pandas 패키지 설치 후, 쿼리로 알고리즘을 처리하기로 함
+    >   - [참고1](https://ko.reactjs.org/docs/optimizing-performance.html#virtualize-long-lists)
+    >   - 계속 나오는 오류들을 못고치겠음 → 차선책으로 무한스크롤 없이 만들고 Page 를 사용하기로 함.
+
+> - Pin Recommend Algorithm 이 배포 환경에서 처음 실행할 때 오래걸려서 계속 Time Out 이 나옴 
+    >   - gunicorn 의 timeout 설정 "--timeout", "120"
+    >   - 해당 알고리즘 자체를 개선하는 방법은 없을까?
+
+> - Pin Recommnd Alogrithm 할 때 CSV 파일에서 게시글 정보를 가져오는데, 해당 방식은 인코딩 문제도 계속 발생하고, 실시간 처리에 적합하지 않음
+    >   - django-pandas 패키지 설치 후, 쿼리로 처리하기로 함 
+
+> - Pin Recommend List 에 해당하는 Id 들을 리턴하고 이걸 쿼리셋에 저장할 때, 순서대로 저장하고 싶음.
+> - 예를들어 list = [15,87,2,19] 가 왔을 때 해당 순서로 저장하고 싶음. 기존 방식으로 하면 [2,15,19,87] 순서로 저장되어 추천 순이 아니게 됨.
+    >   - → extra field 사용 또는 Case, When 을 사용하여 Custom sort 를 구현할 수 있었음.
+
+> - Pin 의 Tag Field 는 저장될 때 Title 에서 태그를 추출해서 해당 태그들이 저장되는 방식임. 근데 태그를 추출하고, Tag 필드가 저장되기 전에 save() 가 발생하여
+Tag 필드가 저장되지 않음
+    >   - django signal post_save 를 사용하여 save() 이후에 Tag 추출과 저장 모두 하도록 했음

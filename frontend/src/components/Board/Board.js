@@ -10,33 +10,19 @@ function Board({pin_id, boards}) {
     let [dropdownVisibility, setDropdownVisibility] = useState("hidden")
     let [selectedBoard, setSelectedBoard] = useState({})
     let [newBoard, setNewBoard] = useState('')
-    let [isUsed, setIsUsed] = useState(false)
-    let[userInfo, setUserInfo] = useState()
     let [createBoardModalVisibility, setCreateBoardModalVisibility] = useState("hidden")
-    const {loggedUser} = useSelector(state => ({
-        loggedUser: state.userReducer.user,
-    }))
+
     useEffect( () => {
-        // axiosInstance.get(`boards/?author__username=${loggedUser.username}`)
-        console.log(boards)
         setUserBoard(boards)
-        // if(userBoard.length === undefined) {
-        //     axiosInstance.get(`boards/?author__username=${loggedUser.username}`)
-        //         .then((res) => {
-        //             setUserBoard(res.data);
-        //         })
-        //         .catch((e) => console.log(e))
-        // }
         if (userBoard && userBoard.length > 0) {
             selectionHandler(userBoard[0])
         }
-        }, [userBoard, pin_id])
+        }, [boards, userBoard])
 
 
     async function addPin() {
         try {
-            const res = await axiosInstance.post(`boards/${selectedBoard.id}/add_pin`, {id: pin_id})
-            console.log(res)
+            const res = await axiosInstance.post(`boards/${selectedBoard.id}/add_pin/`, {id: pin_id})
             notification.open({
                 message: res.data['success'],
             })
@@ -69,11 +55,6 @@ function Board({pin_id, boards}) {
                             {board.title}
                         </div>
                     ))}
-                    {/*<input type="text" placeholder="보드 만들기" value={newBoard} onChange={(e) => {*/}
-                    {/*    setNewBoard(e.target.value);*/}
-                    {/*    setSelectedBoard({})*/}
-                    {/*}}/>*/}
-
                 </div>
             </div>
         )

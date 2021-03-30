@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from boards import views
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register("", views.BoardViewSet)
 
 urlpatterns = [

@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from tags import views
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register("", views.TagViewSet)
 
 urlpatterns = [

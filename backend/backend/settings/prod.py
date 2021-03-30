@@ -6,7 +6,7 @@ DEFAULT_FILE_STORAGE = "backend.storages.MediaAzureStorage"
 AZURE_ACCOUNT_NAME = get_secret("AZURE_ACCOUNT_NAME")
 AZURE_ACCOUNT_KEY = get_secret("AZURE_ACCOUNT_KEY")
 
-ALLOWED_HOSTS += ['gptjddl123.azurewebsites.net']
+ALLOWED_HOSTS += ['gptjddl123.azurewebsites.net', 'django-lb2u36dbfzz6i.azurewebsites.net']
 
 CORS_ALLOW_ALL_ORIGINS = True
 

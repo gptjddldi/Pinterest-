@@ -5,6 +5,7 @@ import axios from "axios";
 import SecondaryButton from "../Button/SecondaryButton";
 import {axiosInstance} from "../../utils/axios";
 import {update} from "../../actions/userAction";
+import {notification} from "antd";
 
 export default function FollowUserButton({user}){
     let [isFollowing, setIsFollowing] = useState(false)
@@ -15,27 +16,71 @@ export default function FollowUserButton({user}){
     const onUpdate = (data) => dispatch(update(data));
 
     useEffect(() => {
-        if(loggedUser.following_user.indexOf(user.id) !== -1){
-            setIsFollowing(true)
-        } else setIsFollowing(false)
+        axiosInstance.get('pinterestAccounts/following-list/').then((res) => {
+            for(let idx in res.data)
+                if(res.data[idx].username === user.username){
+                    setIsFollowing(true)
+                    break;
+                }
+        })
     }, [user,loggedUser, isFollowing])
 
-    function follow(){
-        axiosInstance.post('pinterestAccounts/follow/', {'username': user.username})
-            .then(()=> {
-                setIsFollowing(true)
-                axiosInstance.get('rest-auth/user/').then((res)=>onUpdate(res.data)).catch((e)=>console.log(e.response))
+    const follow = async() => {
+        try{
+            const res = await axiosInstance.post('pinterestAccounts/follow/', {'username': user.username})
+            setIsFollowing(true)
+            notification.open({
+                message: `${user.username}님을 팔로잉합니다.`
             })
-            .catch((e)=>console.log(e.response))
-    }
-    function unfollow(){
-        axiosInstance.post('pinterestAccounts/unfollow/', {'username': user.username})
-            .then(()=> {
-                setIsFollowing(false)
-                axiosInstance.get('rest-auth/user/').then((res)=>onUpdate(res.data)).catch((e)=>console.log(e.response))
+        }
+        catch(error){
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        return acc
+                    }
+                ),
             })
-            .catch((e)=>console.log(e))
+        }
     }
+    const unfollow = async() => {
+        try{
+            const res = await axiosInstance.post('pinterestAccounts/unfollow/', {'username': user.username})
+            setIsFollowing(true)
+            notification.open({
+                message: `${user.username}님을 팔로우 취소합니다.`
+            })
+        }
+        catch(error){
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        return acc
+                    }
+                ),
+            })
+        }
+    }
+    // function follow(){
+    //     axiosInstance.post('pinterestAccounts/follow/', {'username': user.username})
+    //         .then(()=> {
+    //             setIsFollowing(true)
+    //             axiosInstance.get('rest-auth/user/').then((res)=>onUpdate(res.data)).catch((e)=>console.log(e.response))
+    //         })
+    //         .catch((e)=>console.log(e.response))
+    // }
+    // function unfollow(){
+    //     axiosInstance.post('pinterestAccounts/unfollow/', {'username': user.username})
+    //         .then(()=> {
+    //             setIsFollowing(false)
+    //             axiosInstance.get('rest-auth/user/').then((res)=>onUpdate(res.data)).catch((e)=>console.log(e.response))
+    //         })
+    //         .catch((e)=>console.log(e))
+    // }
 
     if(isFollowing){
         return <SecondaryButton onClick={unfollow} className="px-4 py-2 rounded-3xl ml-auto ">팔로잉중</SecondaryButton>

@@ -23,9 +23,9 @@ function Profile(props) {
             setUserData(res.data)
         }).catch((e) => console.log(e))
 
-        axiosInstance(`boards/?author__username=${username}`).then((res) => setBoards(res.data))
+        axiosInstance(`boards?author__username=${username}`).then((res) => setBoards(res.data))
             .catch((e) => console.log(e));
-    },[] )
+    },[username] )
 
     function AddWidget(props) {
         let [createBoardModalVisibility, setCreateBoardModalVisibility] = useState("hidden")

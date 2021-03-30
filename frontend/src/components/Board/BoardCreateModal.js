@@ -8,7 +8,7 @@ export default function BoardCreateModal(props){
     const createBoardSubmitHandler = async(e) => {
         e.preventDefault()
         try{
-            const res = await axiosInstance.post('/boards', {title:boardTitle})
+            const res = await axiosInstance.post('boards/', {title:boardTitle})
             notification.open({
                 message: "생성되었습니다."
             })

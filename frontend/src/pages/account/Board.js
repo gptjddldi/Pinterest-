@@ -1,10 +1,8 @@
 import React from 'react'
-import PrimaryButton from "../../components/Button/PrimaryButton";
 import PostList from "../../components/PostList";
 import Layout from "../../components/Layout";
 
 const Board = (props) => {
-    const userName = props.match.params.username
     const boardName = props.match.params.boardname;
     return (
         <Layout props={props}>

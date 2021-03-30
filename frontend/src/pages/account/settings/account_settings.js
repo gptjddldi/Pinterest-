@@ -1,9 +1,5 @@
 import React, {useState} from 'react'
-import {useDispatch, useSelector} from "react-redux";
-import {update} from "../../../actions/userAction";
-import axios from "axios";
 import Layout from "../../../components/Layout";
-import ProfilePicture from "../../../components/ProfilePicture";
 import {axiosInstance} from "../../../utils/axios";
 import {notification} from "antd";
 
@@ -13,11 +9,7 @@ export default function AccountSetting(props) {
         new_password1: '',
         new_password2: '',
     }
-    const {user} = useSelector(state => ({
-        user: state.userReducer.user,
-    }))
     let [password, setPassword] = useState(init)
-    const dispatch = useDispatch()
 
     const onEdit = async(e) => {
         e.preventDefault()

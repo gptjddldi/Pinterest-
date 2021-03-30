@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from "react-router-dom";
 
 function getBoardDisplayImage(board){
     if(board.pin.length >= 1)

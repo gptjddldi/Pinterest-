@@ -1,5 +1,4 @@
 import React from 'react'
-import PrimaryButton from "./Button/PrimaryButton";
 import SecondaryButton from "./Button/SecondaryButton";
 import {axiosInstance} from "../utils/axios";
 

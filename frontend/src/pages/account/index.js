@@ -2,7 +2,6 @@ import React from 'react'
 import {Route} from "react-router-dom";
 import Login from "./login";
 import Signup from "./signup";
-import Profile from "../profile";
 
 export default function AccountRoutes ({match}) {
     return(

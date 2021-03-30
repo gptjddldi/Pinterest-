@@ -37,17 +37,8 @@ export default function Pin(props) {
                                 <img className="" src={pinData.image}/>
                         </div>
                         <div className="p-5 pl-10 ">
-                            {/*<div className="flex items-center justify-between">*/}
-
-                            {/*    { pinSaved ? (*/}
-                            {/*        <div className="rounded-xl bg-gray-300 px-4 py-2">Saved to <b>{boardTarget.name}</b></div>*/}
-                            {/*    ) : (*/}
-                            {/*        <BoardSelector pin={pinData} onSave={onSave}/>*/}
-                            {/*    )}*/}
-                            {/*</div>*/}
                             <div className="pr-5">
                                 <h1 className="text-4xl font-bold">{pinData.title}</h1>
-                                {/*<p>{pinData.description}</p>*/}
                                 <div className="flex justify-between my-2">
                                     { pinData.author &&
                                     <>

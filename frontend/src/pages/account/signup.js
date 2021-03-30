@@ -1,15 +1,10 @@
 import React, {useState} from 'react'
-import {useDispatch} from "react-redux";
-import Axios from "axios";
 import {Link, useHistory} from "react-router-dom";
 import {axiosInstance} from "../../utils/axios";
 import {notification} from "antd";
 
 
 export default function Signup(props) {
-    const history = useHistory()
-    const [errors, setErrors] = useState()
-
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password1, setPassword1] = useState("")

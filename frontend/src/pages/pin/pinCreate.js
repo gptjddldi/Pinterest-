@@ -2,6 +2,7 @@ import {useHistory} from "react-router-dom";
 import Layout from "../../components/Layout";
 import {useRef, useState} from "react";
 import {axiosInstance} from "../../utils/axios";
+import {notification} from "antd";
 
 export default function PinCreate(props){
 
@@ -19,8 +20,24 @@ export default function PinCreate(props){
             formData.append('image', image)
         else if(imageURL)
             formData.append('image_url', imageURL)
-        axiosInstance.post('/pins/', formData).then((res)=>history.push(`pin/${res.data.id}`))
-            .catch((e)=>console.log(e.response))
+        try{
+            const res = await axiosInstance.post('pins/', formData)
+            history.push(`pin/${res.data.id}`)
+            notification.open({
+                message: '핀이 생성되었습니다.'
+            })
+        }
+        catch (error) {
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        return acc
+                    }
+                ),
+            })
+        }
     }
     const handleChange = (e) => {
         setImage(e.target.files[0])
@@ -28,7 +45,6 @@ export default function PinCreate(props){
     }
     const handleUrl = (e) => {
         setImageURL(e.target.value)
-        // setImage(e.target.value)
     }
     return (
         <Layout props={props}>

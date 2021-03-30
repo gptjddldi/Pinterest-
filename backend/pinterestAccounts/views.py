@@ -4,6 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
+import tags
+from tags.models import Tag
+from tags.serializers import TagSerializer
 from . import serializers
 from .models import Account
 
@@ -39,7 +42,7 @@ def unfollow_user(request):
     return Response(status.HTTP_202_ACCEPTED)
 
 
-class FollowingList(ListAPIView):
+class FollowingUserList(ListAPIView):
     '''
     Following User View
 
@@ -51,4 +54,19 @@ class FollowingList(ListAPIView):
 
     def get_queryset(self):
         qs = super().get_queryset().filter(pk__in=self.request.user.following_user.all())
+        return qs
+
+
+class FollowingTagList(ListAPIView):
+    '''
+    Following Tag View
+
+    ---
+    현재 User 가 Following 하는 Tag List 를 제공하는데.. 여기에 정의하는 게 맞나.. 아니면 Tag 에 정의해야 하나..
+    '''
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset().filter(users__username=self.request.user.username);
         return qs

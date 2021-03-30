@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {Link} from "react-router-dom";
-import SearchBar from "./SearchBar";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../actions/userAction";
 import {axiosInstance} from "../utils/axios";

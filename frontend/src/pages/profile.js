@@ -7,7 +7,7 @@ import PostList from "../components/PostList";
 import BoardsFeed from "../components/Board/BoardsFeed";
 import BoardCreateModal from "../components/Board/BoardCreateModal";
 import useOnClickOutside from "../utils/useOnClickOutside";
-import FollowButton from "../components/FollowButton";
+import FollowUserButton from "../components/FollowButton/FollowUserButton";
 import {axiosInstance} from "../utils/axios";
 
 function Profile(props) {
@@ -60,7 +60,7 @@ function Profile(props) {
                 <div>@{userData.username}</div>
                 <div>팔로워 {userData.follower ? userData.follower.length : 0} 명 · 팔로잉 {userData.following_user ? userData.following_user.length : 0} 명</div>
                 {userData.username != loggedUser.username &&
-                <div className="mt-5"><FollowButton user={userData}/></div>
+                <div className="mt-5"><FollowUserButton user={userData}/></div>
                 }
             </div>
             <div className="container mx-auto mt-10">

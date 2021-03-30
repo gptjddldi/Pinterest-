@@ -7,9 +7,6 @@ export default function UserSignature({ user, includeFollowers }){
             <ProfilePicture user={user} size="1.5"/>
             <div className="ml-3">
                 <div className={includeFollowers ? "font-bold" : ""}>{user.username}</div>
-                {/*{ includeFollowers &&*/}
-                {/*<div>{user.follower.length} followers</div>*/}
-                {/*}*/}
             </div>
         </div>
     );

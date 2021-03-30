@@ -1,30 +1,37 @@
 import React from 'react'
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {axiosInstance} from "../../utils/axios";
 import Modal from "../Modal";
 import SecondaryButton from "../Button/SecondaryButton";
-import {update} from "../../actions/userAction";
-
+import {notification} from "antd";
 
 const FollowingTagModal = (props) => {
     const [tagList, setTagList] = useState([]);
-    const {loggedUser} = useSelector(state => ({
-        loggedUser: state.userReducer.user
-    }))
 
-    const dispatch = useDispatch()
-    const onUpdate = (data) => dispatch(update(data));
-
-    function unfollow(tag){
-        axiosInstance.post(`tags/${tag.id}/unfollow_tag/`)
-            .catch((e)=>console.log(e.response))
+    const unfollow = async(tag) => {
+        try{
+            const res = await axiosInstance.post(`tags/${tag.id}/unfollow_tag`)
+            notification.open({
+                message: `태그 ${tag.tag_name} 을(를) 팔로잉 취소합니다.`
+            })
+        }
+        catch(error){
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        return acc
+                    }
+                ),
+            })
+        }
     }
     useEffect(()=>{
-        axiosInstance.get(`tags/?users__username=${loggedUser.username}`)
+        axiosInstance.get('pinterestAccounts/following-tag')
             .then((res)=>setTagList(res.data))
             .catch((e)=>console.log(e.response))
-    }, [])
+    }, [tagList])
     return(
         <Modal className={props.className} onClickOutside={props.onClickOutside}>
             <h1 className="text-xl font-bold text-center">팔로잉 중인 태그</h1>

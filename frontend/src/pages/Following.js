@@ -7,9 +7,6 @@ import FollowingTagModal from "../components/FollowingList/FollowingTagModal";
 import FollowingUserModal from "../components/FollowingList/FollowingUserModal";
 
 function Following(props) {
-    const {loggedUser} = useSelector(state => ({
-        loggedUser: state.userReducer.user
-    }))
     const [followingTagModalVisibility, setFollowingTagModalVisibility] = useState("hidden")
     const [followingUserModalVisibility, setFollowingUserModalVisibility] = useState("hidden")
 

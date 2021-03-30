@@ -1,31 +1,40 @@
 import React from 'react'
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {axiosInstance} from "../../utils/axios";
 import Modal from "../Modal";
 import SecondaryButton from "../Button/SecondaryButton";
 import UserSignature from "../UserSignature";
-import {update} from "../../actions/userAction";
+import {notification} from "antd";
 
 
 const FollowingUserModal = (props) => {
     const [userList, setUserList] = useState([]);
-    const dispatch = useDispatch()
-    const onUpdate = (data) => dispatch(update(data));
 
-    function unfollow(user){
-        axiosInstance.post('pinterestAccounts/unfollow/', {'username': user.username})
-            .then(()=> {
-                axiosInstance.get('rest-auth/user/').then((res)=>onUpdate(res.data)).catch((e)=>console.log(e.response))
+    const unfollow = async(user) => {
+        try{
+            const res = await axiosInstance.post('pinterestAccounts/unfollow', {'username': user.username})
+            notification.open({
+                message: `${user.username}님을 팔로우 취소합니다.`
             })
-            .catch((e)=>console.log(e))
+        }
+        catch(error){
+            const {data: ErrorMessages} = error.response
+            notification.open({
+                message: Object.entries(ErrorMessages).reduce(
+                    (acc,[fieldName, err]) => {
+                        acc += err
+                        return acc
+                    }
+                ),
+            })
+        }
     }
     useEffect(()=>{
-        axiosInstance.get(`pinterestAccounts/following-list/`)
+        axiosInstance.get(`pinterestAccounts/following-user`)
             .then((res)=>setUserList(res.data))
             .catch((e)=>console.log(e.response))
-        // setUserList(loggedUser.following_user)
-    }, [])
+    }, [userList])
+
     return(
         <Modal className={props.className} onClickOutside={props.onClickOutside}>
             <h1 className="text-xl font-bold text-center">팔로잉 중인 사람</h1>

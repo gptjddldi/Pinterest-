@@ -23,15 +23,13 @@ const Login = (props) => {
         try{
             const res = await axiosInstance.post('rest-auth/login/', data)
             onLogin(res.data);
-            history.push(loginRedirectUrl)
-            window.location.reload()
-
             notification.open({
                 message:"로그인 성공."
             })
+            history.push(loginRedirectUrl)
+            window.location.reload()
         }
         catch(error) {
-            console.log(error.response)
             const {data: ErrorMessages} = error.response
             notification.open({
                 message: "로그인 실패",

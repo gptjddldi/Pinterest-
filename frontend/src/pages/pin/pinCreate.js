@@ -1,8 +1,5 @@
-import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import axios from "axios";
 import Layout from "../../components/Layout";
-import Card from "../../components/Card";
 import {useRef, useState} from "react";
 import {axiosInstance} from "../../utils/axios";
 
@@ -37,7 +34,7 @@ export default function PinCreate(props){
         <Layout props={props}>
             <div className="bg-gray-200">
                 <div className="max-w-screen-md py-10 mx-auto">
-                    <Card>
+                    <div className={"overflow-hidden shadow-lg rounded-3xl bg-white"}>
                         <form onSubmit={handleSubmit}>
                             <div className="p-10">
                                 <div className="flex items-center justify-between">
@@ -68,7 +65,7 @@ export default function PinCreate(props){
                                 </div>
                             </div>
                         </form>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </Layout>

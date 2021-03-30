@@ -14,7 +14,6 @@ const PostList = ({filter, url}) => {
     const [postList, setPostList] = useState([])
     const [nextCursor, setNextCursor] = useState('')
     const [prevCursor, setPrevCursor] = useState('')
-    const [userInfo, setUserInfo] = useState()
     const curCursor = useSelector(state => ({
         curCursor: state.userReducer.cursor
     }))
@@ -23,7 +22,7 @@ const PostList = ({filter, url}) => {
 
     const initFeed = async(cursorTo) => {
         if(url){
-            axiosInstance.get(`pins/${url}/?`)
+            axiosInstance.get(`pins/${url}?`)
                 .then((res) => {
                     setNextCursor(res.data.next)
                     setPrevCursor(res.data.previous)
@@ -51,7 +50,7 @@ const PostList = ({filter, url}) => {
                 .catch((err)=>console.log(err))
         }
         else{
-            axiosInstance.get(`pins/?`)
+            axiosInstance.get(`pins?`)
                 .then((res) => {
                     setNextCursor(res.data.next)
                     setPrevCursor(res.data.previous)
@@ -69,16 +68,11 @@ const PostList = ({filter, url}) => {
     const [boards, setBoards] = useState()
     useEffect(()=> {
 
-        axiosInstance(`boards/?author__username=${loggedUser.username}`).then((res) => setBoards(res.data))
+        axiosInstance(`boards?author__username=${loggedUser.username}`).then((res) => setBoards(res.data))
             .catch((e) => console.log(e));
     }, [])
-    // const getUserInfo = async() => {
-    //     axiosInstance.get('rest-auth/user/').then((res)=>setUserInfo(res.data))
-    //         .catch((e)=>console.log(e.response))
-    // }
     useEffect(()=>{
         initFeed(curCursor.curCursor)
-        // getUserInfo()
     }, [])
 
 

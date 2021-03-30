@@ -4,7 +4,7 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import Tabs from "../../components/Tab";
 import PostList from "../../components/PostList";
-import FollowButton from "../../components/FollowButton";
+import FollowUserButton from "../../components/FollowButton/FollowUserButton";
 import UserSignature from "../../components/UserSignature";
 import {axiosInstance} from "../../utils/axios";
 
@@ -20,7 +20,7 @@ export default function Pin(props) {
         axiosInstance.get(`/pins/${pinNum}`)
             .then((res) => {
                 setPinData(res.data);
-                axiosInstance.get(`/pinterestAccounts/user/${res.data.author}/`).then((res) =>{
+                axiosInstance.get(`/pinterestAccounts/user/${res.data.author}`).then((res) =>{
                     setUserData(res.data);
                 }).catch((e) => console.log(e.response))
             }).catch((e)=>console.log(e.response))
@@ -54,7 +54,7 @@ export default function Pin(props) {
                                         <UserSignature user={userData} includeFollowers />
                                         {  pinData.author.username != loggedUser.username &&
                                         <>
-                                            <FollowButton user={userData} />
+                                            <FollowUserButton user={userData} />
                                         </>
                                         }
                                     </>

@@ -3,7 +3,7 @@ import PrimaryButton from "./Button/PrimaryButton";
 import SecondaryButton from "./Button/SecondaryButton";
 import {axiosInstance} from "../utils/axios";
 
-function Delete({pin_id}) {
+function PinDelete({pin_id}) {
 
     function deletePin(e) {
             axiosInstance.delete(`pins/${pin_id}`)
@@ -15,4 +15,4 @@ function Delete({pin_id}) {
             <SecondaryButton>삭제</SecondaryButton>
         </form>
     )
-}export default Delete
+}export default PinDelete

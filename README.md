@@ -78,6 +78,10 @@
  |boards/{id}/add_pin|POST|O| board.id=id 에 해당하는 board 에 request.pin_id 추가 
  
  
+ ### Front EndPoints
+|PATH|METHOD|AUTH|내용|
+|----|----|----|----|
+
  ### Pin Recommend Algorithm
  > - Content Based Recommender System
  >   - Pin 의 Title 을 분석하여 Pin 들 간의 유사도 구현

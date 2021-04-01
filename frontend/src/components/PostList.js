@@ -21,49 +21,31 @@ const PostList = ({filter, url}) => {
     const onCursor = (data) => dispatch(cursor(data));
 
     const initFeed = async(cursorTo) => {
-        if(url){
-            axiosInstance.get(`pins/${url}?`)
-                .then((res) => {
-                    setNextCursor(res.data.next)
-                    setPrevCursor(res.data.previous)
+        let res
+        try{
+            if(url){
+                res = await axiosInstance.get(`pins/${url}?`)
 
-                    if(res.data.results)
-                        setPostList(res.data.results)
-                    else
-                        setPostList(res.data)
+            }
+            else if(filter){
+                res = await axiosInstance.get(`pins/?${filter}`)
 
-                })
-                .catch((err)=>console.log(err))
+            }
+            else if(cursorTo){
+                res = await axiosInstance.get(cursorTo)
+            }
+            else{
+                res = await axiosInstance.get(`pins/`)
+            }
+            setNextCursor(res.data.next)
+            setPrevCursor(res.data.previous)
+            if(res.data.results) setPostList(res.data.results)
+            else setPostList(res.data)
         }
-        else if(filter){
-            axiosInstance.get(`pins/?${filter}&`)
-                .then((res) => {
-                    setNextCursor(res.data.next)
-                    setPrevCursor(res.data.previous)
+        catch(e) {
+            console.log(e);
 
-                    if(res.data.results)
-                        setPostList(res.data.results)
-                    else
-                        setPostList(res.data)
-
-                })
-                .catch((err)=>console.log(err))
         }
-        else{
-            axiosInstance.get(`pins?`)
-                .then((res) => {
-                    setNextCursor(res.data.next)
-                    setPrevCursor(res.data.previous)
-
-                    if(res.data.results)
-                        setPostList(res.data.results)
-                    else
-                        setPostList(res.data)
-
-                })
-                .catch((err)=>console.log(err))
-        }
-
     }
     const [boards, setBoards] = useState()
     useEffect(()=> {

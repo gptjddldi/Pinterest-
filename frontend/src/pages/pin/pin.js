@@ -17,10 +17,10 @@ export default function Pin(props) {
     let [userData, setUserData] = useState([]);
 
     function getData() {
-        axiosInstance.get(`/pins/${pinNum}`)
+        axiosInstance.get(`pins/${pinNum}`)
             .then((res) => {
                 setPinData(res.data);
-                axiosInstance.get(`/pinterestAccounts/user/${res.data.author}`).then((res) =>{
+                axiosInstance.get(`pinterestAccounts/user/${res.data.author}`).then((res) =>{
                     setUserData(res.data);
                 }).catch((e) => console.log(e.response))
             }).catch((e)=>console.log(e.response))

@@ -17,72 +17,97 @@
 ### Requirements
 
 > - BACKEND
->   - Python    
->   - Django
->   - Django Rest FrameWork
->   - ...
+>   - BASE
+>      - Python    
+>      - Django
+>      - djangorestframework
+>      - djangorestframework-jwt
+>     - Pillow
+>     - psycopg2-binary
+>     - PyJWT
+>     - requests
+>     - djangp-rest-auth
+>     - pandas
+>     - konlpy
+>     - sklearn
+>     - django-pandas
+>   - LOCAL
+>     - drf-yasg
+>   - PRODUCTION
+>        - gunicorn
+>       - django-storages[azure]
+
 > - FrontEnd
->   - TailWind CSS
 >   - Axios
 >   - Redux
->   - ...
+>   - redux-logger
+>   - react-masonry-css
+>   - TailWind CSS
+>   - Antd
+
 > - DataBase
 >   - PostgreSQL
+
 > - Deployment
 >   - Azure
->   - Azure Storage
-> - Etc.
->   - Selenium
->   - Pandas
->   - Sklearn
->   - Konlpy
->   - ...
+>   - gunicorn
+>   - Docker
+
+
 
 ### API EndPoints
 
  #### rest-auth 인증
 |PATH|METHOD|AUTH|내용|
 |----|----|----|----|
-|rest-auth/login|POST|X|JWT 인증 로그인
-|rest-auth/logout|POST|O|
-|rest-auth/registration|POST|X|
-|rest-auth/user|GET/PATCH|O|현재 REQUEST USER 정보 GET 또는 PATCH
-|rest-auth/password/change|POST|O|REQUEST USER 비밀번호 변경
+|rest-auth/login|POST|X|JWT 인증 로그인 수행
+|rest-auth/logout|POST|O|로그아웃
+|rest-auth/registration|POST|X|username, email, password 회원가입
+|rest-auth/user|GET|O|현재 유저의 정보 GET
+|rest-auth/user|PATCH|O|현재 유저의 username, 프로필사진
+|rest-auth/password/change|POST|O|현재 유저의 비밀번호 변경
 
  #### pinterestAccount
 |PATH|METHOD|AUTH|내용|
 |----|----|----|----|
-|pinterestAccounts/following-list|GET|O|REQUEST USER 의 팔로잉 유저 GET
-|pinterestAccounts/follow|POST|O|
-|pinterestAccounts/unfollow|POST|O|
+|pinterestAccounts/user/{username}|GET|O|username 을 slug 로 받아 해당 유저의 사진, 이름 이메일, 팔로워, 팔로잉을 제공함
+|pinterestAccounts/following-user|GET|O|REQUEST USER 의 팔로잉 유저 GET
+|pinterestAccounts/following-tag|GET|O|REQUEST USER 의 팔로잉 태그 GET
+|pinterestAccounts/follow|POST|O|username 을 받아와 해당 유저 팔로우
+|pinterestAccounts/unfollow|POST|O|username 을 받아와 해당 유저 언팔로우
 
  #### pins
  |PATH|METHOD|AUTH|내용|
  |----|----|----|----|
- |pins/|GET/POST|O|
- |pins/following_pin_list|GET|O|REQUEST USER 가 팔로우하는 태그/유저 의 핀 GET
- |pins/{id}/|GET/POST/DELETE|O|
+ |pins/|GET/POST|O| 핀 리스트 GET
+ |pins/|POST|O| 핀 생성 (URL or Local Image 가능), 핀이 생성될 때 제목에 '#'이 붙은 단어는 tag 에 자동으로 추가됨(signal).
+ |pins/following_pin|GET|O|현재 유저가 팔로우하는 태그/유저 의 핀 리스트 GET
+ |pins/{id}|GET|O|Pin 의 id 를 pk 로 받아와 해당 핀의 정보 GET
+ |pins/{id}|DELETE|O|해당 핀의 author 가 현재 유저일 경우 핀 DELETE
  |pins/{id}/sim_pin_list|GET|O| pin.id=id 에 해당하는 핀 추천 리스트 GET
  
   #### tags
  |PATH|METHOD|AUTH|내용|
  |----|----|----|----|
- |tags/|GET/POST|O|
- |tags/{id}|GET/POST|O|
- |tags/{id}/follow_tag|POST|O| tag.id = id 에 해당하는 태그 Follow
- |tags/{id}/unfollow_tag|POST|O| tag.id = id 에 해당하는 태그 Unfollow
+ |tags/{id}/follow_tag|POST|O| 해당 태그 Follow
+ |tags/{id}/unfollow_tag|POST|O| 해당 태그 Unfollow
  
    #### boards
  |PATH|METHOD|AUTH|내용|
  |----|----|----|----|
- |boards/|GET/POST|O| REQUEST USER 의 보드 GET
- |boards/{id}|GET/DELETE|O| board.id=id 에 해당하는 Pin GET
- |boards/{id}/add_pin|POST|O| board.id=id 에 해당하는 board 에 request.pin_id 추가 
+ |boards/|GET/POST|O| 현재 유저의 보드 리스트 GET
+ |boards/{id}/add_pin|POST|O|request.data['id'] 로 받아온 핀을 {id} 보드에 핀을 추가함
  
  
- ### Front EndPoints
-|PATH|METHOD|AUTH|내용|
+ ### Front Components
+
+ ##### 인증 관련
+|File Name|End Point|Directory|Description|
 |----|----|----|----|
+|login.js|/|pages/account/|로그인 Form, 로그인 성공시 메인 화면으로 이동|
+|signup.js|/|pages/account/|회원가입 Form, 회원가입 성공시 로그인 화면으로 이동|
+|LoginRequiredRouter.js|||인증되지 않은 사용자는 메인(로그인) 화면으로 이동|
+
 
  ### Pin Recommend Algorithm
 
@@ -156,7 +181,7 @@
 >    - image url 을 ByteIO 로 읽어서 메모리에 저장
 >    - 저장한 데이터를 File 객체로 바꿔서 save
 ```
-#pin.models
+#pin.models.py
 class Pin(models.Model)
     #...
     def save(self, *args, **kwargs):
@@ -166,6 +191,28 @@ class Pin(models.Model)
         super().save(*args, **kwargs)
 ```
 
+### Extract Tag And Post
+
+> - 정규표현식과 Django signal 을 이용한 태그 추출 및 포스트
+```
+#pin.models.py
+class Pin(models.Model):
+#...
+    def get_tags_from_title(self):
+        tag_name_list = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", self.title)
+        tag_list = []
+        for tag_name in tag_name_list:
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)  # 객체와 bool 이 리턴되므로 뒤에껀 버림
+            tag_list.append(tag)
+        return tag_list
+
+#pin.signals.py
+@receiver(post_save, sender=Pin)
+def insert_tags(sender, instance, created, **kwargs):
+    if created:
+        for name in Pin.get_tags_from_title(instance):
+            instance.tag_set.add(name)
+```
 
 ## issue
 
@@ -195,5 +242,5 @@ class Pin(models.Model)
 
 > - Pin Recommend Algorithm 이 배포 환경에서 오래걸려서 계속 Time Out 이 나옴 -> gunicorn 의 timeout 설정 "--timeout", "120"
 
-> - csv 파일로 읽고 쓰기를 하면 유지보수의 어려움이 예상됨 -> django-pandas 패키지 설치 후, 쿼리로 알고리즘을 처리하기로 함
+> - csv 파일로 읽고 쓰기를 하면 유지보수의 어려움이 예상됨 -> django-pandas 패키지 설치 후, 추천 알고리즘을 실행할 때 쿼리로 처리하도록 함
 

@@ -4,17 +4,6 @@ import requests
 
 from PIL import Image
 
-VALID_IMAGE_EXTENSION = [
-    ".jpg",
-    ".png",
-    ".jpeg",
-    ".gif"
-]
-
-
-def valid_url_extension(url, extension_list=VALID_IMAGE_EXTENSION):
-    return any([url.endswith(e) for e in extension_list])
-
 
 def retrieve_image(url):
     response = requests.get(url)

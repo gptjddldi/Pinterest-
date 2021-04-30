@@ -214,6 +214,39 @@ def insert_tags(sender, instance, created, **kwargs):
             instance.tag_set.add(name)
 ```
 
+### DB Models
+<img src="./screenshots/DBrelations.JPG">
+
+#### DB 최적화 작업 (04.30~)
+
+1. pin.views
+
+before (159 queries)
+-> after (5 queries)
+```
+    queryset = Pin.objects.select_related('author')\
+    .prefetch_related('tag_set')\
+    .prefetch_related('boards')\
+    .all()
+```
+
+Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오래걸리기 떄문에 Index 추가해줬음
+
+최대 13초 -> 11초
+최소 4초 -> 2.6초
+
+```
+# Pin.models
+#...
+    class Meta:
+        indexes = [
+            models.Index(
+                name="Pin_title_idx",
+                fields=["title","id"]
+            )
+        ]
+```
+
 ## issue
 
 > - No 'Access-Control-Allow-Origin' header is present on the requested resource. 

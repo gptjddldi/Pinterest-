@@ -43,3 +43,11 @@ class Pin(TimestampedModel):
     def delete(self, using=None, keep_parents=False):
         self.image.storage.delete(self.image.name)
         super().delete()
+
+    class Meta:
+        indexes = [
+            models.Index(
+                name="Pin_title_idx",
+                fields=["title","id"]
+            )
+        ]

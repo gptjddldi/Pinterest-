@@ -1,3 +1,4 @@
 -r base.txt
 
 httpie==2.4.0
+django-debug-toolbar

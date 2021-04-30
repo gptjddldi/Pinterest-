@@ -20,7 +20,7 @@ class BoardViewSet(ModelViewSet):
     /boards/[board_id]
     /boards/[board_id]/add_pin
     '''
-    queryset = Board.objects.all()
+    queryset = Board.objects.select_related('author').prefetch_related('pin').all()
     serializer_class = serializers.BoardSerializer
     filterset_fields = ['author__username']
 

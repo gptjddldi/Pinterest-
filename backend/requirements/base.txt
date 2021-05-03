@@ -14,7 +14,8 @@ konlpy
 sklearn
 django-pandas
 drf-yasg==1.20.0
-
-Celery
+cloudinary
+celery[redis]
 redis
+django-redis
 django-debug-toolbar

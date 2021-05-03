@@ -1,4 +1,3 @@
-import time
 
 from django.db.models import Q, Case, When
 
@@ -59,14 +58,12 @@ class PinViewSet(ModelViewSet):
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
-    @action(methods=['get'], detail=True)
-    def similar_pin(self, request, pk):
-        st = time.time()
-        qs = self.get_queryset()
-        pin = Pin.objects.get(pk=pk)
-        lis = recommend_pin(pin)
-        preserved = Case(*[When(pk=pk, then=position) for position, pk in enumerate(lis)])
-        qs = qs.filter(id__in=lis).order_by(preserved)
-        serializer = self.get_serializer(qs, many=True)
-        print("소요 시간 : {}초".format(time.time() - st))
-        return Response(serializer.data)
+    # @action(methods=['get'], detail=True)
+    # def similar_pin(self, request, pk):
+    #     qs = self.get_queryset()
+    #     pin = Pin.objects.get(pk=pk)
+    #     lis = recommend_pin(pin)
+    #     preserved = Case(*[When(pk=pk, then=position) for position, pk in enumerate(lis)])
+    #     qs = qs.filter(id__in=lis).order_by(preserved)
+    #     serializer = self.get_serializer(qs, many=True)
+    #     return Response(serializer.data)

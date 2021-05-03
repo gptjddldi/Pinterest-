@@ -4,17 +4,16 @@ services:
   django:
     build:
       context: .
-      dockerfile: ./Dockerfile
-    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --timeout 120 --env DJANGO_SETTINGS_MODULE='backend.settings.prod'
+      dockerfile: compose/django/Dockerfile
+    command: python manage.py runserver 0:8000 --settings=backend.settings.prod
     ports:
       - "8000:8000"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     working_dir: /djangoProject
     volumes:
     - .:/djangoProject
     expose:
       - "8000"
+    restart: always
 
   nginx:
     image: nginx

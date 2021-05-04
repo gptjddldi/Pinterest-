@@ -10,6 +10,7 @@ from utils2 import recommend_pin
 from . import serializers
 from .models import Pin
 from .pagination import CustomCursorPagination
+from .tasks import task_get_similarity
 
 
 class PinViewSet(ModelViewSet):
@@ -21,7 +22,7 @@ class PinViewSet(ModelViewSet):
     search: author__following__username => 현재 유저가 following 하는 유저의 pin list 제공
     boards__id => 보드 id에 해당하는 pin List 제공
     '''
-    queryset = Pin.objects.select_related('author').prefetch_related('tag_set').prefetch_related('boards').all()
+    queryset = Pin.objects.select_related('author').prefetch_related('tag_set').prefetch_related('boards').all().cache()
     serializer_class = serializers.PinListSerializer
     filterset_fields = ['author__follower__username', 'author__username', 'boards__title']
     pagination_class = CustomCursorPagination
@@ -58,12 +59,13 @@ class PinViewSet(ModelViewSet):
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
-    # @action(methods=['get'], detail=True)
-    # def similar_pin(self, request, pk):
-    #     qs = self.get_queryset()
-    #     pin = Pin.objects.get(pk=pk)
-    #     lis = recommend_pin(pin)
-    #     preserved = Case(*[When(pk=pk, then=position) for position, pk in enumerate(lis)])
-    #     qs = qs.filter(id__in=lis).order_by(preserved)
-    #     serializer = self.get_serializer(qs, many=True)
-    #     return Response(serializer.data)
+    @action(methods=['get'], detail=True)
+    def similar_pin(self, request, pk):
+        qs = self.get_queryset()
+        pin = Pin.objects.get(pk=pk)
+        lis = recommend_pin(pin)
+        # task_get_similarity.delay(pin)
+        preserved = Case(*[When(pk=pk, then=position) for position, pk in enumerate(lis)])
+        qs = qs.filter(id__in=lis).order_by(preserved)
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)

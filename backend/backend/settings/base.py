@@ -214,13 +214,18 @@ SCHEDULE_DAY = 24 * SCHEDULE_HOUR
 SCHEDULE_WEEK = 7 * SCHEDULE_DAY
 SCHEDULE_MONTH = 30 * SCHEDULE_DAY
 
-# redis cache
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://sample-project-cache:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
+# redis cache (Cacheops)
+INSTALLED_APPS += ['cacheops']
+
+CACHEOPS_LRU = True
+
+CACHEOPS = {
+    'pin.Pin': {'ops': 'get', 'timeout': 120},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
+}
+
+CACHEOPS_REDIS = "redis://redis:6379"
+
+CACHEOPS_DEFAULTS = {
+    'timeout': 60 * 60 * 1, # 1시간
+    'cache_on_save': True # save()할때 캐시 할지
 }

@@ -30,7 +30,7 @@ services:
       - django
   redis:
     image: redis:alpine
-
+    command: redis-server
   celery:
     restart: always
     build:

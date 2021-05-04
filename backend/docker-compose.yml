@@ -6,7 +6,7 @@ services:
       dockerfile: compose/django/Dockerfile
     depends_on:
       - redis
-    command: python manage.py runserver 0:8000 --settings=backend.settings.prod
+    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
     ports:
       - "8000:8000"
     working_dir: /djangoProject
@@ -36,6 +36,9 @@ services:
     build:
       context: .
     command: celery -A backend worker -l info
+    environment:
+      - LC_ALL=C.UTF-8
+      - LANG=C.CUT-8
     volumes:
     - .:/djangoProject
     depends_on:

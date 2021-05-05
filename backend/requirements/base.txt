@@ -15,7 +15,10 @@ sklearn
 django-pandas
 drf-yasg==1.20.0
 cloudinary
+
+
 celery[redis]
 redis
 django-redis
+django-cacheops
 django-debug-toolbar

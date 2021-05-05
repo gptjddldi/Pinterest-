@@ -220,7 +220,7 @@ INSTALLED_APPS += ['cacheops']
 CACHEOPS_LRU = True
 
 CACHEOPS = {
-    'pin.Pin': {'ops': 'get', 'timeout': 120},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
+    'pin.pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
 }
 
 CACHEOPS_REDIS = "redis://redis:6379"

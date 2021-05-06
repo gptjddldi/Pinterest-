@@ -277,3 +277,5 @@ Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오
 
 > - csv 파일로 읽고 쓰기를 하면 유지보수의 어려움이 예상됨 -> django-pandas 패키지 설치 후, 추천 알고리즘을 실행할 때 쿼리로 처리하도록 함
 
+
+> - locust 로 성능 측정 중 발생 오류 remaining connection slots are reserved for non-replication superuser connections

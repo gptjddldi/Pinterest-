@@ -10,7 +10,6 @@ from utils2 import recommend_pin
 from . import serializers
 from .models import Pin
 from .pagination import CustomCursorPagination
-from .tasks import task_get_similarity
 
 
 class PinViewSet(ModelViewSet):

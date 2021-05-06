@@ -4,7 +4,6 @@ from utils2 import recommend_pin
 
 
 @shared_task
-def task_get_similarity(pin):
-    print(pin)
+def add(a, b):
     # print(lis)
-    return None
+    return a + b

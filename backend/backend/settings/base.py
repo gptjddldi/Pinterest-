@@ -161,7 +161,7 @@ REST_FRAMEWORK = {  # added
         'rest_framework.parsers.JSONParser',
     ],
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',

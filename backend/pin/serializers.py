@@ -26,3 +26,4 @@ class PinListSerializer(serializers.ModelSerializer):
         model = Pin
         fields = '__all__'
 
+

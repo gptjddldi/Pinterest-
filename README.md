@@ -279,3 +279,8 @@ Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오
 
 
 > - locust 로 성능 측정 중 발생 오류 remaining connection slots are reserved for non-replication superuser connections
+
+> - Pin 추천 API 가 너무 느리다.. 원인 분석 -> 유사도를 측정하는 gs 함수가 오래걸림.
+>   - 생각해보면 gs 함수는 추천 API 를 호출할 때가 아니라 핀이 생성될 때 한 번만 호출되면 됨.
+>   - 이게 시간이 좀 걸리니 핀을 생성하고 gs 함수는 비동기로 처리한다면..!
+>   - 훨씬 나아질 것으로 예상된다.

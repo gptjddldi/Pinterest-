@@ -15,6 +15,16 @@ django.setup()
 from pin.models import Pin
 
 
+def logging_time(original_fn):
+    def wrapper_fn(*args, **kwargs):
+        start_time = time.time()
+        result = original_fn(*args, **kwargs)
+        end_time = time.time()
+        print("WorkingTime[{}]: {} sec".format(original_fn.__name__, end_time-start_time))
+        return result
+    return wrapper_fn
+
+@logging_time
 def tokenizer(raw, pos=["Noun", 'noun'], stopword=[]):
     from konlpy.tag import Okt
     m = Okt()
@@ -24,7 +34,7 @@ def tokenizer(raw, pos=["Noun", 'noun'], stopword=[]):
             # if tag in pos and word not in stopword
         ]
 
-
+@logging_time
 def get_recommendations(pin_id, cosine_sim, indices, metadata):
     # indices 에서 pin_id 에 해당하는 index
     idx = indices[pin_id]
@@ -54,7 +64,7 @@ def get_recommendations(pin_id, cosine_sim, indices, metadata):
 #     time.sleep(1)
 #     return pin['title']
 
-
+@logging_time
 def get_similarities(metadata):
     metadata1 = metadata["title"].fillna('')
     tfidf = TfidfVectorizer(tokenizer=tokenizer, ngram_range=(1, 3), min_df=2, sublinear_tf=True)
@@ -64,7 +74,7 @@ def get_similarities(metadata):
     # print(cosine_sim)
     return cosine_sim
 
-
+@logging_time
 def get_indices(metadata):
     # pin 의 id 를 기준으로 새로운 시리즈를 만듦
     # 대략 id = ['421', '555', '653'] 이라면 indices = [{1:421}, {2:555}, {3:653}] 이런 식임
@@ -72,17 +82,17 @@ def get_indices(metadata):
     return indices
 
 
-def recommend_pin(pin):
+def recommend_pin(pin, qs):
     # title = write_data_csv(pin)
     # metadata = pd.read_csv('data_set.csv', engine='python', encoding='CP949')
-    metadata = read_frame(Pin.objects.all(), fieldnames=['id', 'title'])
-    similarities = gs(metadata)
+    metadata = read_frame(qs, fieldnames=['id', 'title'])
+    # similarities = gs(metadata)
     indices = get_indices(metadata)
     return get_recommendations(pin.id, similarities, indices, metadata)
 
 
 # print(get_recommendations('#풍경 사진 #여행 #나무 #꽃'))
-
+@logging_time
 def gs(metadata):
     from konlpy.tag import Okt
     okt = Okt()
@@ -98,3 +108,12 @@ def gs(metadata):
     return similarities
 
     # raw = ' '.join(re.findall(r"([a-zA-Z\dㄱ-힣]+)", raw))
+
+
+qs = Pin.objects.all()
+pin = Pin.objects.get(pk=1076)
+pin2 = Pin.objects.get(pk=1234)
+metadata = read_frame(qs, fieldnames=['id', 'title'])
+similarities = gs(metadata)
+
+print(recommend_pin(pin, qs), recommend_pin(pin2, qs))

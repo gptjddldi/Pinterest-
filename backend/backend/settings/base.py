@@ -215,17 +215,17 @@ SCHEDULE_WEEK = 7 * SCHEDULE_DAY
 SCHEDULE_MONTH = 30 * SCHEDULE_DAY
 
 # redis cache (Cacheops)
-# INSTALLED_APPS += ['cacheops']
-#
-# CACHEOPS_LRU = True
-#
-# CACHEOPS = {
-#     'pin.pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
-# }
-#
-# CACHEOPS_REDIS = "redis://redis:6379"
-#
-# CACHEOPS_DEFAULTS = {
-#     'timeout': 60 * 60 * 1, # 1시간
-#     'cache_on_save': True # save()할때 캐시 할지
-# }
+INSTALLED_APPS += ['cacheops']
+
+CACHEOPS_LRU = True
+
+CACHEOPS = {
+    'pin.Pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
+}
+
+CACHEOPS_REDIS = "redis://redis:6379"
+
+CACHEOPS_DEFAULTS = {
+    'timeout': 60 * 60 * 1, # 1시간
+    'cache_on_save': True # save()할때 캐시 할지
+}

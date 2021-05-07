@@ -41,12 +41,12 @@ class PinViewSet(ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     @action(methods=['get'], detail=False)
     def following_pin(self, *args, **kwargs):
@@ -79,4 +79,5 @@ class PinViewSet(ModelViewSet):
         preserved = Case(*[When(pk=pk, then=position) for position, pk in enumerate(lis)])
         qs = qs.filter(id__in=lis).order_by(preserved)
         serializer = self.get_serializer(qs, many=True)
+
         return Response(serializer.data)

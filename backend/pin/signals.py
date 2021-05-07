@@ -8,3 +8,4 @@ def insert_tags(sender, instance, created, **kwargs):
     if created:
         for name in Pin.get_tags_from_title(instance):
             instance.tag_set.add(name)
+

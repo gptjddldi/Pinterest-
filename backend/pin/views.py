@@ -22,6 +22,7 @@ class PinViewSet(ModelViewSet):
     boards__id => 보드 id에 해당하는 pin List 제공
     '''
     queryset = Pin.objects.all()
+
     serializer_class = serializers.PinListSerializer
     filterset_fields = ['author__follower__username', 'author__username', 'boards__title']
     pagination_class = CustomCursorPagination
@@ -54,13 +55,13 @@ class PinViewSet(ModelViewSet):
         author_list = self.request.user.following_user.all()
         tag_list = self.request.user.following_tag.all()
 
-        # qs = qs\
-        #     .select_related('author')\
-        #     .prefetch_related('tag_set')\
-        #     .filter(Q(author__in=author_list) | Q(tag_set__in=tag_list))\
-        #     .distinct()\
-        #     .order_by('-created_at')
-        qs = qs.filter(Q(author__in=author_list | Q(tag_set__in=tag_list))).distinct().order_by('-created_at')
+        qs = qs\
+            .select_related('author')\
+            .prefetch_related('tag_set')\
+            .filter(Q(author__in=author_list) | Q(tag_set__in=tag_list))\
+            .distinct()\
+            .order_by('-created_at')
+        # qs = qs.filter(Q(author__in=author_list | Q(tag_set__in=tag_list))).distinct().order_by('-created_at')
         page = self.paginate_queryset(qs)
 
         if page is not None:

@@ -17,4 +17,4 @@ RUN pip3 install -r requirements.txt
 ADD . /djangoProject/
 
 EXPOSE 80
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:80", "--timeout", "120"]
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000", "--timeout", "120"]

@@ -284,3 +284,5 @@ Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오
 >   - 생각해보면 gs 함수는 추천 API 를 호출할 때가 아니라 핀이 생성될 때 한 번만 호출되면 됨.
 >   - 이게 시간이 좀 걸리니 핀을 생성하고 gs 함수는 비동기로 처리한다면..!
 >   - 훨씬 나아질 것으로 예상된다.
+
+> - AttributeError: 'Q' object has no attribute '_known_related_objects'

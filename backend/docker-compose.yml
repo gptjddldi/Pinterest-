@@ -1,57 +1,61 @@
 version: '3'
 services:
   django:
-    build:
-      context: .
-      dockerfile: compose/django/Dockerfile
+#    build:
+#      context: .
+#      dockerfile: compose/django/Dockerfile
+    build: ./
+    image: dockercompose.azurecr.io/pinterest:v1
+    container_name: dockercompose
     depends_on:
       - redis
-    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
+#    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
     ports:
       - "8000:8000"
     working_dir: /djangoProject
     links:
       - redis
     volumes:
-    - .:/djangoProject
+    - home:/djangoProject
     expose:
       - "8000"
     restart: always
 
   nginx:
-    image: nginx
-    container_name : nginx_service
-    volumes:
-      - ./volumes-nginx:/etc/nginx/conf.d
-      - ./volumes/.static_root/:/static
+    build: ./
+    image: dockercompose.azurecr.io/nginx
+    container_name : nginx-service
     ports:
       - "80:80"
     depends_on :
       - django
   redis:
+#    build: ./
+
     image: redis:alpine
     command: redis-server
-  celery:
-    restart: always
-    build:
-      context: .
-    command: celery -A backend worker -l info
-    environment:
-      - LC_ALL=C.UTF-8
-      - LANG=C.CUT-8
-    volumes:
-    - .:/djangoProject
-    depends_on:
-      - redis
-      - django
-      - nginx
-  locust:
-    image: locustio/locust
-    ports:
-      - "8089:8089"
-    volumes:
-      - ./:/mnt/locust
-    command: --host=http://django:8000 -f /mnt/locust/locust_files/locust_example.py
+#  celery:
+#
+#    restart: always
+#    build: ./
+#    image: dockercompose.azurecr.io/pinterest:v1
+#    command: celery -A backend worker -l info
+#    environment:
+#      - LC_ALL=C.UTF-8
+#      - LANG=C.CUT-8
+#    volumes:
+#    - .:/djangoProject
+#    depends_on:
+##      - redis
+#      - django
+#      - nginx
+#  locust:
+#    image: locustio/locust
+#    ports:
+#      - "8089:8089"
+#    volumes:
+#      - ./:/mnt/locust
+#    command: --host=http://django:8000 -f /mnt/locust/locust_files/locust_example.py
 
 #  worker:
 #    image: locustio/locust
@@ -61,3 +65,10 @@ services:
 #
 #    depends_on:
 #      - locust
+volumes:
+  home:
+    driver: azure_file
+    driver_opts:
+      share_name: pinterestshare
+      storage_account_name: dockercompose
+      storage_account_key: 9FjNrtnF7+pGwDYL7C+H76eufJWys8CaNbrWmudYR6bMPH34kdgu7KFe5T80BuAtRDz8KGhLlZkMNGjsx7Yq/Q==

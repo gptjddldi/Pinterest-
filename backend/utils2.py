@@ -59,8 +59,8 @@ def get_recommendations(pin_id, cosine_sim, indices, metadata):
     return ret
 
 
-# @logging_time
-@cached_as(Pin, timeout=60*60*24)
+@logging_time
+@cached_as(Pin.objects.all(), timeout=60*60*24)
 def gs(metadata):
     from konlpy.tag import Okt
     okt = Okt()
@@ -69,10 +69,11 @@ def gs(metadata):
     noun_title_lists = [' '.join(okt.nouns(title)) for title in title_lists]
 
     tfidf = TfidfVectorizer(min_df=1)
-
     tfidf_matrix = tfidf.fit_transform(noun_title_lists)
     # similarities = tfidf_matrix * tfidf_matrix.T
     similarities = linear_kernel(tfidf_matrix, tfidf_matrix)
+    print("done")
+
     return similarities
 
 
@@ -87,7 +88,7 @@ def get_similarities(metadata):
     return cosine_sim
 
 
-@logging_time
+# @logging_time
 def get_indices(metadata):
     # pin 의 id 를 기준으로 새로운 시리즈를 만듦
     # 대략 id = ['421', '555', '653'] 이라면 indices = [{1:421}, {2:555}, {3:653}] 이런 식임
@@ -95,16 +96,11 @@ def get_indices(metadata):
     return indices
 
 
-qs = Pin.objects.all()
-metadata = read_frame(qs, fieldnames=['id', 'title'])
-similarities = gs(metadata)
-
-
 def recommend_pin(pin, qs):
     # title = write_data_csv(pin)
     # metadata = pd.read_csv('data_set.csv', engine='python', encoding='CP949')
     metadata = read_frame(qs, fieldnames=['id', 'title'])
-    # similarities = gs(metadata)
+    similarities = gs(metadata)
     indices = get_indices(metadata)
     return get_recommendations(pin.id, similarities, indices, metadata)
 

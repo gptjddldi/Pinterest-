@@ -223,8 +223,15 @@ CACHEOPS = {
     'pin.Pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
 }
 
-CACHEOPS_REDIS = "redis://redis:6379"
+# CACHEOPS_REDIS = "redis://:y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=@PinterestRedis.redis.cache.windows.net:6380/1"
 
+CACHEOPS_REDIS = {
+    'host': 'PinterestRedis.redis.cache.windows.net',  # redis-server is on same machine
+    'port': 6380,        # default redis port
+    'password': 'y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=',     # optional
+    'ssl': True
+    # 'unix_socket_path': '' # replaces host and port
+}
 CACHEOPS_DEFAULTS = {
     'timeout': 60 * 60 * 1, # 1시간
     'cache_on_save': True # save()할때 캐시 할지

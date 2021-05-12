@@ -10,7 +10,7 @@
 ### summary
 > - Project 소개
 >   - Pinterest Clone Page
->   - Content Based Filtering 을 이용한 비슷한 Pin 추천 기능
+>   - Content Based Filtering 을 이용한 Similar Pin 추천 기능
 >   - image 파일뿐만 아니라 URL을 이용한 업로드
 >   - Pinterest Pin Crawling 으로 데이터 수집
 
@@ -27,10 +27,13 @@
 >     - PyJWT
 >     - requests
 >     - djangp-rest-auth
+>     - redis
 >     - pandas
 >     - konlpy
 >     - sklearn
 >     - django-pandas
+>     - django-redis
+>     - django-cacheops
 >   - LOCAL
 >     - drf-yasg
 >   - PRODUCTION
@@ -49,9 +52,11 @@
 >   - PostgreSQL
 
 > - Deployment
->   - Azure
+>   - Azure Instance
+>   - Nginx
 >   - gunicorn
 >   - Docker
+>   - Docker-Compose
 
 
 
@@ -217,9 +222,9 @@ def insert_tags(sender, instance, created, **kwargs):
 ### DB Models
 <img src="./screenshots/DBrelations.JPG">
 
-#### DB 최적화 작업 (04.30~)
+#### DB 성능
 
-1. pin.views
+1. N+1 Problem
 
 before (159 queries)
 -> after (5 queries)
@@ -230,10 +235,9 @@ before (159 queries)
     .all()
 ```
 
-Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오래걸리기 떄문에 Index 추가해줬음
+2. Using Index 
 
-최대 13초 -> 11초
-최소 4초 -> 2.6초
+Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오래걸리기 떄문에 Index 추가
 
 ```
 # Pin.models
@@ -246,6 +250,69 @@ Recommender 에서 Pin title 과 id 를 빈번하게 사용하고, 시간이 오
             )
         ]
 ```
+3. Using Cache (Redis)
+
+``` 
+# Redis Option
+INSTALLED_APPS += ['cacheops']
+
+CACHEOPS_LRU = True
+
+CACHEOPS = {
+    'pin.Pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
+}
+
+
+CACHEOPS_REDIS = {
+    'host': 'PinterestRedis.redis.cache.windows.net',  # redis-server is on same machine
+    'port': 6380,
+    'password': get_secret("REDISPASSOWRD"),
+    'ssl': True
+}
+CACHEOPS_DEFAULTS = {
+    'timeout': 60 * 60 * 1, # 1시간
+    'cache_on_save': True # save()할때 캐시 할지
+}
+```
+
+4. Similar Pin Recommend 시간 단축
+
+해당 메서드가 가장 오래 시간이 걸림,
+
+핀이 추가되거나 삭제되지 않으면 이전에 쓰던 데이터를 계속 써도 되기 때문에 해당 결과를 캐싱하여 속도 향상
+```
+@cached_as(Pin.objects.all(), timeout=60*60*24)
+def gs(metadata):
+    from konlpy.tag import Okt
+    okt = Okt()
+    title_lists = metadata["title"].fillna('')
+    title_lists = [' '.join(re.findall(r"([a-zA-Z\dㄱ-힣]+)", title)) for title in title_lists]
+    noun_title_lists = [' '.join(okt.nouns(title)) for title in title_lists]
+
+    tfidf = TfidfVectorizer(min_df=1)
+    tfidf_matrix = tfidf.fit_transform(noun_title_lists)
+    # similarities = tfidf_matrix * tfidf_matrix.T
+    similarities = linear_kernel(tfidf_matrix, tfidf_matrix)
+    print("done")
+
+    return similarities
+```
+
+Similar Pin API 호출 결과
+
+기존 (최적화 전) 평균 87000ms
+<img src="./screenshots/without_prefetch_select.jpg">
+
+prefetch_select 사용,Index 사용, Cache 사용 X 평균 54000ms
+<img src="./screenshots/redisCache사용.JPG">
+
+최적화 이후 평균 900ms
+<img src="./screenshots/CaCheops사용.JPG">
+
+테스트 환경 : Locust
+
+<!-- ### Deployment -->
+ 
 
 ## issue
 

@@ -201,18 +201,18 @@ AUTHENTICATION_BACKENDS = [
 
 # celery config
 # redis 를 message broker 로 사용하고, 그것에 연결함
-CELERY_ALWAYS_EAGER = True
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-
-SCHEDULE_MINUTE = 60
-SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
-SCHEDULE_DAY = 24 * SCHEDULE_HOUR
-SCHEDULE_WEEK = 7 * SCHEDULE_DAY
-SCHEDULE_MONTH = 30 * SCHEDULE_DAY
+# CELERY_ALWAYS_EAGER = True
+# CELERY_BROKER_URL = "redis://redis:6379"
+# CELERY_RESULT_BACKEND = "redis://redis:6379"
+# # CELERY_ACCEPT_CONTENT = ['application/json']
+# # CELERY_RESULT_SERIALIZER = 'json'
+# # CELERY_TASK_SERIALIZER = 'json'
+#
+# SCHEDULE_MINUTE = 60
+# SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
+# SCHEDULE_DAY = 24 * SCHEDULE_HOUR
+# SCHEDULE_WEEK = 7 * SCHEDULE_DAY
+# SCHEDULE_MONTH = 30 * SCHEDULE_DAY
 
 # redis cache (Cacheops)
 INSTALLED_APPS += ['cacheops']
@@ -228,7 +228,7 @@ CACHEOPS = {
 CACHEOPS_REDIS = {
     'host': 'PinterestRedis.redis.cache.windows.net',  # redis-server is on same machine
     'port': 6380,        # default redis port
-    'password': 'y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=',     # optional
+    'password': get_secret("REDISPASSOWRD"),     # optional
     'ssl': True
     # 'unix_socket_path': '' # replaces host and port
 }

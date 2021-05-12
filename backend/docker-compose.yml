@@ -1,25 +1,23 @@
 version: '3'
 services:
   django:
-#    build:
-#      context: .
-#      dockerfile: compose/django/Dockerfile
     build: ./
     image: dockercompose.azurecr.io/pinterest:v1
     container_name: dockercompose
-    depends_on:
-      - redis
-#    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
+    domainname: pinterest
     ports:
       - "8000:8000"
     working_dir: /djangoProject
-    links:
-      - redis
     volumes:
     - home:/djangoProject
     expose:
       - "8000"
     restart: always
+    deploy:
+      resources:
+        reservations:
+          cpus: '2'
+          memory: 2G
 
   nginx:
     build: ./
@@ -29,11 +27,6 @@ services:
       - "80:80"
     depends_on :
       - django
-  redis:
-#    build: ./
-
-    image: redis:alpine
-    command: redis-server
 #  celery:
 #
 #    restart: always

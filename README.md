@@ -353,3 +353,5 @@ prefetch_select 사용,Index 사용, Cache 사용 X 평균 54000ms
 >   - 훨씬 나아질 것으로 예상된다.
 
 > - AttributeError: 'Q' object has no attribute '_known_related_objects'
+
+> - Azure Container Instance 로 배포할 때 옵션을 주지 않으면 HTTP 로 배포됨.. HTTPS 로 바꿔서 하려면 Nginx 설정을 해야 함.

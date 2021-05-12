@@ -228,7 +228,7 @@ CACHEOPS = {
 CACHEOPS_REDIS = {
     'host': 'PinterestRedis.redis.cache.windows.net',  # redis-server is on same machine
     'port': 6380,        # default redis port
-    'password': get_secret("REDISPASSOWRD"),     # optional
+    'password': 'jyKsihokACjQ6EUw6+9WYlfgOgnLdDS7d1qrUqzoC+U=',     # optional
     'ssl': True
     # 'unix_socket_path': '' # replaces host and port
 }

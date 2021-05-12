@@ -1,10 +1,14 @@
 version: '3'
 services:
   django:
+#    build:
+#      context: .
+#      dockerfile: compose/django/Dockerfile
     build: ./
-    image: dockercompose.azurecr.io/pinterest:v1
+    image: dockercompose.azurecr.io/pinterest:v2
     container_name: dockercompose
     domainname: pinterest
+#    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
     ports:
       - "8000:8000"
     working_dir: /djangoProject
@@ -21,12 +25,23 @@ services:
 
   nginx:
     build: ./
+    volumes:
+      - ngin:/etc/nginx/cert
     image: dockercompose.azurecr.io/nginx
     container_name : nginx-service
     ports:
       - "80:80"
+      - "443:443"
     depends_on :
       - django
+
+#  redis:
+##    build: ./
+#
+#    image: redis:alpine
+#    command: redis-server
+#    deploy:
+
 #  celery:
 #
 #    restart: always
@@ -65,3 +80,15 @@ volumes:
       share_name: pinterestshare
       storage_account_name: dockercompose
       storage_account_key: 9FjNrtnF7+pGwDYL7C+H76eufJWys8CaNbrWmudYR6bMPH34kdgu7KFe5T80BuAtRDz8KGhLlZkMNGjsx7Yq/Q==
+  ngin:
+    driver: azure_file
+    driver_opts:
+      share_name: nginx
+      storage_account_name: dockercompose
+      storage_account_key: Cuvyw4uWEeNzEhkXgR0zvwsMvZL/sEVeR8uNsp6C81ZTAnk5dSMj08VEtAz/tYbbtVifnKYng3ynMBdqe+ljHg==
+
+#    secret:
+#        ssl.crt: <base64-ssl.crt>
+#        ssl.key: <base64-ssl.key>
+#        nginx.conf: <base64-nginx.conf>
+#          name: nginx-config

@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import ssl
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -201,18 +202,22 @@ AUTHENTICATION_BACKENDS = [
 
 # celery config
 # redis 를 message broker 로 사용하고, 그것에 연결함
-# CELERY_ALWAYS_EAGER = True
-# CELERY_BROKER_URL = "redis://redis:6379"
-# CELERY_RESULT_BACKEND = "redis://redis:6379"
-# # CELERY_ACCEPT_CONTENT = ['application/json']
-# # CELERY_RESULT_SERIALIZER = 'json'
-# # CELERY_TASK_SERIALIZER = 'json'
-#
-# SCHEDULE_MINUTE = 60
-# SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
-# SCHEDULE_DAY = 24 * SCHEDULE_HOUR
-# SCHEDULE_WEEK = 7 * SCHEDULE_DAY
-# SCHEDULE_MONTH = 30 * SCHEDULE_DAY
+ssl_cert_reqs = {ssl.CERT_NONE}
+CELERY_ALWAYS_EAGER = True
+CELERY_BROKER_URL = "redis://:y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=" \
+                    "@PinterestRedis.redis.cache.windows.net:6380/0"
+broker_use_ssl = True
+CELERY_RESULT_BACKEND = "redis://:y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=" \
+                        "@PinterestRedis.redis.cache.windows.net:6380/0"
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TASK_SERIALIZER = 'json'
+
+SCHEDULE_MINUTE = 60
+SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
+SCHEDULE_DAY = 24 * SCHEDULE_HOUR
+SCHEDULE_WEEK = 7 * SCHEDULE_DAY
+SCHEDULE_MONTH = 30 * SCHEDULE_DAY
 
 # redis cache (Cacheops)
 INSTALLED_APPS += ['cacheops']
@@ -223,14 +228,11 @@ CACHEOPS = {
     'pin.Pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
 }
 
-# CACHEOPS_REDIS = "redis://:y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=@PinterestRedis.redis.cache.windows.net:6380/1"
-
 CACHEOPS_REDIS = {
     'host': 'PinterestRedis.redis.cache.windows.net',  # redis-server is on same machine
     'port': 6380,        # default redis port
     'password': 'jyKsihokACjQ6EUw6+9WYlfgOgnLdDS7d1qrUqzoC+U=',     # optional
     'ssl': True
-    # 'unix_socket_path': '' # replaces host and port
 }
 CACHEOPS_DEFAULTS = {
     'timeout': 60 * 60 * 1, # 1시간

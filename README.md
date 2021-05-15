@@ -311,8 +311,58 @@ prefetch_select 사용,Index 사용, Cache 사용 X 평균 54000ms
 
 테스트 환경 : Locust
 
-<!-- ### Deployment -->
- 
+## Deployment
+
+ Django, Nginx Image 를 ACR 에 Push 한다
+
+#### docker-compose, Azure WebApp 사용
+
+1. docker-compose.yml 파일을 만든다.
+
+```
+version: '3'
+services:
+
+  django:
+
+    build: ./
+    image: {ACR이름}.azurecr.io/{IMAGE이름}:{version}
+    container_name: {Container 이름}
+    volumes:
+    - home:/{WORK DIR}
+    ports:
+      - "80:80"
+
+    working_dir: /{WORK DIR}
+
+
+  nginx:
+    build: ./
+
+    image: {ACR이름}.azurecr.io/{IMAGE이름}:{version}
+    container_name : nginx-service
+
+    depends_on :
+      - django
+volumes:
+  home:
+    driver: azure_file
+    driver_opts:
+      share_name: pinterestshare
+      storage_account_name: dockercompose
+      storage_account_key: 
+
+```
+자세한 내용은 [참조](https://docs.microsoft.com/ko-kr/azure/app-service/quickstart-multi-container)
+2. Azure Portal 에서 App Services 를 만든다
+
+<img src="./screenshots/webapp_1.jpg">
+
+configuration File 은 docker-compose.yml 을 넣어준다.
+
+<img src="./screenshots/webapp_2.jpg">
+
+
 
 ## issue
 

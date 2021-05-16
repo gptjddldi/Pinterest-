@@ -61,31 +61,30 @@ def get_recommendations(pin_id, cosine_sim, indices, metadata):
 
 @logging_time
 @cached_as(Pin.objects.all(), timeout=60*60*24)
-def gs(metadata):
+def get_similarities(qs):
     from konlpy.tag import Okt
     okt = Okt()
+    metadata = read_frame(qs, fieldnames=['id', 'title'])
     title_lists = metadata["title"].fillna('')
     title_lists = [' '.join(re.findall(r"([a-zA-Z\dㄱ-힣]+)", title)) for title in title_lists]
     noun_title_lists = [' '.join(okt.nouns(title)) for title in title_lists]
 
     tfidf = TfidfVectorizer(min_df=1)
     tfidf_matrix = tfidf.fit_transform(noun_title_lists)
-    # similarities = tfidf_matrix * tfidf_matrix.T
     similarities = linear_kernel(tfidf_matrix, tfidf_matrix)
-    print("done")
 
     return similarities
 
 
-@logging_time
-def get_similarities(metadata):
-    metadata1 = metadata["title"].fillna('')
-    tfidf = TfidfVectorizer(tokenizer=tokenizer, ngram_range=(1, 3), min_df=2, sublinear_tf=True)
-
-    tfidf_matrix = tfidf.fit_transform(metadata1)
-    cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
-    # print(cosine_sim)
-    return cosine_sim
+# @logging_time
+# def get_similarities(metadata):
+#     metadata1 = metadata["title"].fillna('')
+#     tfidf = TfidfVectorizer(tokenizer=tokenizer, ngram_range=(1, 3), min_df=2, sublinear_tf=True)
+#
+#     tfidf_matrix = tfidf.fit_transform(metadata1)
+#     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+#     # print(cosine_sim)
+#     return cosine_sim
 
 
 # @logging_time
@@ -100,7 +99,7 @@ def recommend_pin(pin, qs):
     # title = write_data_csv(pin)
     # metadata = pd.read_csv('data_set.csv', engine='python', encoding='CP949')
     metadata = read_frame(qs, fieldnames=['id', 'title'])
-    similarities = gs(metadata)
+    similarities = get_similarities(qs)
     indices = get_indices(metadata)
     return get_recommendations(pin.id, similarities, indices, metadata)
 

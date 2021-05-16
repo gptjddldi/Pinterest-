@@ -94,14 +94,12 @@ def post_pin_from_pin_set(driver, pin_set):
         url = 'https://www.pinterest.co.kr/pin/{}'.format(pin_id)
         driver.get(url)
         element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '.PinBetterSave__DownArrowContainer.PinBetterSave__'
-                                                             'DownArrowContainer--lego')))  # 10초 기다릴 때까지 js 로딩 확인
+            EC.presence_of_element_located((By.CSS_SELECTOR, '.XbT.zI7.iyn.Hsu')))  # 10초 기다릴 때까지 js 로딩 확인
         try:
             image = driver.find_element_by_css_selector(".MIw.QLY.Rym.ojN.p6V.sLG.zI7.iyn.Hsu")
             link = image.find_element_by_xpath('./div/img').get_attribute('src')
 
-            driver.find_element_by_css_selector(".PinBetterSave__DownArrowContainer.PinBetterSave__DownArrowContainer--lego"
-                                                ).click()
+            driver.find_element_by_css_selector(".XbT.zI7.iyn.Hsu").click()
             time.sleep(1)
             tag_set = driver.find_elements_by_css_selector(".tBJ.dyH.iFc.yTZ.pBj.DrD.IZT.mWe.z-6")
             title = ''.join(["#"+tag.text+" " for tag in tag_set[1:4]])
@@ -116,7 +114,7 @@ if __name__ == '__main__':
     login(driver=driver)
     print("---------Pin id 를 수집합니다.. ---------")
     time.sleep(0.2)
-    while len(pin_set) < 400:
+    while len(pin_set) < 900:
         get_pin_id_set(driver)
     print("---------수집 완료---------")
     print("---------포스팅 시작---------")

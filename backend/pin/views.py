@@ -6,10 +6,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from utils2 import recommend_pin
+from utils2 import recommend_pin, get_similarities
 from . import serializers
 from .models import Pin
 from .pagination import CustomCursorPagination
+from .tasks import get_similar
 
 
 class PinViewSet(ModelViewSet):
@@ -32,8 +33,9 @@ class PinViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         qs = self.get_queryset()
-        # qs = qs.prefetch_related('author').prefetch_related('tag_set').prefetch_related('boards')
+        qs = qs.prefetch_related('author').prefetch_related('tag_set').prefetch_related('boards')
         queryset = self.filter_queryset(qs)
+        # res = get_similar.delay()
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

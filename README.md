@@ -3,7 +3,10 @@
 
 #### Django 와 React 를 이용해 만든 Pinterest Clone Page
 
-### [🔑DemoPage](https://reactpinterest.z12.web.core.windows.net/)
+### [🔑DemoPage](https://pinterestreact.z12.web.core.windows.net/)
+
+id : test@test.com
+pw : 테스트123
 
 ## *Introduction*
 
@@ -304,10 +307,10 @@ Similar Pin API 호출 결과
 <img src="./screenshots/without_prefetch_select.jpg">
 
 prefetch_select 사용,Index 사용, Cache 사용 X 평균 54000ms
-<img src="./screenshots/redisCache사용.JPG">
+<img src="./screenshots/redisCache사용.jpg">
 
 최적화 이후 평균 900ms
-<img src="./screenshots/CaCheops사용.JPG">
+<img src="./screenshots/CaCheops사용.jpg">
 
 테스트 환경 : Locust
 
@@ -363,6 +366,26 @@ configuration File 은 docker-compose.yml 을 넣어준다.
 <img src="./screenshots/webapp_2.jpg">
 
 
+## 개발환경
+
+```
+# backend/secrets.json
+{
+  "SECRET_KEY": "{Django Secret Key}",
+  "AZURE_ACCOUNT_NAME": "",
+  "AZURE_ACCOUNT_KEY": "",
+  "USER": "{POSTGRESQL USER}",
+  "PASSWORD": "{POSTGRESQL PASSWORD}",
+  "HOST": "{POSTGETSQL HOST}",
+}
+```
+설정 후,
+
+``` docker-compose up ```
+
+http://localhost:8000/ 
+
+
 
 ## issue
 
@@ -371,6 +394,7 @@ configuration File 은 docker-compose.yml 을 넣어준다.
 > - azure.common.AzureHttpError: Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature. ErrorCode: AuthenticationFailed
 
 > - 로그인을 한 뒤 다른 곳에서 request.user 를 호출하면 anonymoususer 가 나옴;;
+>   - JWT 로 인증을 구현했으니 request.user 에 토큰을 담아서 보내야 했다. 아니면 세션 인증으로 했으면 토큰을 보내지 않아도 됨.
 
 > - 미디어 파일을 로컬이에서 선택해서가 아니라 url([https://i.pinimg.com/236x/76/d0/ce/76d0ced78f2bf72370d753afaead0d63.jpg](https://i.pinimg.com/236x/76/d0/ce/76d0ced78f2bf72370d753afaead0d63.jpg)) 을 통해 업로드하는 방법 
 >   - InMemoryUploadedFile 로 시도 → 로컬에선 되지만 cloudinary 로 업로드할 때 'Empty File' 에러 

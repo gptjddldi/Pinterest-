@@ -1,33 +1,27 @@
 version: '3'
 services:
   django:
+    build: ./
+    image: gptjddl123/pinterest
 #    build:
 #      context: .
 #      dockerfile: compose/django/Dockerfile
-    build: ./
-    image: dockercompose.azurecr.io/pinterest:v2
+    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
+
     container_name: dockercompose
     domainname: pinterest
-#    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
     ports:
       - "8000:8000"
     working_dir: /djangoProject
     volumes:
-    - home:/djangoProject
+    - .:/djangoProject
     expose:
       - "8000"
-    restart: always
-    deploy:
-      resources:
-        reservations:
-          cpus: '2'
-          memory: 2G
+
 
   nginx:
     build: ./
-    volumes:
-      - ngin:/etc/nginx/cert
-    image: dockercompose.azurecr.io/nginx
+    image: nginx
     container_name : nginx-service
     ports:
       - "80:80"
@@ -35,18 +29,10 @@ services:
     depends_on :
       - django
 
-#  redis:
-##    build: ./
-#
-#    image: redis:alpine
-#    command: redis-server
-#    deploy:
-
 #  celery:
-#
 #    restart: always
 #    build: ./
-#    image: dockercompose.azurecr.io/pinterest:v1
+#    image: pinrepo.azurecr.io/pinterest
 #    command: celery -A backend worker -l info
 #    environment:
 #      - LC_ALL=C.UTF-8
@@ -54,41 +40,13 @@ services:
 #    volumes:
 #    - .:/djangoProject
 #    depends_on:
-##      - redis
 #      - django
 #      - nginx
-#  locust:
-#    image: locustio/locust
-#    ports:
-#      - "8089:8089"
-#    volumes:
-#      - ./:/mnt/locust
-#    command: --host=http://django:8000 -f /mnt/locust/locust_files/locust_example.py
+#volumes:
+#  home:
+#    driver: azure_file
+#    driver_opts:
+#      share_name: django
+#      storage_account_name: mediastatic
+#      storage_account_key: rQxhjmOE7A4TXmZiQ6slgUtiUl9/mlIrrgRAL18sSM8QNwvQvRQuOhJmqxKXKP0UImU/hCh0DCfKxUT6nrOa/Q==
 
-#  worker:
-#    image: locustio/locust
-#    volumes:
-#      - ./:/mnt/locust
-#    command: -f /mnt/locust/locust_files/locust_example.py --worker --master-host=127.0.0.1:8089
-#
-#    depends_on:
-#      - locust
-volumes:
-  home:
-    driver: azure_file
-    driver_opts:
-      share_name: pinterestshare
-      storage_account_name: dockercompose
-      storage_account_key: 9FjNrtnF7+pGwDYL7C+H76eufJWys8CaNbrWmudYR6bMPH34kdgu7KFe5T80BuAtRDz8KGhLlZkMNGjsx7Yq/Q==
-  ngin:
-    driver: azure_file
-    driver_opts:
-      share_name: nginx
-      storage_account_name: dockercompose
-      storage_account_key: Cuvyw4uWEeNzEhkXgR0zvwsMvZL/sEVeR8uNsp6C81ZTAnk5dSMj08VEtAz/tYbbtVifnKYng3ynMBdqe+ljHg==
-
-#    secret:
-#        ssl.crt: <base64-ssl.crt>
-#        ssl.key: <base64-ssl.key>
-#        nginx.conf: <base64-nginx.conf>
-#          name: nginx-config

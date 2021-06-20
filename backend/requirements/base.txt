@@ -21,3 +21,4 @@ celery[redis]
 redis
 django-redis
 django-cacheops
+django-debug-toolbar

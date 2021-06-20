@@ -202,13 +202,12 @@ AUTHENTICATION_BACKENDS = [
 
 # celery config
 # redis 를 message broker 로 사용하고, 그것에 연결함
-ssl_cert_reqs = {ssl.CERT_NONE}
 CELERY_ALWAYS_EAGER = True
-CELERY_BROKER_URL = "redis://:y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=" \
-                    "@PinterestRedis.redis.cache.windows.net:6380/0"
-broker_use_ssl = True
-CELERY_RESULT_BACKEND = "redis://:y6GyRkJrrXTNNzvLvLYRdKAqDvTC4j7z5O1DKXFuNGI=" \
-                        "@PinterestRedis.redis.cache.windows.net:6380/0"
+CELERY_BROKER_URL = "redis://:u+QBCJrgZxlwIAJ0mGH6Z8NPs81r5f1EYJZfLrn7U5I=" \
+                    "@pinterestredis123.redis.cache.windows.net"
+# broker_use_ssl = True
+CELERY_RESULT_BACKEND = "redis://:u+QBCJrgZxlwIAJ0mGH6Z8NPs81r5f1EYJZfLrn7U5I=" \
+                        "@pinterestredis123.redis.cache.windows.net"
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TASK_SERIALIZER = 'json'
@@ -225,13 +224,13 @@ INSTALLED_APPS += ['cacheops']
 CACHEOPS_LRU = True
 
 CACHEOPS = {
-    'pin.Pin': {'ops': 'get', 'timeout': 60*15},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
+    'pin.Pin': {'ops': 'get', 'timeout': 60*60*24},  # Pin Model 을 GET 으로 조회하는 경우 db 보다 캐시를 먼저 본다.
 }
 
 CACHEOPS_REDIS = {
-    'host': 'PinterestRedis.redis.cache.windows.net',  # redis-server is on same machine
+    'host': 'pinterestredis123.redis.cache.windows.net',  # redis-server is on same machine
     'port': 6380,        # default redis port
-    'password': 'jyKsihokACjQ6EUw6+9WYlfgOgnLdDS7d1qrUqzoC+U=',     # optional
+    'password': 'u+QBCJrgZxlwIAJ0mGH6Z8NPs81r5f1EYJZfLrn7U5I=',     # optional
     'ssl': True
 }
 CACHEOPS_DEFAULTS = {

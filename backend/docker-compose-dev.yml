@@ -1,0 +1,133 @@
+version: '3'
+services:
+  django:
+    build: ./
+    image: gptjddl123/pinterest
+#    build:
+#      context: .
+#      dockerfile: compose/django/Dockerfile
+    command: python3 manage.py runserver 0:8000 --settings=backend.settings.prod
+
+    container_name: dockercompose
+    domainname: pinterest
+    ports:
+      - "8000:8000"
+    working_dir: /djangoProject
+    volumes:
+    - .:/djangoProject
+    expose:
+      - "8000"
+
+
+  nginx:
+    build: ./
+    image: nginx
+    container_name : nginx-service
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on :
+      - django
+
+#  redis:
+##    build: ./
+#
+#    image: redis:alpine
+#    command: redis-server
+#    deploy:
+
+#  celery:
+#
+#    restart: always
+#    build:
+#      context: .
+#      dockerfile: compose/django/Dockerfile
+#    command: celery -A backend worker -l info
+#    environment:
+#      - LC_ALL=C.UTF-8
+#      - LANG=C.CUT-8
+#    volumes:
+#    - .:/djangoProject
+#    depends_on:
+##      - redis
+#      - django
+#      - nginx
+
+#  locust:
+#    image: locustio/locust
+#    ports:
+#      - "8089:8089"
+#    volumes:
+#      - ./:/mnt/locust
+#    command: --host=http://django:8000 -f /mnt/locust/locust_files/locust_example.py
+
+#  worker:
+#    image: locustio/locust
+#    volumes:
+#      - ./:/mnt/locust
+#    command: -f /mnt/locust/locust_files/locust_example.py --worker --master-host=127.0.0.1:8089
+#
+#    depends_on:
+#      - locust
+#volumes:
+#  home:
+#    driver: azure_file
+#    driver_opts:
+#      share_name: pinterestshare
+#      storage_account_name: dockercompose
+#      storage_account_key: 9FjNrtnF7+pGwDYL7C+H76eufJWys8CaNbrWmudYR6bMPH34kdgu7KFe5T80BuAtRDz8KGhLlZkMNGjsx7Yq/Q==
+#  ngin:
+#    driver: azure_file
+#    driver_opts:
+#      share_name: nginx
+#      storage_account_name: dockercompose
+#      storage_account_key: Cuvyw4uWEeNzEhkXgR0zvwsMvZL/sEVeR8uNsp6C81ZTAnk5dSMj08VEtAz/tYbbtVifnKYng3ynMBdqe+ljHg==
+
+#    secret:
+#        ssl.crt: <base64-ssl.crt>
+#        ssl.key: <base64-ssl.key>
+#        nginx.conf: <base64-nginx.conf>
+#          name: nginx-config
+
+
+
+
+
+
+
+
+#
+#version: '3'
+#services:
+#
+#  django:
+#
+#    build: ./
+#    image: dockercompose.azurecr.io/pinterest:v4
+#    container_name: dockercompose
+#    volumes:
+#    - home:/djangoProject
+#    ports:
+#      - "80:80"
+#
+#    working_dir: /djangoProject
+#
+#
+#  nginx:
+#    build: ./
+#
+#    image: dockercompose.azurecr.io/nginx
+#    container_name : nginx-service
+#
+#    depends_on :
+#      - django
+#volumes:
+#  home:
+#    driver: azure_file
+#    driver_opts:
+#      share_name: pinterestshare
+#      storage_account_name: dockercompose
+#      storage_account_key: 9FjNrtnF7+pGwDYL7C+H76eufJWys8CaNbrWmudYR6bMPH34kdgu7KFe5T80BuAtRDz8KGhLlZkMNGjsx7Yq/Q==
+#
+
+
